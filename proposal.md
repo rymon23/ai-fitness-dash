@@ -1,8 +1,7 @@
 
+Background and Overview
 
-Overview
-
-2d guessing game that uses genetic algorithoms.
+2d guessing game that uses genetic algorithm.
 Objective is to guess the number of generations needed to breed a fit enough population of npcs in which 90% can 
 sucessfully traverse a randomly generated map with the obstacles and make it to the other side.
 
@@ -32,6 +31,14 @@ else you Lose
 
 Functionality
 
+  users can:
+  -guess on a breed generation
+  -adjust population size
+
+  -adjust the genetic algorithm:
+    -gene mutation amount
+    -gene mutation percent
+    
 
 
 Wireframes
