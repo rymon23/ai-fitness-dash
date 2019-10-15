@@ -20,6 +20,7 @@
 
     const GAME_SCREEN = [1080, 720];
     const ENTITY_COUNT = 4;
+    const ENTITY_SENSE_RADIUS = 10;
 
     const wallBuffer = 75;
     const wallWidth = 20;
@@ -205,6 +206,18 @@
             ctx.fillStyle = entity.color;
             ctx.fill();
             ctx.closePath();
+
+            //SENSORS
+            const offset = entity.radius/2
+            ctx.beginPath();
+            ctx.rect(entity.x, entity.y - offset, 1, -45 ); //TOP
+            ctx.rect(entity.x, entity.y + offset, 1, 45 ); //BOTTOM
+            ctx.rect(entity.x + offset, entity.y, 45, 1 ); //RIGHT
+            ctx.rect(entity.x - offset, entity.y, -45, 1 ); //LEFT
+            ctx.fillStyle = "#ff0000";
+            ctx.fill();
+            ctx.closePath();
+
         };
     };
     const moveEntities = () => {
@@ -294,6 +307,20 @@
         // })
     };
 
+    function entityVisionSenser() {
+        const esr = ENTITY_SENSE_RADIUS;
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            if (!entity.goalReached && !entity.isDead){
+                if (entity.x + esr > brick.x - entity.radius && entity.x - entity.radius < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
+                    entity.dx = -entity.dx;
+                }
+                if (entity.x > brick.x && entity.x < brick.x + wallWidth && (entity.y > brick.y - entity.radius && entity.y - entity.radius < brick.y + brick.height)) {
+                    entity.dy = -entity.dy;
+                }
+            };
+        };
+    };
 
 
     const draw = () =>{
