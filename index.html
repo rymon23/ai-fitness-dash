@@ -8,48 +8,145 @@
     <title>Fitness Dash</title>
     <style>
         * { padding: 0; margin: 0;}
-        canvas {background: rgb(181, 179, 179); display: block; margin: 0 auto;}
+        canvas {background: rgb(191, 193, 189); display: block; margin: 0 auto;}
     </style>
 </head>
 <body>
     <!-- <div id="root">you should not see this</div> -->
-    <canvas id="canvas-id" width="720" height="480"></canvas>
+    <canvas id="canvas-id" width="1080" height="720"></canvas>
 <script>
     const canvas = document.getElementById("canvas-id");
     const ctx = canvas.getContext("2d");
 
-    const GAME_SCREEN = [720, 480];
+    const GAME_SCREEN = [1080, 720];
     const wallBuffer = 75;
     const wallWidth = 15;
 
+    const bricks = [];
 
-    const generateWall = () => {
-        ctx.beginPath();
-        ctx.rect(wallBuffer, 400, wallWidth, 400);
-        ctx.fillStyle = "#FF0000";
-        ctx.fill();
-        ctx.closePath();        
+
+    const setUpRoundColumns = (startPos = 125) => {
+        const randomColumnBuffer = () => {
+            return getRandomInt(40, 80)
+        }
+        const wallStartPos = (length) => {
+            if (Math.random() >= 0.5) { return 0 }
+            return GAME_SCREEN[1] - length
+        }    
+
+        let ix = 0;
+        let currentColumnPos = startPos;
+
+        while (currentColumnPos < GAME_SCREEN[0] * 0.85) {
+            let length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
+            bricks[ix] = { 
+                widthBuffer: currentColumnPos, 
+                length: length,
+                verticalStart: wallStartPos(length),
+            }
+            ix += 1;
+            currentColumnPos += randomColumnBuffer();
+        }
     }
-    
-    generateWall();
+            
 
-    ctx.beginPath();
-    ctx.rect(wallBuffer, 0, 90, 50);
-    ctx.fillStyle = "#FF0000";
-    ctx.fill();
-    ctx.closePath();
 
-    ctx.beginPath();
-    ctx.arc(240, 160, 20, 0, Math.PI*2, false);
-    ctx.fillStyle = "green";
-    ctx.fill();
-    ctx.closePath();
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
 
-    ctx.beginPath();
-    ctx.rect(160, 0, 90, 500);
-    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-    ctx.stroke();
-    ctx.closePath();
+    const generateSingleWall = (wallBuffer) => {
+        const wallStartPos = (length) => {
+            if (Math.random() >= 0.5){ return 0}
+            return GAME_SCREEN[1] - length
+        }        
+        const length = getRandomInt(50, GAME_SCREEN[1]*0.8);
+        ctx.beginPath();
+        ctx.rect(wallBuffer, wallStartPos(length), wallWidth, length);
+        ctx.fillStyle = "#FFFFF";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    const generateBrokenWall = (wallBuffer) => {
+        const gap = getRandomInt(55, 95);
+        const topLength = getRandomInt(50, GAME_SCREEN[1]*0.6);
+        ctx.beginPath();
+        ctx.rect(wallBuffer, 0, wallWidth, topLength);
+        ctx.rect(wallBuffer, topLength + gap, wallWidth, GAME_SCREEN[1] - (topLength + gap));
+        ctx.fillStyle = "#FFFFF";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    const generateColumns = (startPos = 125) => {
+         const randomColumnBuffer = () => {
+            return getRandomInt(40, 80)
+        }
+        const generateRandomColumn = (currentColumnPos) => {
+            if (Math.random() >= 0.5) { 
+                generateSingleWall(currentColumnPos) 
+            }else { generateBrokenWall(currentColumnPos)}
+        }
+
+        let currentColumnPos = startPos;
+        while(currentColumnPos < GAME_SCREEN[0]*0.85){
+           generateRandomColumn(currentColumnPos);
+         //   generateSingleWall(currentColumnPos);
+         //   generateBrokenWall(currentColumnPos);
+            currentColumnPos += randomColumnBuffer();
+        }
+    }
+
+
+    let x = canvas.width / 2;
+    let y = canvas.height - 30;
+    let dx = 6;
+    let dy = -6;
+    const ballRadius = 10;
+
+    function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+    const drawColumns = () => {
+        for (let i = 0; i < bricks.length; i++) {
+            const brick = bricks[i];
+            ctx.beginPath();
+            ctx.rect(brick.widthBuffer, brick.verticalStart, wallWidth, brick.length);
+            ctx.fillStyle = "#FFFFF";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+
+    const draw = () =>{
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawColumns();
+        drawBall();
+
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            dx = -dx;
+        }
+        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+            dy = -dy;
+        }
+
+        x += dx;
+        y += dy;
+    }
+
+    const runGame = () => {
+        setInterval(draw, 10);
+    }
+
+    setUpRoundColumns()
+    runGame();
 </script>
 
 </body>
