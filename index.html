@@ -19,13 +19,38 @@
     const ctx = canvas.getContext("2d");
 
     const GAME_SCREEN = [1080, 720];
+    const ENTITY_COUNT = 4;
+
     const wallBuffer = 75;
-    const wallWidth = 50;
+    const wallWidth = 20;
 
     const bricks = [];
+    const entities = [];
 
+    const createEntity = (startX ,startY, speed = 5) => {
+        return {
+            radius: 10,
+            x: startX,
+            y: startY,
+            dx: speed,
+            dy: -speed,
+            color: "#000000"
+        };
+    };
 
-    const setUpRoundColumns = (startPosX = 125) => {
+    const setupEntities = (amount = 1, startBox) => {
+        let ix = 0;
+        const randomBoxPos = (startBox) => {
+            return [getRandomInt(startBox.x + 2, startBox.width - 1),
+             getRandomInt(startBox.y + 2 , startBox.height - 2)]
+        } 
+        for (let i = 0; i < amount; i++) {
+            let xyPos = randomBoxPos(startBox);
+            entities[i] = createEntity(xyPos[0] ,xyPos[1]); 
+        }; 
+    };
+
+    const setupColumns = (startPosX = 125) => {
         const randomColumnBuffer = () => {
             return getRandomInt(40, 80)
         }
@@ -43,17 +68,12 @@
                 height: length,
                 x: currentPosX,
                 y: wallStartPos(length)
-                // widthBuffer: currentPosX, 
-                // length: length,
-                // verticalStart: wallStartPos(length),
             }
             ix += 1;
             currentPosX += wallWidth + randomColumnBuffer();
         }
     }
             
-
-
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -125,6 +145,7 @@
         strokeStyle: "rgba(0, 0, 255, 0.5)",
     };
 
+
     const drawBox = (box) => {
         ctx.beginPath();
         ctx.rect(box.x, box.y, box.width, box.height);
@@ -132,25 +153,13 @@
         ctx.stroke();
         ctx.closePath();
     };
-
-    // function drawFinishBox() {
-    //     const height = canvas.height / 2
-    //     const x = canvas.width - 60;
-    //     const y = (canvas.height - height) / 2;
-    //     ctx.beginPath();
-    //     ctx.rect(x, y, 60, height);
-    //     ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-    //     ctx.stroke();
-    //     ctx.closePath();
-    // }
-
     function drawBall() {
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
-    }
+    };
     const drawColumns = () => {
         for (let i = 0; i < bricks.length; i++) {
             const brick = bricks[i];
@@ -160,20 +169,52 @@
             ctx.fillStyle = "#FFFFF";
             ctx.fill();
             ctx.closePath();
-        }
-    }
+        };
+    };
+    const drawEntities = () => {
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            ctx.beginPath();
+            ctx.arc(entity.x, entity.y, entity.radius, 0, Math.PI * 2);
+            ctx.fillStyle = entity.color;
+            ctx.fill();
+            ctx.closePath();
+        };
+    };
+    const moveEntities = () => {
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+
+            entity.x += entity.dx;
+            entity.y += entity.dy;            
+        };
+    };
 
     function columnCollisionDetection() {
         for (let i = 0; i < bricks.length; i++) {
             const brick = bricks[i];
+
             //testing only
             ctx.beginPath();
             ctx.rect(brick.x, brick.y, wallWidth, brick.height);
             ctx.fillStyle = "#ff0000";
             ctx.fill();
             ctx.closePath();
+            //
 
-    
+            //Entities
+            for (let i = 0; i < entities.length; i++) {
+                const entity = entities[i];
+
+                if (entity.x > brick.x - entity.radius && entity.x - entity.radius < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
+                    entity.dx = -entity.dx;
+                }
+                if (entity.x > brick.x && entity.x < brick.x + wallWidth && (entity.y > brick.y - entity.radius && entity.y - entity.radius < brick.y + brick.height)) {
+                    entity.dy = -entity.dy;
+                }
+            };
+
+            //BALL
             if (x > brick.x - ballRadius && x - ballRadius < brick.x + wallWidth && y > brick.y && y < brick.y + brick.height) {
                 dx = -dx;
             }
@@ -184,31 +225,49 @@
         }
     }
 
+    const canvasCollisionDetection = () => {
+        //Entities
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+
+            if (entity.x + entity.dx > canvas.width - entity.radius || entity.x + entity.dx < entity.radius) {
+                entity.dx = -entity.dx;
+            }
+            if (entity.y + entity.dy > canvas.height - entity.radius || entity.y + entity.dy < entity.radius) {
+                entity.dy = -entity.dy;
+            }  
+        };
+        //BALL
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            dx = -dx;
+        }
+        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+            dy = -dy;
+        }        
+    };
+
     const draw = () =>{
         // debugger
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawColumns();
         drawBox(startBox);
         drawBox(finishBox);
+        drawEntities(1);
         drawBall();
         columnCollisionDetection();
-
-        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-            dx = -dx;
-        }
-        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-            dy = -dy;
-        }
+        canvasCollisionDetection();
 
         x += dx;
         y += dy;
+        moveEntities();
     }
 
     const runGame = () => {
         setInterval(draw, 10);
     }
 
-    setUpRoundColumns()
+    setupColumns()
+    setupEntities(ENTITY_COUNT,startBox);
     runGame();
 </script>
 
