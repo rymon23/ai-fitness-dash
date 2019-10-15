@@ -335,22 +335,6 @@
         // })
     };
 
-    function entityVisionSenser() {
-        const esr = ENTITY_SENSE_RADIUS;
-        for (let i = 0; i < entities.length; i++) {
-            const entity = entities[i];
-            if (!entity.goalReached && !entity.isDead){
-                if (entity.x + esr > brick.x - entity.radius && entity.x - entity.radius < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
-                    entity.dx = -entity.dx;
-                }
-                if (entity.x > brick.x && entity.x < brick.x + wallWidth && (entity.y > brick.y - entity.radius && entity.y - entity.radius < brick.y + brick.height)) {
-                    entity.dy = -entity.dy;
-                }
-            };
-        };
-    };
-
-
     const draw = () =>{
         // debugger
         ctx.clearRect(0, 0, canvas.width, canvas.height);
