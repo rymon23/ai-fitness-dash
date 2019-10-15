@@ -20,12 +20,12 @@
 
     const GAME_SCREEN = [1080, 720];
     const wallBuffer = 75;
-    const wallWidth = 15;
+    const wallWidth = 50;
 
     const bricks = [];
 
 
-    const setUpRoundColumns = (startPos = 125) => {
+    const setUpRoundColumns = (startPosX = 125) => {
         const randomColumnBuffer = () => {
             return getRandomInt(40, 80)
         }
@@ -34,18 +34,21 @@
             return GAME_SCREEN[1] - length
         }    
 
+        let currentPosX = startPosX;
         let ix = 0;
-        let currentColumnPos = startPos;
 
-        while (currentColumnPos < GAME_SCREEN[0] * 0.85) {
+        while (currentPosX < GAME_SCREEN[0] * 0.85) {
             let length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
             bricks[ix] = { 
-                widthBuffer: currentColumnPos, 
-                length: length,
-                verticalStart: wallStartPos(length),
+                height: length,
+                x: currentPosX,
+                y: wallStartPos(length)
+                // widthBuffer: currentPosX, 
+                // length: length,
+                // verticalStart: wallStartPos(length),
             }
             ix += 1;
-            currentColumnPos += randomColumnBuffer();
+            currentPosX += wallWidth + randomColumnBuffer();
         }
     }
             
@@ -93,9 +96,7 @@
 
         let currentColumnPos = startPos;
         while(currentColumnPos < GAME_SCREEN[0]*0.85){
-           generateRandomColumn(currentColumnPos);
-         //   generateSingleWall(currentColumnPos);
-         //   generateBrokenWall(currentColumnPos);
+            generateRandomColumn(currentColumnPos);
             currentColumnPos += randomColumnBuffer();
         }
     }
@@ -103,9 +104,45 @@
 
     let x = canvas.width / 2;
     let y = canvas.height - 30;
-    let dx = 6;
-    let dy = -6;
+    let dx = 5;
+    let dy = -5;
     const ballRadius = 10;
+
+    const boxY = (canvas.height / 2) / 2;
+
+    const startBox = {
+        height: canvas.height / 2,
+        width: 60,
+        x: 0,
+        y: boxY,
+        strokeStyle: "rgba(0, 0, 255, 0.5)",
+    };
+    const finishBox = {
+        height: canvas.height / 2,
+        width: 60,
+        x: canvas.width - 60,
+        y: boxY,
+        strokeStyle: "rgba(0, 0, 255, 0.5)",
+    };
+
+    const drawBox = (box) => {
+        ctx.beginPath();
+        ctx.rect(box.x, box.y, box.width, box.height);
+        ctx.strokeStyle = box.strokeStyle;
+        ctx.stroke();
+        ctx.closePath();
+    };
+
+    // function drawFinishBox() {
+    //     const height = canvas.height / 2
+    //     const x = canvas.width - 60;
+    //     const y = (canvas.height - height) / 2;
+    //     ctx.beginPath();
+    //     ctx.rect(x, y, 60, height);
+    //     ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
+    //     ctx.stroke();
+    //     ctx.closePath();
+    // }
 
     function drawBall() {
         ctx.beginPath();
@@ -118,17 +155,43 @@
         for (let i = 0; i < bricks.length; i++) {
             const brick = bricks[i];
             ctx.beginPath();
-            ctx.rect(brick.widthBuffer, brick.verticalStart, wallWidth, brick.length);
+            // ctx.rect(brick.widthBuffer, brick.verticalStart, wallWidth, brick.length);
+            ctx.rect(brick.x, brick.y, wallWidth, brick.height);
             ctx.fillStyle = "#FFFFF";
             ctx.fill();
             ctx.closePath();
         }
     }
 
+    function columnCollisionDetection() {
+        for (let i = 0; i < bricks.length; i++) {
+            const brick = bricks[i];
+            //testing only
+            ctx.beginPath();
+            ctx.rect(brick.x, brick.y, wallWidth, brick.height);
+            ctx.fillStyle = "#ff0000";
+            ctx.fill();
+            ctx.closePath();
+
+    
+            if (x > brick.x - ballRadius && x - ballRadius < brick.x + wallWidth && y > brick.y && y < brick.y + brick.height) {
+                dx = -dx;
+            }
+            if (x > brick.x && x < brick.x + wallWidth && (y > brick.y - ballRadius && y - ballRadius < brick.y + brick.height) ) {
+                dy = -dy;
+            }
+
+        }
+    }
+
     const draw = () =>{
+        // debugger
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawColumns();
+        drawBox(startBox);
+        drawBox(finishBox);
         drawBall();
+        columnCollisionDetection();
 
         if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
             dx = -dx;
