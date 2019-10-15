@@ -19,7 +19,7 @@
     const ctx = canvas.getContext("2d");
 
     const GAME_SCREEN = [1080, 720];
-    const ENTITY_COUNT = 1;
+    const ENTITY_COUNT = 4;
     const ENTITY_SENSE_RADIUS = 35;
 
     const wallBuffer = 75;
@@ -32,6 +32,12 @@
     const getFinishBoxDistance = (entity) => {
         return Math.sqrt(Math.pow((finishBox.center.x - entity.x), 2) + Math.pow((finishBox.center.y - entity.y), 2));
     };
+
+    // const entityActions = (action) => {
+    //     return Math.sqrt(Math.pow((finishBox.center.x - entity.x), 2) + Math.pow((finishBox.center.y - entity.y), 2));
+    // };
+
+
 
     const createHoldingBox = (height, width, x, y, color = "rgba(0, 0, 255, 0.5)") => {
         const center = {
@@ -95,7 +101,7 @@
         let ix = 0;
 
         while (currentPosX < GAME_SCREEN[0] * 0.85) {
-            let length = 70; //getRandomInt(50, GAME_SCREEN[1] * 0.8);
+            let length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
             bricks[ix] = { 
                 height: length,
                 x: currentPosX,
@@ -261,12 +267,20 @@
                     const checkSensorOnX = (x, sensorType="") => {
                         if (x > brick.x && x < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
                             console.log(`Sensor X Hit: ${sensorType}`);
-                            debugger
+                            // debugger
                         };
                     };
-                    checkSensorOnX(entity.x + ENTITY_SENSE_RADIUS, "RIGHT")
-                    checkSensorOnX(entity.x + -ENTITY_SENSE_RADIUS, "LEFT")
-                    
+                    const checkSensorOnY = (y, sensorType="") => {
+                        if (entity.x > brick.x && entity.x < brick.x + wallWidth && 
+                            (y > brick.y && y < brick.y + brick.height)) {
+                            console.log(`Sensor Y Hit: ${sensorType}`);
+                            // debugger
+                        };
+                    };
+                    checkSensorOnX(entity.x + ENTITY_SENSE_RADIUS, "RIGHT");
+                    checkSensorOnX(entity.x + -ENTITY_SENSE_RADIUS, "LEFT");
+                    checkSensorOnY(entity.y + -ENTITY_SENSE_RADIUS, "TOP");
+                    checkSensorOnY(entity.y + ENTITY_SENSE_RADIUS, "BOTTOM");
                 };
             };
 
