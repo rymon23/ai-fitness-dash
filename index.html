@@ -5,9 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./src/styles/index.css">
-    <title>Document</title>
+    <title>Fitness Dash</title>
+    <style>
+        * { padding: 0; margin: 0;}
+        canvas {background: rgb(181, 179, 179); display: block; margin: 0 auto;}
+    </style>
 </head>
 <body>
+    <!-- <div id="root">you should not see this</div> -->
+    <canvas id="canvas-id" width="720" height="480"></canvas>
+<script>
+    const canvas = document.getElementById("canvas-id");
+    const ctx = canvas.getContext("2d");
+
+    const GAME_SCREEN = [720, 480];
+    const wallBuffer = 75;
+    const wallWidth = 15;
+
+
+    const generateWall = () => {
+        ctx.beginPath();
+        ctx.rect(wallBuffer, 400, wallWidth, 400);
+        ctx.fillStyle = "#FF0000";
+        ctx.fill();
+        ctx.closePath();        
+    }
     
+    generateWall();
+
+    ctx.beginPath();
+    ctx.rect(wallBuffer, 0, 90, 50);
+    ctx.fillStyle = "#FF0000";
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.arc(240, 160, 20, 0, Math.PI*2, false);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.rect(160, 0, 90, 500);
+    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
+    ctx.stroke();
+    ctx.closePath();
+</script>
+
 </body>
 </html>
