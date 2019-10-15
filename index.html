@@ -19,8 +19,8 @@
     const ctx = canvas.getContext("2d");
 
     const GAME_SCREEN = [1080, 720];
-    const ENTITY_COUNT = 4;
-    const ENTITY_SENSE_RADIUS = 10;
+    const ENTITY_COUNT = 1;
+    const ENTITY_SENSE_RADIUS = 35;
 
     const wallBuffer = 75;
     const wallWidth = 20;
@@ -49,6 +49,10 @@
     };
 
     const createEntity = (startX ,startY, speed = 3) => {
+        const createSensor = (x, y,) => {
+
+            return { x }
+        }
         const newEntity =  {
             radius: 10,
             x: startX,
@@ -210,10 +214,10 @@
             //SENSORS
             const offset = entity.radius/2
             ctx.beginPath();
-            ctx.rect(entity.x, entity.y - offset, 1, -45 ); //TOP
-            ctx.rect(entity.x, entity.y + offset, 1, 45 ); //BOTTOM
-            ctx.rect(entity.x + offset, entity.y, 45, 1 ); //RIGHT
-            ctx.rect(entity.x - offset, entity.y, -45, 1 ); //LEFT
+            ctx.rect(entity.x, entity.y - offset, 1, -ENTITY_SENSE_RADIUS ); //TOP
+            ctx.rect(entity.x, entity.y + offset, 1, ENTITY_SENSE_RADIUS ); //BOTTOM
+            ctx.rect(entity.x + offset, entity.y, ENTITY_SENSE_RADIUS, 1 ); //RIGHT
+            ctx.rect(entity.x - offset, entity.y, -ENTITY_SENSE_RADIUS, 1 ); //LEFT
             ctx.fillStyle = "#ff0000";
             ctx.fill();
             ctx.closePath();
@@ -253,6 +257,16 @@
                     if (entity.x > brick.x && entity.x < brick.x + wallWidth && (entity.y > brick.y - entity.radius && entity.y - entity.radius < brick.y + brick.height)) {
                         entity.dy = -entity.dy;
                     }
+
+                    const checkSensorOnX = (x, sensorType="") => {
+                        if (x > brick.x && x < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
+                            console.log(`Sensor X Hit: ${sensorType}`);
+                            debugger
+                        };
+                    };
+                    checkSensorOnX(entity.x + ENTITY_SENSE_RADIUS, "RIGHT")
+                    checkSensorOnX(entity.x + -ENTITY_SENSE_RADIUS, "LEFT")
+                    
                 };
             };
 
@@ -275,10 +289,10 @@
 
                 if (entity.x + entity.dx > canvas.width - entity.radius || entity.x + entity.dx < entity.radius) {
                     entity.dx = -entity.dx;
-                }
+                };
                 if (entity.y + entity.dy > canvas.height - entity.radius || entity.y + entity.dy < entity.radius) {
                     entity.dy = -entity.dy;
-                }
+                };
             };
         };
         //BALL
