@@ -25,29 +25,56 @@
     const wallWidth = 20;
 
     const bricks = [];
-    const entities = [];
+    let entities = [];
+    let roundEntities = [];
 
-    const createEntity = (startX ,startY, speed = 5) => {
-        return {
+    const getFinishBoxDistance = (entity) => {
+        return Math.sqrt(Math.pow((finishBox.center.x - entity.x), 2) + Math.pow((finishBox.center.y - entity.y), 2));
+    };
+
+    const createHoldingBox = (height, width, x, y, color = "rgba(0, 0, 255, 0.5)") => {
+        const center = {
+            x: (x + (width / 2)), 
+            y: (y + (height / 2))
+        };
+        return  {
+            height: height,
+            width: width,
+            x: x,
+            y: y,
+            strokeStyle: color,
+            center: center,
+        };
+    };
+
+    const createEntity = (startX ,startY, speed = 3) => {
+        const newEntity =  {
             radius: 10,
             x: startX,
             y: startY,
             dx: speed,
             dy: -speed,
-            color: "#000000"
+            color: "#000000",
+            isDead: false,
+            goalReached: false,
+            stats: { timeAlive: 0.0, finishBoxDist: 0 },
         };
+        newEntity.stats.finishBoxDist = getFinishBoxDistance(newEntity);
+        return newEntity;
     };
 
     const setupEntities = (amount = 1, startBox) => {
         let ix = 0;
         const randomBoxPos = (startBox) => {
-            return [getRandomInt(startBox.x + 2, startBox.width - 1),
-             getRandomInt(startBox.y + 2 , startBox.height - 2)]
+            const padding = 5;
+            return [getRandomInt(startBox.x + padding, startBox.width - padding),
+             getRandomInt(startBox.y + padding, startBox.height - padding)]
         } 
         for (let i = 0; i < amount; i++) {
             let xyPos = randomBoxPos(startBox);
             entities[i] = createEntity(xyPos[0] ,xyPos[1]); 
-        }; 
+        };
+        roundEntities = entities;
     };
 
     const setupColumns = (startPosX = 125) => {
@@ -63,7 +90,7 @@
         let ix = 0;
 
         while (currentPosX < GAME_SCREEN[0] * 0.85) {
-            let length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
+            let length = 70; //getRandomInt(50, GAME_SCREEN[1] * 0.8);
             bricks[ix] = { 
                 height: length,
                 x: currentPosX,
@@ -85,7 +112,7 @@
             if (Math.random() >= 0.5){ return 0}
             return GAME_SCREEN[1] - length
         }        
-        const length = getRandomInt(50, GAME_SCREEN[1]*0.8);
+        const length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
         ctx.beginPath();
         ctx.rect(wallBuffer, wallStartPos(length), wallWidth, length);
         ctx.fillStyle = "#FFFFF";
@@ -121,7 +148,6 @@
         }
     }
 
-
     let x = canvas.width / 2;
     let y = canvas.height - 30;
     let dx = 5;
@@ -137,13 +163,13 @@
         y: boxY,
         strokeStyle: "rgba(0, 0, 255, 0.5)",
     };
-    const finishBox = {
-        height: canvas.height / 2,
-        width: 60,
-        x: canvas.width - 60,
-        y: boxY,
-        strokeStyle: "rgba(0, 0, 255, 0.5)",
-    };
+    const finishBox = createHoldingBox(
+        canvas.height / 2,
+        60,
+        (canvas.width - 60),
+        (canvas.height / 2) / 2,
+        "rgba(0, 0, 255, 0.5)",
+    );
 
 
     const drawBox = (box) => {
@@ -185,8 +211,10 @@
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
 
-            entity.x += entity.dx;
-            entity.y += entity.dy;            
+            if (!entity.goalReached && !entity.isDead) {
+                entity.x += entity.dx;
+                entity.y += entity.dy;
+            }          
         };
     };
 
@@ -205,13 +233,14 @@
             //Entities
             for (let i = 0; i < entities.length; i++) {
                 const entity = entities[i];
-
-                if (entity.x > brick.x - entity.radius && entity.x - entity.radius < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
-                    entity.dx = -entity.dx;
-                }
-                if (entity.x > brick.x && entity.x < brick.x + wallWidth && (entity.y > brick.y - entity.radius && entity.y - entity.radius < brick.y + brick.height)) {
-                    entity.dy = -entity.dy;
-                }
+                if (!entity.goalReached && !entity.isDead){
+                    if (entity.x > brick.x - entity.radius && entity.x - entity.radius < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
+                        entity.dx = -entity.dx;
+                    }
+                    if (entity.x > brick.x && entity.x < brick.x + wallWidth && (entity.y > brick.y - entity.radius && entity.y - entity.radius < brick.y + brick.height)) {
+                        entity.dy = -entity.dy;
+                    }
+                };
             };
 
             //BALL
@@ -229,13 +258,15 @@
         //Entities
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
+            if (!entity.goalReached && !entity.isDead) {
 
-            if (entity.x + entity.dx > canvas.width - entity.radius || entity.x + entity.dx < entity.radius) {
-                entity.dx = -entity.dx;
-            }
-            if (entity.y + entity.dy > canvas.height - entity.radius || entity.y + entity.dy < entity.radius) {
-                entity.dy = -entity.dy;
-            }  
+                if (entity.x + entity.dx > canvas.width - entity.radius || entity.x + entity.dx < entity.radius) {
+                    entity.dx = -entity.dx;
+                }
+                if (entity.y + entity.dy > canvas.height - entity.radius || entity.y + entity.dy < entity.radius) {
+                    entity.dy = -entity.dy;
+                }
+            };
         };
         //BALL
         if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -245,6 +276,25 @@
             dy = -dy;
         }        
     };
+
+    const finishBoxCollision = () => {
+        //Entities ONLY
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+
+            entity.stats.finishBoxDist = getFinishBoxDistance(entity);
+
+            if (entity.x > finishBox.x && entity.x < finishBox.x + finishBox.width && entity.y > finishBox.y && entity.y < finishBox.y + finishBox.height) {
+                entity.goalReached = true;
+            }
+
+        };
+        // entities = entities.filter((el) => {
+        //     return !el.goalReached;
+        // })
+    };
+
+
 
     const draw = () =>{
         // debugger
@@ -256,6 +306,7 @@
         drawBall();
         columnCollisionDetection();
         canvasCollisionDetection();
+        finishBoxCollision();
 
         x += dx;
         y += dy;
