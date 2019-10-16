@@ -15,6 +15,7 @@ class Entity extends GameObject {
     this.dy = 0;
     this.dna = new DNA(DNA_LENGTH, 200);
     this.isStatic = false;
+    this.hasSensors = true;
     this.triggers = {
       seeDownWall: false,
       seeUpWall: false,
@@ -47,7 +48,7 @@ class Entity extends GameObject {
     if(bottom) return this.PosY() + ENTITY_SENSOR_RANGE; //BOTTOM
     return this.PosY() - ENTITY_SENSOR_RANGE; //TOP
   }
-  
+
   // OnCollisionEnter(col)
   //   {
   //       if(col.gameObject.tag == "dead" ||

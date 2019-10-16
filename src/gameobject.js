@@ -11,6 +11,7 @@ class GameObject {
     this.color = color;
     this.borderColor = "";
     this.isStatic = true;
+    this.hasSensors = false;
 
     this.interval;
     this.triggers = { triggerType: "", }
@@ -98,6 +99,35 @@ class GameObject {
   IsInCollisionZone(object) {
     if (!object) return false;
 
+
+      const sensorOnX = (x, sensorType="") => {
+          if (x > this.PosX() && x < this.PosX() + this.GetWidth() && object.PosY() > this.PosY() && object.PosY() < this.PosY() + this.GetHeight()) {
+              console.log(`Sensor X Hit: ${sensorType}`);
+              // debugger
+              return true;
+          }else { return false; }
+      };
+      const sensorOnY = (y, sensorType="") => {
+          if (object.PosX() > this.PosX() && object.PosX() < this.PosX() + this.GetWidth() && 
+              (y > this.PosY() && y < this.PosY() + this.GetHeight())) {
+              console.log(`Sensor Y Hit: ${sensorType}`);
+              // debugger
+              return true;
+          }else { return false; }
+      };
+
+      if (object.hasSensors){
+          if (sensorOnX(object.SensorX(true), "RIGHT")){ 
+              // // object.triggerType = this.triggerType;
+          }else if (sensorOnX(object.SensorX(false), "LEFT")){
+              // // object.triggerType = this.triggerType;
+          }else if (sensorOnY(object.SensorY(true), "BOTTOM")){
+              // // object.triggerType = this.triggerType;              
+          }else if (sensorOnY(object.SensorY(false), "TOP")){
+              // // object.triggerType = this.triggerType;
+          }
+      }
+    
     // const isInRangeX = Util.isInRange(
     //   objectX,
     //   this.pos.x,
@@ -115,8 +145,7 @@ class GameObject {
       object.PosY() > this.PosY() &&
       object.PosY() < this.PosY() + this.GetHeight()
     ) {
-      console.log("COLLISION DETECTED: X");
-
+      // console.log("COLLISION DETECTED: X");
       object.dx = -object.dx;
 
       return true;
@@ -128,10 +157,9 @@ class GameObject {
         object.PosY() - object.GetHeight() <
           this.PosY() + this.GetHeight())
     ) {
-
+      // console.log("COLLISION DETECTED Y");
       object.dy = -object.dy;
 
-      console.log("COLLISION DETECTED Y");
       return true;
     }
   }
