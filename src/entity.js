@@ -1,10 +1,9 @@
 
+import DNA from "./dna";
+
 class Entity {
   constructor(){
-
   }
-
-
 
 
 }

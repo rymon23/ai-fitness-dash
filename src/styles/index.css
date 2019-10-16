@@ -2,6 +2,7 @@
 * { 
   padding: 0; 
   margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
 canvas {
@@ -23,6 +24,29 @@ body {
 .header-container h1 {
     color: white;
     font-size: 82px;
-    padding-top: 30px;
+    /* padding-top: 30px; */
     padding-bottom: 30px;
+}
+.game-content-container {
+  display: flex;
+  flex-direction: column;
+}
+.game-controls-container{
+  display: flex;
+  justify-content: center;
+  padding-top: 25px;
+}
+
+.game-controls-container button {
+  font-size: 45px;
+  border: 2px solid white;
+  background-color: black;
+  color: white;
+  padding: 15px;
+  border-radius: 40px;
+}
+
+.game-controls-container button:hover {
+  background-color: white;
+  color: black;  
 }
