@@ -45,8 +45,10 @@
     "start": "webpack-dev-server --config webpack.dev.js",
     "webpack:watch": "webpack --watch --config webpack.dev.js",
     "webpack:build": "webpack --config webpack.prod.js  --optimize-minimize",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "webpack": "webpack --watch --mode=development"
+},
   "devDependencies": {},
   "keywords": []
 }
