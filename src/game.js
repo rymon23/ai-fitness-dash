@@ -4,6 +4,7 @@ import Box from "./box";
 import Ball from "./ball";
 import { CreateColumns } from "./column";
 
+
 class Game {
   constructor(canvas) {
     this.canvas = canvas;
@@ -14,6 +15,7 @@ class Game {
       columns: [],
       entities: []
     };
+    this.generations = 1;
     this.interval;
 
     this.Start = this.Start.bind(this);
@@ -72,7 +74,7 @@ class Game {
 
     this.gameObjects.balls.push(new Ball(this, 100, 100)); //startBoxCenter.x, startBoxCenter.y));
     this.gameObjects.columns = CreateColumns(125, this);
-    // const entities = CreateEntities(2, startBox);
+    this.gameObjects.entities = CreateEntities(2, startBox, this);
 
     this.interval = setInterval(this.Update, 10);
   }
@@ -109,13 +111,13 @@ class Game {
 
             if (gameObject.PosX() + gameObject.DirX() > canvas.width - gameObject.GetWidth() 
               || gameObject.PosX() + gameObject.DirX() < gameObject.GetWidth()) {
-                console.log("CANVAS COLLISION DETECTED: X");
+              //  console.log("CANVAS COLLISION DETECTED: X");
                 gameObject.dx = -gameObject.dx;
                 // return true;
             }
             if (gameObject.PosY() + gameObject.DirY() > canvas.height - gameObject.GetHeight() 
               || gameObject.PosY() + gameObject.DirY() < gameObject.GetHeight()) {
-                console.log("CANVAS COLLISION DETECTED: Y");
+              //  console.log("CANVAS COLLISION DETECTED: Y");
                 gameObject.dy = -gameObject.dy;
                 // return true;
             }
