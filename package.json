@@ -1,13 +1,10 @@
 {
   "name": "aa_js_project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Background and Overview",
+  "private": true,
   "directories": {
     "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -26,6 +23,7 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "fibers": "^4.0.1",
+    "lodash": "^4.17.15",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
@@ -46,6 +44,9 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
     "webpack:watch": "webpack --watch --config webpack.dev.js",
-    "webpack:build": "webpack --config webpack.prod.js  --optimize-minimize"
+    "webpack:build": "webpack --config webpack.prod.js  --optimize-minimize",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "devDependencies": {},
+  "keywords": []
 }

@@ -1,0 +1,28 @@
+
+* { 
+  padding: 0; 
+  margin: 0;
+}
+
+canvas {
+  border: 5px solid white;
+  background: rgb(172, 179, 165); 
+  display: block; 
+  margin: 0 auto;
+}
+
+body {
+  background-color: rgb(104, 108, 103);
+}
+
+.header-container {
+  display: flex;
+  justify-content: center;
+
+}  
+.header-container h1 {
+    color: white;
+    font-size: 82px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}

@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./src/styles/index.css">
-    <title>Fitness Dash</title>
-    <style>
-        * { padding: 0; margin: 0;}
-        canvas {background: rgb(191, 193, 189); display: block; margin: 0 auto;}
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="../src/styles/index.css">
+        <title>Fitness Dash</title>
+        <style>
+            /* * { padding: 0; margin: 0;}
+            canvas {background: rgb(191, 193, 189); display: block; margin: 0 auto;} */
+        </style>
+    </head>
+
+
 <body>
-    <!-- <div id="root">you should not see this</div> -->
-    <canvas id="canvas-id" width="1080" height="720"></canvas>
-<script>
+    <div class="header-container">
+        <h1>Fitness Dash</h1>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="canvas-id" width="1080" height="720"></canvas>
+    </div>
+
+    <!-- <script scr="./scr/index.js"></script> -->
+    <script scr="main.js"></script>
+
+    <script>
     const canvas = document.getElementById("canvas-id");
     const ctx = canvas.getContext("2d");
 
@@ -460,5 +471,5 @@
     runGame();
 </script>
 
-</body>
+    </body>
 </html>
