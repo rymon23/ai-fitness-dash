@@ -21,6 +21,12 @@
     const GAME_SCREEN = [1080, 720];
     const ENTITY_COUNT = 4;
     const ENTITY_SENSE_RADIUS = 35;
+    const SENSOR_TRIGGERS = [
+        "UPPER_COLUMN",
+        "LOWER_COLUMN",
+        "TOP",
+        "BOTTOM",
+    ];
 
     const wallBuffer = 75;
     const wallWidth = 20;
@@ -37,6 +43,51 @@
     //     return Math.sqrt(Math.pow((finishBox.center.x - entity.x), 2) + Math.pow((finishBox.center.y - entity.y), 2));
     // };
 
+    
+    const updateEntityBehavior = (entity) => {
+        if (entity.isDead || entity.goalReached) return 0;
+
+        // read DNA
+        // float h = 0;
+        // float v = 1.0f; //dna.GetGene(0);
+
+        // if (seeUpWall) {
+        //     h = dna.GetGene(0);
+        // }
+        // else if (seeDownWall) {
+        //     h = dna.GetGene(1);
+        // }
+        // else if (seeTop) {
+        //     h = dna.GetGene(2);
+        // }
+        // else if (seeBottom) {
+        //     h = dna.GetGene(3);
+        // }
+        // else {
+        //     h = dna.GetGene(4);
+        // }
+
+        // rb.AddForce(this.transform.right * v);
+        // rb.AddForce(this.transform.up * h * 0.1f);
+        // distanceTravelled = Vector3.Distance(startPosition, this.transform.position);
+
+
+        const getEntityElevationMagnitude = (entity) => {
+            switch (entity.triggerType) {
+                case "UPPER_COLUMN":
+                    return entity.genes[0];
+                case "LOWER_COLUMN":
+                    return entity.genes[1];
+                case "TOP":
+                    return entity.genes[2];
+                case "BOTTOM":
+                    return entity.genes[3];
+                default:
+                    return entity.genes[4];
+            };
+        };
+        return getEntityElevationMagnitude(entity);
+    };
 
 
     const createHoldingBox = (height, width, x, y, color = "rgba(0, 0, 255, 0.5)") => {
@@ -55,10 +106,14 @@
     };
 
     const createEntity = (startX ,startY, speed = 3) => {
-        const createSensor = (x, y,) => {
+        const createGenes = (dnaLength = 5, maxValues = 200) => {
+            newGenes = []
+            for (let i = 0; i < dnaLength; i++) {
+                newGenes[i] = getRandomInt(-maxValues, maxValues);
+            };
+            return newGenes;
+        };
 
-            return { x }
-        }
         const newEntity =  {
             radius: 10,
             x: startX,
@@ -69,6 +124,8 @@
             isDead: false,
             goalReached: false,
             stats: { timeAlive: 0.0, finishBoxDist: 0 },
+            triggerType: undefined,
+            genes: createGenes(5, 200)
         };
         newEntity.stats.finishBoxDist = getFinishBoxDistance(newEntity);
         return newEntity;
@@ -83,9 +140,30 @@
         } 
         for (let i = 0; i < amount; i++) {
             let xyPos = randomBoxPos(startBox);
-            entities[i] = createEntity(xyPos[0] ,xyPos[1]); 
+            entities[i] = createEntity(xyPos[0] ,xyPos[1], getRandomInt(2,5)); 
         };
         roundEntities = entities;
+    };
+
+
+    const createColumn = (x, width) => {
+        let height = getRandomInt(50, GAME_SCREEN[1] * 0.8);
+
+        const newColumn = {
+            x: x,
+            y: 0,
+            height: height,
+            width: width,
+            triggerType: "",
+        };
+        if (Math.random() >= 0.5) {
+            newColumn.y = 0;
+            newColumn.triggerType = SENSOR_TRIGGERS[0];
+        } else {
+            newColumn.y = GAME_SCREEN[1] - height;
+            newColumn.triggerType = SENSOR_TRIGGERS[1];            
+        };
+        return newColumn;
     };
 
     const setupColumns = (startPosX = 125) => {
@@ -101,12 +179,14 @@
         let ix = 0;
 
         while (currentPosX < GAME_SCREEN[0] * 0.85) {
-            let length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
-            bricks[ix] = { 
-                height: length,
-                x: currentPosX,
-                y: wallStartPos(length)
-            }
+            // let length = getRandomInt(50, GAME_SCREEN[1] * 0.8);
+            // bricks[ix] = { 
+            //     height: length,
+            //     x: currentPosX,
+            //     y: wallStartPos(length)
+            // }
+            bricks[ix] = createColumn(currentPosX, wallWidth);
+
             ix += 1;
             currentPosX += wallWidth + randomColumnBuffer();
         }
@@ -228,6 +308,13 @@
             ctx.fill();
             ctx.closePath();
 
+            //ENERGY SHIELD
+            ctx.beginPath();
+            ctx.arc(entity.x, entity.y, ENTITY_SENSE_RADIUS, 0, Math.PI * 2);
+            ctx.strokeStyle = "#0095DD";
+            ctx.stroke();
+            ctx.closePath();
+
         };
     };
     const moveEntities = () => {
@@ -237,7 +324,11 @@
             if (!entity.goalReached && !entity.isDead) {
                 entity.x += entity.dx;
                 entity.y += entity.dy;
-            }          
+                // let elevation = 0;
+                // elevation = updateEntityBehavior(entity);
+                // entity.x += entity.dx;
+                // entity.y += elevation * 0.1;
+            } 
         };
     };
 
@@ -264,23 +355,31 @@
                         entity.dy = -entity.dy;
                     }
 
-                    const checkSensorOnX = (x, sensorType="") => {
+                    const sensorOnX = (x, sensorType="") => {
                         if (x > brick.x && x < brick.x + wallWidth && entity.y > brick.y && entity.y < brick.y + brick.height) {
                             console.log(`Sensor X Hit: ${sensorType}`);
                             // debugger
-                        };
+                            return true;
+                        }else { return false; }
                     };
-                    const checkSensorOnY = (y, sensorType="") => {
+                    const sensorOnY = (y, sensorType="") => {
                         if (entity.x > brick.x && entity.x < brick.x + wallWidth && 
                             (y > brick.y && y < brick.y + brick.height)) {
                             console.log(`Sensor Y Hit: ${sensorType}`);
                             // debugger
-                        };
+                            return true;
+                        }else { return false; }
                     };
-                    checkSensorOnX(entity.x + ENTITY_SENSE_RADIUS, "RIGHT");
-                    checkSensorOnX(entity.x + -ENTITY_SENSE_RADIUS, "LEFT");
-                    checkSensorOnY(entity.y + -ENTITY_SENSE_RADIUS, "TOP");
-                    checkSensorOnY(entity.y + ENTITY_SENSE_RADIUS, "BOTTOM");
+
+                    if (sensorOnX(entity.x + ENTITY_SENSE_RADIUS, "RIGHT")){ 
+                        entity.triggerType = brick.triggerType;
+                    }else if (sensorOnX(entity.x + -ENTITY_SENSE_RADIUS, "LEFT")){
+                        entity.triggerType = brick.triggerType;
+                    }else if (sensorOnY(entity.y + -ENTITY_SENSE_RADIUS, "TOP")){
+                        entity.triggerType = brick.triggerType;
+                    }else if (sensorOnY(entity.y + ENTITY_SENSE_RADIUS, "BOTTOM")){
+                        entity.triggerType = brick.triggerType;
+                    };
                 };
             };
 
