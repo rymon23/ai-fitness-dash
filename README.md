@@ -80,8 +80,9 @@ Day 2:
   
 Day 3:
 
-  -create the sprites and basic styling of the game objects
-  -setup animation
+  -setup genetic algorithm logic and break up the code into different files
+  -add more style to the game
+  -setup & style the page
   
 Day 4:
 
