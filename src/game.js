@@ -62,19 +62,19 @@ class Game {
     );
     this.gameObjects.boxes.push(startBox);
 
-    this.gameObjects.boxes.push(
-      new Box(
+    const finishBox = new Box(
         this,
         this.canvas.width - startBoxWidth,
         startBoxY,
         startBoxHeight,
         startBoxWidth,
         "rgba(0, 0, 255, 0.5)"
-      )
-    );
+    )
+    this.gameObjects.boxes.push(finishBox);
+  
 
     const startBoxCenter = startBox.GetCenterPos();
-    this.PopulationManager = new PopulationManager(this, this.canvas, startBox)
+    this.PopulationManager = new PopulationManager(this, this.canvas, startBox, finishBox)
 
     this.gameObjects.balls.push(new Ball(this, 100, 100)); //startBoxCenter.x, startBoxCenter.y));
     this.gameObjects.columns = CreateColumns(125, this);

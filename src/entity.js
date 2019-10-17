@@ -8,11 +8,13 @@ const DNA_LENGTH = 5;
 const ENTITY_SENSOR_RANGE = 35;
 
 class Entity extends GameObject {
-  constructor(game, x, y) {
+  constructor(game, x, y, target = null) {
     super();
     this.game = game;
     this.pos = { x, y };
     this.startPos = new Vector2(this.PosX(), this.PosY());
+    this.target = target;
+
     this.dx = 1;
     this.dy = 1;
     this.dna = new DNA(DNA_LENGTH, 200);
@@ -60,7 +62,6 @@ class Entity extends GameObject {
     return this.PosY() - ENTITY_SENSOR_RANGE; //TOP
   }
 
-
   // OnCollisionEnter(col)
   //   {
   //       if(col.gameObject.tag == "dead" ||
@@ -78,11 +79,11 @@ class Entity extends GameObject {
     if (Object.keys(this.sensorHit).includes(trigger)){
       debugger
       this.sensorHit.trigger = true;
-    };
+    }
   }
 
   GetTriggerGene(){
-    debugger
+    // debugger
     if(this.sensorHit.seeUpWall){
       return this.dna.GetGene(0);
     } else if (this.sensorHit.seeDownWall){
@@ -124,7 +125,15 @@ class Entity extends GameObject {
     this.pos.x += this.DirX() * velocity;
     this.pos.y += this.DirY() * (h * 0.1);
     this.distanceTravelled = Util.getDistance(this, this.startPos);
+
     debugger
+    if (Util.getDistance(this, this.target.GetCenterPos()) <= 90){
+      this.goalReached = true;
+      return    
+    }
+    
+    //Return motion forward
+    this.dx = 1;
   }
 
   StopUpdates() {

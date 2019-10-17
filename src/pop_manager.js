@@ -6,12 +6,13 @@ const POPULATION_SIZE = 4;
 const TRIAL_DURATION = 30; //in seconds
 
 class PopulationManager {
-    constructor(game, canvas, startBox) {
+    constructor(game, canvas, startBox, finishBox) {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.game = game;
         this.startBox = startBox;
-        
+        this.finishBox = finishBox;
+
         this.population = [];
         this.generation = 1;
 
@@ -30,9 +31,9 @@ class PopulationManager {
         for (let i = 0; i < POPULATION_SIZE; i++)
         {
             const xyPos = Util.getRandomBoxPos(this.startBox);
-            const entity = new Entity(this.game, xyPos[0], xyPos[1]);
+            const entity = new Entity(this.game, xyPos[0], xyPos[1], this.finishBox);
             this.population.push(entity);
-        };
+        }
     }
 
     Start(){
@@ -59,7 +60,7 @@ class PopulationManager {
 
     Breed(parent1, parent2){
         const xyPos = Util.getRandomBoxPos(this.startBox);
-        const offspring = new Entity(this.game, xyPos[0], xyPos[1]);
+        const offspring = new Entity(this.game, xyPos[0], xyPos[1], this.finishBox);
 
         if (Util.getRandomInt(0, 100) == 1) //mutate 1 in 100
         {
@@ -83,10 +84,10 @@ class PopulationManager {
         
         for (let i = (3 * sortedPop.Count / 4.0) - 1; i < sortedPop.Count - 1; i++)
         {
-            population.push(Breed(sortedPop[i], sortedPop[i + 1]));
-            population.push(Breed(sortedPop[i + 1], sortedPop[i]));
-            population.push(Breed(sortedPop[i], sortedPop[i + 1]));
-            population.push(Breed(sortedPop[i + 1], sortedPop[i]));
+            this.population.push(this.Breed(sortedPop[i], sortedPop[i + 1]));
+            this.population.push(this.Breed(sortedPop[i + 1], sortedPop[i]));
+            this.population.push(this.Breed(sortedPop[i], sortedPop[i + 1]));
+            this.population.push(this.Breed(sortedPop[i + 1], sortedPop[i]));
         }
 
         //destroy all parents and previous population

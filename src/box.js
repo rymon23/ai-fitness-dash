@@ -20,5 +20,20 @@ class Box extends GameObject {
     ctx.closePath();
   }
 }
-
 export default Box;
+
+export class FinishBox extends Box {
+  constructor(game, x, y, height, width, borderColor = "rgba(0, 0, 255, 0.5)") {
+    super();
+    this.game = game;
+    this.pos = { x, y };
+    this.height = height;
+    this.width = width;
+    this.borderColor = borderColor;
+
+    this.Init();
+  }
+  Update(){
+    this.CheckForCollisions();
+  }
+}
