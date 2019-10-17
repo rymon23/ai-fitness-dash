@@ -1,12 +1,9 @@
-
 import * as Util from "./util";
-import Entity, { CreateEntities } from "./entity";
-import Box from "./box";
-import Ball from "./ball";
-import { CreateColumns } from "./column";
+import Entity from "./entity";
+
 
 const POPULATION_SIZE = 4;
-const TRIAL_DURATION = 60; //in seconds
+const TRIAL_DURATION = 30; //in seconds
 
 class PopulationManager {
     constructor(game, canvas, startBox) {
@@ -20,11 +17,34 @@ class PopulationManager {
 
         this.interval;
 
-        this.Start();
+        this.Start = this.Start.bind(this);
+        this.Stop = this.Stop.bind(this);
+        this.CompareEntities = this.CompareEntities.bind(this);
+        this.Breed = this.Breed.bind(this);
+        this.BreedNewPopulation = this.BreedNewPopulation.bind(this);
+        this.Update = this.Update.bind(this);
+        this.Init();
+    }
+
+    Init(){
+        for (let i = 0; i < POPULATION_SIZE; i++)
+        {
+            const xyPos = Util.getRandomBoxPos(this.startBox);
+            const entity = new Entity(this.game, xyPos[0], xyPos[1]);
+            this.population.push(entity);
+        };
     }
 
     Start(){
-        setTimeout(this.BreedNewPopulation, TRIAL_DURATION * 1000);
+        this.generation = 1;
+
+        setTimeout(() => {
+            this.interval = setInterval(this.BreedNewPopulation, TRIAL_DURATION * 1000);
+        }, TRIAL_DURATION * 1000);
+    }
+
+    Stop(){
+        clearInterval(this.interval);
     }
 
     CompareEntities(a, b) {
@@ -52,7 +72,13 @@ class PopulationManager {
     }
 
     BreedNewPopulation(){
-        const sortedPop = this.population.sort(this.CompareEntities(a,b)).slice();
+        console.log("BREED NEW POPULATION");
+
+        const sortedPop = this.population.sort((a, b) => {
+            debugger
+            this.CompareEntities(a,b)
+        }).slice();
+
         this.population = [];
         
         for (let i = (3 * sortedPop.Count / 4.0) - 1; i < sortedPop.Count - 1; i++)
@@ -74,7 +100,6 @@ class PopulationManager {
     Update(){
 
     }
-    
 }
 
 

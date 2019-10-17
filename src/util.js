@@ -6,8 +6,8 @@ export const getRandomInt = (min, max) => {
 };
 
 export const getRandomBoxPos = (box, padding = 6) => {
-  return [Util.getRandomInt(box.PosX() + padding, box.GetWidth() - padding),
-  Util.getRandomInt(box.PosY() + padding, box.GetHeight() - padding)];
+  return [getRandomInt(box.PosX() + padding, box.GetWidth() - padding),
+  getRandomInt(box.PosY() + padding, box.GetHeight() - padding)];
 }
 
 //Requires a GameObject or Vector2

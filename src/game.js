@@ -1,8 +1,10 @@
 import * as Util from "./util";
-import { CreateEntities } from "./entity";
+import PopulationManager from "./pop_manager";
 import Box from "./box";
 import Ball from "./ball";
+import { CreateEntities } from "./entity";
 import { CreateColumns } from "./column";
+
 
 
 class Game {
@@ -15,7 +17,7 @@ class Game {
       columns: [],
       entities: []
     };
-    this.generations = 1;
+    this.PopulationManager;
     this.interval;
 
     this.Start = this.Start.bind(this);
@@ -70,11 +72,16 @@ class Game {
         "rgba(0, 0, 255, 0.5)"
       )
     );
+
     const startBoxCenter = startBox.GetCenterPos();
+    this.PopulationManager = new PopulationManager(this, this.canvas, startBox)
 
     this.gameObjects.balls.push(new Ball(this, 100, 100)); //startBoxCenter.x, startBoxCenter.y));
     this.gameObjects.columns = CreateColumns(125, this);
-    this.gameObjects.entities = CreateEntities(2, startBox, this);
+
+    // this.gameObjects.entities = CreateEntities(2, startBox, this);
+    this.gameObjects.entities = this.PopulationManager.population;
+    this.PopulationManager.Start()
 
     this.interval = setInterval(this.Update, 10);
   }

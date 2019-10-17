@@ -13,6 +13,7 @@ class Column extends GameObject {
     this.width = width;
     this.triggers = triggers;
     this.color = COLUMN_COLOR;
+    this.trigger = "";
 
     this.Init();
   }
@@ -40,10 +41,11 @@ export const CreateColumns = (startPosX = 125, game) => {
     const randomColumnStartPosY = column => {
       if (Math.random() >= 0.5) {
         column.pos.y = 0;
-        // column.triggers = SENSOR_TRIGGERS[0];
+        column.trigger = "seeDownWall";
+
       } else {
         column.pos.y = game.canvas.height - column.height;
-        // column.triggers = SENSOR_TRIGGERS[1];
+        column.trigger = "seeUpWall";
       }
     };
 

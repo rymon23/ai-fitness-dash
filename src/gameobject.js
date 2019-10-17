@@ -14,8 +14,14 @@ class GameObject {
     this.hasSensors = false;
 
     this.interval;
-    this.triggers = { triggerType: "", }
-    // this.triggers = { };
+    this.trigger = "";
+
+    // this.triggers = {
+    //   seeDownWall: false,
+    //   seeUpWall: false,
+    //   seeBottom: false,
+    //   seeTop: false
+    // };
 
     this.Init = this.Init.bind(this);
     this.Update = this.Update.bind(this);
@@ -102,14 +108,20 @@ class GameObject {
 
       const sensorOnX = (x, sensorType="") => {
           if (x > this.PosX() && x < this.PosX() + this.GetWidth() && object.PosY() > this.PosY() && object.PosY() < this.PosY() + this.GetHeight()) {
-              console.log(`Sensor X Hit: ${sensorType}`);
-              // debugger
-              return true;
+            object.SetSensorHit(this.trigger)
+            console.log(`Sensor X Hit: ${sensorType}`);
+            // debugger
+            return true;
           }else { return false; }
       };
       const sensorOnY = (y, sensorType="") => {
-          if (object.PosX() > this.PosX() && object.PosX() < this.PosX() + this.GetWidth() && 
+          if (object.PosX() > this.PosX() && object.PosX() < this.PosX() + this.GetWidth() &&
               (y > this.PosY() && y < this.PosY() + this.GetHeight())) {
+              if (sensorType==="TOP"){
+                object.SetSensorHit("seeTop");
+              }else {
+                object.SetSensorHit("seeBottom");              
+              }
               console.log(`Sensor Y Hit: ${sensorType}`);
               // debugger
               return true;
@@ -146,7 +158,7 @@ class GameObject {
       object.PosY() < this.PosY() + this.GetHeight()
     ) {
       // console.log("COLLISION DETECTED: X");
-      object.dx = -object.dx;
+      object.dx = 0;  //-object.dx;
 
       return true;
     }
@@ -158,7 +170,7 @@ class GameObject {
           this.PosY() + this.GetHeight())
     ) {
       // console.log("COLLISION DETECTED Y");
-      object.dy = -object.dy;
+     // object.dy = 0;  //-object.dy;
 
       return true;
     }

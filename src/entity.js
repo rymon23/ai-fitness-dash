@@ -14,13 +14,13 @@ class Entity extends GameObject {
     this.pos = { x, y };
     this.startPos = new Vector2(this.PosX(), this.PosY());
     this.dx = 1;
-    this.dy = 0;
+    this.dy = 1;
     this.dna = new DNA(DNA_LENGTH, 200);
     this.isStatic = false;
     this.hasSensors = true;
     this.distanceTraveled = 0;
 
-    this.triggers = {
+    this.sensorHit = {
       seeDownWall: false,
       seeUpWall: false,
       seeBottom: false,
@@ -35,6 +35,12 @@ class Entity extends GameObject {
     this.crashes = 0;
     this.finishBoxDist = 0;
     this.radius = 10;
+
+    this.SensorX = this.SensorX.bind(this);
+    this.SensorY = this.SensorY.bind(this);
+    this.SetSensorHit = this.SetSensorHit.bind(this);
+    this.GetTriggerGene = this.GetTriggerGene.bind(this);
+    this.ResetTriggers = this.ResetTriggers.bind(this);
 
     this.Init();
   }
@@ -67,14 +73,23 @@ class Entity extends GameObject {
   //       }
   // }
 
+  SetSensorHit(trigger){
+    debugger
+    if (Object.keys(this.sensorHit).includes(trigger)){
+      debugger
+      this.sensorHit.trigger = true;
+    };
+  }
+
   GetTriggerGene(){
-    if(this.triggers.seeUpWall){
+    debugger
+    if(this.sensorHit.seeUpWall){
       return this.dna.GetGene(0);
-    } else if (this.triggers.seeDownWall){
+    } else if (this.sensorHit.seeDownWall){
       return this.dna.GetGene(1);
-    } else if (this.triggers.seeTop){
+    } else if (this.sensorHit.seeTop){
       return this.dna.GetGene(2);
-    } else if (this.triggers.seeBottom){
+    } else if (this.sensorHit.seeBottom){
       return this.dna.GetGene(3);
     }else{
       return this.dna.GetGene(4);
@@ -82,10 +97,10 @@ class Entity extends GameObject {
   }
 
   ResetTriggers(){
-    this.triggers.seeUpWall = false;
-    this.triggers.seeDownWall = false;
-    this.triggers.seeTop = false;
-    this.triggers.seeBottom = false;
+    this.sensorHit.seeUpWall = false;
+    this.sensorHit.seeDownWall = false;
+    this.sensorHit.seeTop = false;
+    this.sensorHit.seeBottom = false;
   }
 
   Update() {
@@ -95,18 +110,21 @@ class Entity extends GameObject {
     }
 
     // read DNA
-    let velocity = 1.0; //dna.GetGene(0);
-    let h = this.GetTriggerGene();
+    const velocity = 1.0; //dna.GetGene(0);
+    const h = this.GetTriggerGene() || 0;
+    debugger
     this.ResetTriggers();
 
-    // this.x += this.dx * velocity;
-    // this.y += this.dy * (h * 0.1);
 
     //debugger
     //BOUNCE
-    this.pos.x += this.DirX();
-    this.pos.y += this.DirY();
+    // this.pos.x += this.DirX();
+    // this.pos.y += this.DirY();
+
+    this.pos.x += this.DirX() * velocity;
+    this.pos.y += this.DirY() * (h * 0.1);
     this.distanceTravelled = Util.getDistance(this, this.startPos);
+    debugger
   }
 
   StopUpdates() {
