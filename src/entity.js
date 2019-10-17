@@ -2,10 +2,12 @@ import * as Util from "./util";
 import GameObject from "./gameobject";
 import DNA from "./dna";
 import Vector2 from "./vector2";
+import { CreateSensorRays } from "./sensor_ray";
 import { game } from "./index";
 
 const DNA_LENGTH = 5;
-const ENTITY_SENSOR_RANGE = 35;
+const ENTITY_SENSOR_RANGE = 28;
+const ENTITY_GOAL_RADIUS = 85;
 
 class Entity extends GameObject {
   constructor(game, x, y, target = null) {
@@ -14,6 +16,7 @@ class Entity extends GameObject {
     this.pos = { x, y };
     this.startPos = new Vector2(this.PosX(), this.PosY());
     this.target = target;
+    this.objectType = "entity";
 
     this.dx = 1;
     this.dy = 1;
@@ -21,6 +24,10 @@ class Entity extends GameObject {
     this.isStatic = false;
     this.hasSensors = true;
     this.distanceTraveled = 0;
+
+    this.obstructed = {};
+
+    this.sensorRays = CreateSensorRays(this);
 
     this.sensorHit = {
       seeDownWall: false,
@@ -43,7 +50,10 @@ class Entity extends GameObject {
     this.SetSensorHit = this.SetSensorHit.bind(this);
     this.GetTriggerGene = this.GetTriggerGene.bind(this);
     this.ResetTriggers = this.ResetTriggers.bind(this);
+    this.IsObstructed = this.IsObstructed.bind(this);
+    this.ResetObstructions = this.ResetObstructions.bind(this);
 
+    this.ResetObstructions();
     this.Init();
   }
 
@@ -62,6 +72,20 @@ class Entity extends GameObject {
     return this.PosY() - ENTITY_SENSOR_RANGE; //TOP
   }
 
+  SensorCheck(object){
+      if (this.sensorRays.right.CheckCollision(object)) return;
+      if (this.sensorRays.up.CheckCollision(object)) return;
+      if (this.sensorRays.down.CheckCollision(object)) return;
+      if (this.sensorRays.left.CheckCollision(object)) return;
+      return;
+  }
+
+  SetSensorHit(trigger){
+    if (Object.keys(this.sensorHit).includes(trigger)){
+      this.sensorHit[trigger] = true;
+    }
+  }
+
   // OnCollisionEnter(col)
   //   {
   //       if(col.gameObject.tag == "dead" ||
@@ -74,23 +98,21 @@ class Entity extends GameObject {
   //       }
   // }
 
-  SetSensorHit(trigger){
-    debugger
-    if (Object.keys(this.sensorHit).includes(trigger)){
-      debugger
-      this.sensorHit.trigger = true;
-    }
-  }
+
 
   GetTriggerGene(){
     // debugger
     if(this.sensorHit.seeUpWall){
+      this.obstructed.right = true;
       return this.dna.GetGene(0);
     } else if (this.sensorHit.seeDownWall){
+      this.obstructed.right = true;
       return this.dna.GetGene(1);
     } else if (this.sensorHit.seeTop){
+      this.obstructed.top = true;
       return this.dna.GetGene(2);
     } else if (this.sensorHit.seeBottom){
+      this.obstructed.down = true;
       return this.dna.GetGene(3);
     }else{
       return this.dna.GetGene(4);
@@ -104,35 +126,62 @@ class Entity extends GameObject {
     this.sensorHit.seeBottom = false;
   }
 
+  IsObstructed(){
+    return Object.values(this.obstructed).some(value => value === true);
+  }
+
+  ResetObstructions(){
+    this.obstructed = {
+      up: false,
+      down: false,
+      left: false,
+      right: false
+    };     
+  }
+
   Update() {
     if (this.goalReached || !this.alive) {
       this.StopUpdates();
       return;
     }
 
+    debugger
+
     // read DNA
     const velocity = 1.0; //dna.GetGene(0);
     const h = this.GetTriggerGene() || 0;
-    debugger
     this.ResetTriggers();
 
+    let directionX = this.DirX() * velocity;
+    if (directionX > 0){
+      this.obstructed.right ? directionX = 0 : null
+    }else if (directionX < 0){
+      this.obstructed.left ? directionX = 0 : null;
+    }
 
-    //debugger
-    //BOUNCE
-    // this.pos.x += this.DirX();
-    // this.pos.y += this.DirY();
+    let directionY = this.DirY() * (h * 0.1);
+    if (directionY > 0){
+      this.obstructed.down ? directionY = 0 : null
+    }else if (directionY < 0){
+      this.obstructed.up ? directionY = 0 : null;
+    }
 
-    this.pos.x += this.DirX() * velocity;
-    this.pos.y += this.DirY() * (h * 0.1);
+    this.pos.x += directionX;
+    this.pos.y += directionY;
+    // this.pos.x += this.DirX() * velocity;
+    // this.pos.y += this.DirY() * (h * 0.1);
+
     this.distanceTravelled = Util.getDistance(this, this.startPos);
 
     debugger
-    if (Util.getDistance(this, this.target.GetCenterPos()) <= 90){
+
+    if (Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS){
       this.goalReached = true;
       return    
     }
     
     //Return motion forward
+    this.ResetObstructions();
     this.dx = 1;
   }
 
@@ -149,16 +198,20 @@ class Entity extends GameObject {
     ctx.fill();
     ctx.closePath();
 
+    Object.values(this.sensorRays).forEach((sensorRay) => {
+      sensorRay.Render(ctx);
+    });
+
     //SENSORS
-    const offset = this.GetWidth() / 2;
-    ctx.beginPath();
-    ctx.rect(this.PosX(), this.PosY() - offset, 1, -ENTITY_SENSOR_RANGE); //TOP
-    ctx.rect(this.PosX(), this.PosY() + offset, 1, ENTITY_SENSOR_RANGE); //BOTTOM
-    ctx.rect(this.PosX() + offset, this.PosY(), ENTITY_SENSOR_RANGE, 1); //RIGHT
-    ctx.rect(this.PosX() - offset, this.PosY(), -ENTITY_SENSOR_RANGE, 1); //LEFT
-    ctx.fillStyle = "#ff0000";
-    ctx.fill();
-    ctx.closePath();
+    // const offset = this.GetWidth() / 2;
+    // ctx.beginPath();
+    // ctx.rect(this.PosX(), this.PosY() - offset, 1, -ENTITY_SENSOR_RANGE); //TOP
+    // ctx.rect(this.PosX(), this.PosY() + offset, 1, ENTITY_SENSOR_RANGE); //BOTTOM
+    // ctx.rect(this.PosX() + offset, this.PosY(), ENTITY_SENSOR_RANGE, 1); //RIGHT
+    // ctx.rect(this.PosX() - offset, this.PosY(), -ENTITY_SENSOR_RANGE, 1); //LEFT
+    // ctx.fillStyle = "#ff0000";
+    // ctx.fill();
+    // ctx.closePath();
 
     // //ENERGY SHIELD
     // ctx.beginPath();

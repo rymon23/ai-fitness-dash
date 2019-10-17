@@ -1,4 +1,5 @@
 import * as Util from "./util";
+import Canvas from "./canvas";
 import PopulationManager from "./pop_manager";
 import Box from "./box";
 import Ball from "./ball";
@@ -8,9 +9,10 @@ import { CreateColumns } from "./column";
 
 
 class Game {
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
+  constructor(canvasEl) {
+    this.ctx = canvasEl.getContext("2d");
+    this.canvas = new Canvas(this, canvasEl);
+
     this.gameObjects = {
       balls: [],
       boxes: [],
@@ -42,7 +44,7 @@ class Game {
   }
   Update(){
     this.Draw();
-    this.CanvasCollisionDetection(this.canvas);
+    this.CanvasCollisionDetection(this.canvas.canvasEl);
   }
 
   RunGame() {
@@ -74,13 +76,14 @@ class Game {
   
 
     const startBoxCenter = startBox.GetCenterPos();
-    this.PopulationManager = new PopulationManager(this, this.canvas, startBox, finishBox)
+    this.PopulationManager = new PopulationManager(this, startBox, finishBox)
 
     this.gameObjects.balls.push(new Ball(this, 100, 100)); //startBoxCenter.x, startBoxCenter.y));
     this.gameObjects.columns = CreateColumns(125, this);
 
     // this.gameObjects.entities = CreateEntities(2, startBox, this);
     this.gameObjects.entities = this.PopulationManager.population;
+   // this.canvas.Init();
     this.PopulationManager.Start()
 
     this.interval = setInterval(this.Update, 10);
@@ -90,15 +93,16 @@ class Game {
     if (!this.running) return;
     // debugger
 
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      const ctx = this.ctx;
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.RenderGameObjects(ctx);
+      this.RenderGameObjects(ctx);
   }
 
   RenderGameObjects(ctx) {
+    this.canvas.RenderBorders(ctx);
+
     if (Object.values(this.gameObjects).length === 0) return;
-    // debugger
     Object.values(this.gameObjects).forEach((array) => {
       if (array.length > 0) {
         array.forEach(gameObject => {
@@ -115,18 +119,18 @@ class Game {
       if (array.length > 0) {
         array.forEach(gameObject => {
           if (gameObject && gameObject != this && !gameObject.isStatic) { 
+            const canvasHitX = (gameObject.PosX() + gameObject.DirX() < gameObject.GetWidth()
+              || gameObject.PosX() + gameObject.GetWidth() + gameObject.DirX() > canvas.width);
 
-            if (gameObject.PosX() + gameObject.DirX() > canvas.width - gameObject.GetWidth() 
-              || gameObject.PosX() + gameObject.DirX() < gameObject.GetWidth()) {
-              //  console.log("CANVAS COLLISION DETECTED: X");
-                gameObject.dx = -gameObject.dx;
-                // return true;
-            }
-            if (gameObject.PosY() + gameObject.DirY() > canvas.height - gameObject.GetHeight() 
-              || gameObject.PosY() + gameObject.DirY() < gameObject.GetHeight()) {
-              //  console.log("CANVAS COLLISION DETECTED: Y");
-                gameObject.dy = -gameObject.dy;
-                // return true;
+            const canvasHitY = (gameObject.PosY() + gameObject.DirY() < gameObject.GetHeight()
+              || gameObject.PosY() + gameObject.GetHeight() + gameObject.DirY() > canvas.height);            
+
+            if (gameObject.objectType === "ball"){
+              if (canvasHitX) gameObject.dx = -gameObject.dx;
+              if (canvasHitY) gameObject.dy = -gameObject.dy;             
+            }else {
+              if (canvasHitX) gameObject.dx = 0;
+              if (canvasHitY) gameObject.dy = 0;      
             }
           }
         });

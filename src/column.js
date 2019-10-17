@@ -14,6 +14,7 @@ class Column extends GameObject {
     this.triggers = triggers;
     this.color = COLUMN_COLOR;
     this.trigger = "";
+    this.objectType = "column";
 
     this.Init();
   }

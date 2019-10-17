@@ -1,39 +1,36 @@
 import * as Util from "./util";
 import GameObject from "./gameobject";
 
+const DEFAULT_COLOR = "rgba(0, 0, 255, 0.5)";
+
 class Box extends GameObject {
-  constructor(game, x, y, height, width, borderColor = "rgba(0, 0, 255, 0.5)") {
+  constructor(game, x, y, height, width, styles = { fillStyle: DEFAULT_COLOR, strokeStyle: DEFAULT_COLOR }) {
     super();
     this.game = game;
     this.pos = { x, y };
     this.height = height;
-    this.width = width;
-    this.borderColor = borderColor;
+    this.width = width;    
+    this.styles = styles;
+    this.objectType = "box";
+  }
 
+  Update(){
+    this.CheckForCollisions();
   }
 
   Render(ctx){
     ctx.beginPath();
     ctx.rect(this.PosX(), this.PosY(), this.GetWidth(), this.GetHeight());
-    ctx.strokeStyle = this.borderColor;
-    ctx.stroke();
+    
+    if (this.styles.fillStyle){
+      ctx.fillStyle = this.styles.fillStyle;
+      ctx.fill();
+    }
+    if (this.styles.strokeStyle){
+      ctx.strokeStyle = this.styles.strokeStyle;
+      ctx.stroke();
+    }
     ctx.closePath();
   }
 }
 export default Box;
-
-export class FinishBox extends Box {
-  constructor(game, x, y, height, width, borderColor = "rgba(0, 0, 255, 0.5)") {
-    super();
-    this.game = game;
-    this.pos = { x, y };
-    this.height = height;
-    this.width = width;
-    this.borderColor = borderColor;
-
-    this.Init();
-  }
-  Update(){
-    this.CheckForCollisions();
-  }
-}

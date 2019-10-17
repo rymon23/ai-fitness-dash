@@ -1,28 +1,23 @@
 import * as Util from "./util";
 import Vector2 from "./vector2";
 
+const DEFAULT_COLOR = "#000000";
 
 class GameObject {
-  constructor(game, x = 0, y = 0, color = "#000000") {
+  constructor(game, x = 0, y = 0, styles = { fillStyle: DEFAULT_COLOR, strokeStyle: null }) {
     this.game = game;
     this.pos = { x, y };
     this.height = 1;
     this.width = 1;
     this.center;
-    this.color = color;
-    this.borderColor = "";
+    this.styles = styles;
+
     this.isStatic = true;
     this.hasSensors = false;
     this.target = null;
     this.interval;
     this.trigger = "";
-
-    // this.triggers = {
-    //   seeDownWall: false,
-    //   seeUpWall: false,
-    //   seeBottom: false,
-    //   seeTop: false
-    // };
+    this.objectType = ""
 
     this.Init = this.Init.bind(this);
     this.Update = this.Update.bind(this);
@@ -82,12 +77,10 @@ class GameObject {
   }
 
   GetCenterPos() {
-    const v2 = new Vector2(
+    return new Vector2(
       this.PosX() + this.GetWidth() / 2,
       this.PosY() + this.GetHeight() / 2      
     )
-    debugger
-    return v2;
   }
 
   PosX() {
@@ -112,101 +105,74 @@ class GameObject {
     }
   }
 
-  IsInCollisionZone(
-    object,
-    callBack = object => {
-      object.dx = 0;
-    }
-  ) {
+  IsInCollisionZone(object) {
     if (!object) return false;
 
-    const sensorOnX = (x, sensorType = "") => {
-      if (
-        x > this.PosX() &&
-        x < this.PosX() + this.GetWidth() &&
-        object.PosY() > this.PosY() &&
-        object.PosY() < this.PosY() + this.GetHeight()
-      ) {
-        object.SetSensorHit(this.trigger);
-        console.log(`Sensor X Hit: ${sensorType}`);
-        // debugger
-        return true;
-      } else {
-        return false;
-      }
-    };
-    const sensorOnY = (y, sensorType = "") => {
-      if (
-        object.PosX() > this.PosX() &&
-        object.PosX() < this.PosX() + this.GetWidth() &&
-        (y > this.PosY() && y < this.PosY() + this.GetHeight())
-      ) {
-        if (sensorType === "TOP") {
-          object.SetSensorHit("seeTop");
-        } else {
-          object.SetSensorHit("seeBottom");
-        }
-        console.log(`Sensor Y Hit: ${sensorType}`);
-        // debugger
-        return true;
-      } else {
-        return false;
-      }
-    };
-
     if (object.hasSensors) {
-      if (sensorOnX(object.SensorX(true), "RIGHT")) {
-        // // object.triggerType = this.triggerType;
-      } else if (sensorOnX(object.SensorX(false), "LEFT")) {
-        // // object.triggerType = this.triggerType;
-      } else if (sensorOnY(object.SensorY(true), "BOTTOM")) {
-        // // object.triggerType = this.triggerType;
-      } else if (sensorOnY(object.SensorY(false), "TOP")) {
-        // // object.triggerType = this.triggerType;
+      object.SensorCheck(this);
+    }
+    // const colliding = Util.isColliding(this, object);
+    // if (colliding){
+    //   debugger
+    //   if (this.styles.fillStyle === "#000000") {
+    //     console.log(`CANVAS WALL HIT: ${this.objectType}`);
+    //   }
+    // }
+
+    const colX = Util.isCollidingOnX(object, this);
+    debugger
+    if (colX){
+      console.log(`${this.objectType}: COLLISION DETECTED: X - ${object.objectType}`);
+      if (object.objectType === "ball") {
+        object.dx = -object.dx;
+      } else {
+        object.dx = 0;
       }
-    }
-
-    // const isInRangeX = Util.isInRange(
-    //   objectX,
-    //   this.pos.x,
-    //   this.pos.x + this.width
-    // );
-    // const isInRangeY = Util.isInRange(
-    //   objectY,
-    //   this.pos.y,
-    //   this.pos.y + this.height
-    // );
-
-    if (
-      object.PosX() > this.PosX() - object.GetWidth() &&
-      object.PosX() - object.GetWidth() < this.PosX() + this.GetWidth() &&
-      object.PosY() > this.PosY() &&
-      object.PosY() < this.PosY() + this.GetHeight()
-    ) {
-      // console.log("COLLISION DETECTED: X");
-      callBack(object);
 
       return true;
     }
-    if (
-      object.PosX() > this.PosX() &&
-      object.PosX() < this.PosX() + this.GetWidth() &&
-      (object.PosY() > this.PosY() - object.GetHeight() &&
-        object.PosY() - object.GetHeight() < this.PosY() + this.GetHeight())
-    ) {
-      // console.log("COLLISION DETECTED Y");
-      // object.dy = 0;  //-object.dy;
-
+    const colY = Util.isCollidingOnY(object, this);
+    debugger
+    if (colY){
+      console.log(`${this.objectType}: COLLISION DETECTED: Y - ${object.objectType}`);
+      if (object.objectType === "ball") {
+        object.dy = -object.dy;
+      } else {
+        object.dy = 0;
+      }
       return true;
     }
+
+    // if (
+    //   object.PosX() > this.PosX() - object.GetWidth() &&
+    //   object.PosX() - object.GetWidth() < this.PosX() + this.GetWidth() &&
+    //   object.PosY() > this.PosY() &&
+    //   object.PosY() < this.PosY() + this.GetHeight()
+    // ) {
+    //   // console.log("COLLISION DETECTED: X");
+    //   callBack(object);
+    //   return true;
+    // }
+    // if (
+    //   object.PosX() > this.PosX() &&
+    //   object.PosX() < this.PosX() + this.GetWidth() &&
+    //   (object.PosY() > this.PosY() - object.GetHeight() &&
+    //     object.PosY() - object.GetHeight() < this.PosY() + this.GetHeight())
+    // ) {
+    //   // console.log("COLLISION DETECTED Y");
+    //   // object.dy = 0;  //-object.dy;
+
+    //   return true;
+    // }
+    
   }
 
-  CheckForCollisions(callBack) {
+  CheckForCollisions() {
     Object.values(this.game.gameObjects).forEach(array => {
       if (array.length > 0) {
         array.forEach(gameObject => {
           if (gameObject && gameObject != this && !gameObject.isStatic) {
-            this.IsInCollisionZone(gameObject, callBack);
+            this.IsInCollisionZone(gameObject);
           }
         });
       }

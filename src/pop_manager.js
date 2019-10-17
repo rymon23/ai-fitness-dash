@@ -2,13 +2,11 @@ import * as Util from "./util";
 import Entity from "./entity";
 
 
-const POPULATION_SIZE = 4;
+const POPULATION_SIZE = 1;
 const TRIAL_DURATION = 30; //in seconds
 
 class PopulationManager {
-    constructor(game, canvas, startBox, finishBox) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext("2d");
+    constructor(game, startBox, finishBox) {
         this.game = game;
         this.startBox = startBox;
         this.finishBox = finishBox;
