@@ -33,7 +33,8 @@ class Entity extends GameObject {
       seeDownWall: false,
       seeUpWall: false,
       seeBottom: false,
-      seeTop: false
+      seeTop: false,
+      seeCanvasWall: false,
     };
 
     this.speed = Util.getRandomInt(2, 5);
@@ -124,6 +125,7 @@ class Entity extends GameObject {
     this.sensorHit.seeDownWall = false;
     this.sensorHit.seeTop = false;
     this.sensorHit.seeBottom = false;
+    this.sensorHit.seeCanvasWall = false;
   }
 
   IsObstructed(){
@@ -158,7 +160,8 @@ class Entity extends GameObject {
     }else if (directionX < 0){
       this.obstructed.left ? directionX = 0 : null;
     }
-
+    debugger
+    
     let directionY = this.DirY() * (h * 0.1);
     if (directionY > 0){
       this.obstructed.down ? directionY = 0 : null

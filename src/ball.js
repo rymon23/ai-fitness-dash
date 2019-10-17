@@ -7,8 +7,8 @@ class Ball extends GameObject {
     this.game = game;
     this.isStatic = false;
     this.pos = { x, y };
-    this.dx = 2;
-    this.dy = 2;
+    this.dx = 3;
+    this.dy = 3;
     this.radius = radius;
     this.height = radius;
     this.width = radius;

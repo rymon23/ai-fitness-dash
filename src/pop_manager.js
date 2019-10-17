@@ -2,7 +2,7 @@ import * as Util from "./util";
 import Entity from "./entity";
 
 
-const POPULATION_SIZE = 1;
+const POPULATION_SIZE = 5;
 const TRIAL_DURATION = 30; //in seconds
 
 class PopulationManager {

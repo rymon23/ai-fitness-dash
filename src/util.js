@@ -78,7 +78,8 @@ export const isTopCollision = (objectA, objectB) =>{
     return objectA.PosY() + objectA.GetHeight() + objectA.DirY() > objectB.PosY();  
 } 
 export const isBottomCollision = (objectA, objectB) =>{
-    return objectA.PosY() - Math.abs(objectA.DirY()) < objectB.PosY() + objectB.GetHeight();  
+    // return objectA.PosY() - Math.abs(objectA.DirY()) < objectB.PosY() + objectB.GetHeight();
+    return objectA.PosY() - objectA.GetHeight() < objectB.PosY() + objectB.GetHeight();  
 } 
 
 export const isALeftOfB = (objectA, objectB) =>{
@@ -89,7 +90,7 @@ export const isRightCollision = (objectA, objectB) =>{
     return objectA.PosX() + objectA.GetWidth() + objectA.DirX() > objectB.PosX();  
 }       
 export const isLeftCollision = (objectA, objectB) =>{
-    return objectA.PosX() - Math.abs(objectA.DirX()) < objectB.PosX() + objectB.GetWidth();  
+    return objectA.PosX() - objectA.GetWidth() < objectB.PosX() + objectB.GetWidth();  
 }       
 
 export const isCollidingOnX = (objectA, objectB) => {

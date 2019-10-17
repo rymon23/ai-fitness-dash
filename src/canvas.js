@@ -15,7 +15,6 @@ class Canvas {
 
     const top = new Box(game, 0, 0, wallThickness, w, wallStyle);
     const down = new Box(game, 0, h - wallThickness, wallThickness, w, wallStyle);
-
     const left = new Box(game, 0, 0, w, wallThickness, wallStyle);
     const right = new Box(game, w - wallThickness, 0, w, wallThickness, wallStyle);
 
@@ -24,6 +23,11 @@ class Canvas {
     down.objectType = "canvasBottom";
     left.objectType = "canvasLeft";
     right.objectType = "canvasRight";
+
+    top.trigger = "seeTop";
+    down.trigger = "seeBottom";
+    left.trigger = "seeCanvasWall";
+    right.trigger = "seeCanvasWall";
 
     this.borders = {
       top,
@@ -47,7 +51,7 @@ class Canvas {
   PosX() {
     return this.x;
   }
-  
+
   PosY() {
     return this.y;
   }

@@ -4,6 +4,9 @@ import GameObject from "./gameobject";
 const COLUMN_WIDTH = 20;
 const COLUMN_COLOR = "#FFFFF";
 
+const DEFAULT_FILL = "#000000"; //"#FFFFF";
+const DEFAULT_STROKE = "#000000";
+
 class Column extends GameObject {
   constructor(game, x, y, height, width, triggers = {}) {
     super();
@@ -12,7 +15,7 @@ class Column extends GameObject {
     this.height = height;
     this.width = width;
     this.triggers = triggers;
-    this.color = COLUMN_COLOR;
+    this.styles = { fillStyle: DEFAULT_FILL, strokeStyle: DEFAULT_STROKE };
     this.trigger = "";
     this.objectType = "column";
 
@@ -22,8 +25,14 @@ class Column extends GameObject {
   Render(ctx) {
     ctx.beginPath();
     ctx.rect(this.PosX(), this.PosY(), this.GetWidth(), this.GetHeight());
-    ctx.fillStyle = "#FFFFF";
-    ctx.fill();
+    if (this.styles.fillStyle) {
+      ctx.fillStyle = this.styles.fillStyle;
+      ctx.fill();
+    }
+    if (this.styles.strokeStyle) {
+      ctx.strokeStyle = this.styles.strokeStyle;
+      ctx.stroke();
+    }
     ctx.closePath();
   }
 

@@ -7,10 +7,10 @@ import { CreateEntities } from "./entity";
 import { CreateColumns } from "./column";
 
 
-
 class Game {
   constructor(canvasEl) {
     this.ctx = canvasEl.getContext("2d");
+    // this.canvas = canvasEl;
     this.canvas = new Canvas(this, canvasEl);
 
     this.gameObjects = {
@@ -44,7 +44,7 @@ class Game {
   }
   Update(){
     this.Draw();
-    this.CanvasCollisionDetection(this.canvas.canvasEl);
+    this.CanvasCollisionDetection(this.canvas);
   }
 
   RunGame() {
@@ -59,8 +59,7 @@ class Game {
       startBoxX,
       startBoxY,
       startBoxHeight,
-      startBoxWidth,
-      "rgba(0, 0, 255, 0.5)"
+      startBoxWidth
     );
     this.gameObjects.boxes.push(startBox);
 
@@ -69,8 +68,7 @@ class Game {
         this.canvas.width - startBoxWidth,
         startBoxY,
         startBoxHeight,
-        startBoxWidth,
-        "rgba(0, 0, 255, 0.5)"
+        startBoxWidth
     )
     this.gameObjects.boxes.push(finishBox);
   
@@ -83,7 +81,7 @@ class Game {
 
     // this.gameObjects.entities = CreateEntities(2, startBox, this);
     this.gameObjects.entities = this.PopulationManager.population;
-   // this.canvas.Init();
+    this.canvas.Init();
     this.PopulationManager.Start()
 
     this.interval = setInterval(this.Update, 10);
