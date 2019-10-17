@@ -5,15 +5,22 @@ export const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-//Requires objects to have a x and y key
-export const getDistance = (objA, objB) => {
-  if (!objA || !objB) return null;
+export const getRandomBoxPos = (box, padding = 6) => {
+  return [Util.getRandomInt(box.PosX() + padding, box.GetWidth() - padding),
+  Util.getRandomInt(box.PosY() + padding, box.GetHeight() - padding)];
+}
+
+//Requires a GameObject or Vector2
+export const getDistance = (objectA, objectB) => {
+  if (!objectA || !objectB) return null;
 
   return Math.sqrt(
-    Math.pow(objA.x - objB.x, 2) + Math.pow(objA.y - objB.y, 2)
+    Math.pow(objectA.PosX() - objectB.PosX(), 2) + 
+    Math.pow(objectA.PosY() - objectB.PosY(), 2)
   );
 };
 
 export const isInRange = (value, min, max) => {
-  return (value >= min && value <= max) 
+  return (value >= min && value <= max);
 };
+

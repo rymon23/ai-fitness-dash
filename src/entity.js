@@ -1,6 +1,7 @@
 import * as Util from "./util";
 import GameObject from "./gameobject";
 import DNA from "./dna";
+import Vector2 from "./vector2";
 import { game } from "./index";
 
 const DNA_LENGTH = 5;
@@ -11,17 +12,21 @@ class Entity extends GameObject {
     super();
     this.game = game;
     this.pos = { x, y };
+    this.startPos = new Vector2(this.PosX(), this.PosY());
     this.dx = 1;
     this.dy = 0;
     this.dna = new DNA(DNA_LENGTH, 200);
     this.isStatic = false;
     this.hasSensors = true;
+    this.distanceTraveled = 0;
+
     this.triggers = {
       seeDownWall: false,
       seeUpWall: false,
       seeBottom: false,
       seeTop: false
     };
+
     this.speed = Util.getRandomInt(2, 5);
     this.color = "#000000";
     this.goalReached = false;
@@ -49,6 +54,7 @@ class Entity extends GameObject {
     return this.PosY() - ENTITY_SENSOR_RANGE; //TOP
   }
 
+
   // OnCollisionEnter(col)
   //   {
   //       if(col.gameObject.tag == "dead" ||
@@ -61,61 +67,37 @@ class Entity extends GameObject {
   //       }
   // }
 
+  GetTriggerGene(){
+    if(this.triggers.seeUpWall){
+      return this.dna.GetGene(0);
+    } else if (this.triggers.seeDownWall){
+      return this.dna.GetGene(1);
+    } else if (this.triggers.seeTop){
+      return this.dna.GetGene(2);
+    } else if (this.triggers.seeBottom){
+      return this.dna.GetGene(3);
+    }else{
+      return this.dna.GetGene(4);
+    }
+  }
+
+  ResetTriggers(){
+    this.triggers.seeUpWall = false;
+    this.triggers.seeDownWall = false;
+    this.triggers.seeTop = false;
+    this.triggers.seeBottom = false;
+  }
+
   Update() {
     if (this.goalReached || !this.alive) {
       this.StopUpdates();
       return;
     }
 
-    this.seeUpWall = false;
-    this.seeDownWall = false;
-    this.seeTop = false;
-    this.seeBottom = false;
-    // RaycastHit2D hit = Physics2D.Raycast(eyes.transform.position, eyes.transform.forward, 1.0f);
-    // Debug.DrawRay(eyes.transform.position, eyes.transform.forward * 1.0f, Color.red);
-    // Debug.DrawRay(eyes.transform.position, eyes.transform.up* 1.0f, Color.red);
-    // Debug.DrawRay(eyes.transform.position, -eyes.transform.up* 1.0f, Color.red);
-
-    // if (hit.collider != null){
-    //     if(hit.collider.gameObject.tag == "upwall"){
-    //         seeUpWall = true;
-    //     }else if(hit.collider.gameObject.tag == "downwall"){
-    //         seeDownWall = true;
-    //     }
-    // }
-
-    // hit = Physics2D.Raycast(eyes.transform.position, eyes.transform.up, 1.0f);
-
-    // if (hit.collider != null){
-    //   if(hit.collider.gameObject.tag == "top"){
-    //       seeTop = true;
-    //   }
-    // }
-    // hit = Physics2D.Raycast(eyes.transform.position, -eyes.transform.up, 1.0f);
-
-    // if (hit.collider != null){
-    //     if(hit.collider.gameObject.tag == "bottom"){
-    //       seeBottom = true;
-    //     }
-    // }
-    //     timeAlive = PopulationManager.elapsed;
-    // }
-
     // read DNA
-    let h = 0;
     let velocity = 1.0; //dna.GetGene(0);
-
-    // if(seeUpWall){
-    //   h = this.dna.GetGene(0);
-    // }else if(seeDownWall){
-    //   h = this.dna.GetGene(1);
-    // }else if(seeTop){
-    //   h = this.dna.GetGene(2);
-    // }else if(seeBottom){
-    //   h = this.dna.GetGene(3);
-    // }else{
-    //   h = this.dna.GetGene(4);
-    // }
+    let h = this.GetTriggerGene();
+    this.ResetTriggers();
 
     // this.x += this.dx * velocity;
     // this.y += this.dy * (h * 0.1);
@@ -124,8 +106,7 @@ class Entity extends GameObject {
     //BOUNCE
     this.pos.x += this.DirX();
     this.pos.y += this.DirY();
-
-    // distanceTravelled = Vector3.Distance(startPosition,this.transform.position);
+    this.distanceTravelled = Util.getDistance(this, this.startPos);
   }
 
   StopUpdates() {
@@ -163,15 +144,8 @@ class Entity extends GameObject {
 
 export const CreateEntities = (amount, startBox, game) =>{
     const entities = [];
-
-    const randomBoxPos = (startBox) => {
-        const padding = 6;
-        return [Util.getRandomInt(startBox.pos.x + padding, startBox.width - padding),
-          Util.getRandomInt(startBox.pos.y + padding, startBox.height - padding)]
-    }
-
     for (let i = 0; i < amount; i++) {
-        let xyPos = randomBoxPos(startBox);
+        let xyPos = Util.getRandomBoxPos(startBox);
         entities[i] = new Entity(game, xyPos[0], xyPos[1]); 
     }
     return entities;
