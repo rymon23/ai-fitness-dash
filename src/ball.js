@@ -1,17 +1,19 @@
-import * as Util from "./util";
 import GameObject from "./gameobject";
+import * as Util from "./util";
+
 
 class Ball extends GameObject {
-  constructor(game, x, y, radius = 10, color = "#0095DD") {
+  constructor(startPos, radius = 10, color = "#0095DD") {
     super();
-    this.game = game;
+    this.pos = { 
+        x: startPos.PosX(),
+        y: startPos.PosY() 
+      };
     this.isStatic = false;
-    this.pos = { x, y };
-    this.dx = 3;
-    this.dy = 3;
+    this.speed = Util.getRandomInt(2,4);
+    this.dx = 1;
+    this.dy = 1;
     this.radius = radius;
-    this.height = radius;
-    this.width = radius;
     this.color = color;
     this.objectType = "ball";
 
@@ -26,9 +28,8 @@ class Ball extends GameObject {
   }
 
   Update() {
-    // debugger
-    this.pos.x += this.DirX();
-    this.pos.y += this.DirY();
+    this.pos.x += this.DirX()*this.speed;
+    this.pos.y += this.DirY()*this.speed;
   }
 
   Render(ctx) {
@@ -39,6 +40,14 @@ class Ball extends GameObject {
     ctx.closePath();
   }
 
+}
+
+export const CreateBalls = (amount, atObject) => {
+  const balls = [];
+  for (let i = 0; i < amount; i++) {
+    balls[i] = new Ball(atObject)
+  }
+  return balls;
 }
 
 export default Ball;

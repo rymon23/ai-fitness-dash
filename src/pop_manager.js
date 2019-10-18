@@ -3,7 +3,7 @@ import Entity from "./entity";
 
 
 const POPULATION_SIZE = 5;
-const TRIAL_DURATION = 30; //in seconds
+const TRIAL_DURATION = 10; //in seconds
 
 class PopulationManager {
     constructor(game, startBox, finishBox) {
@@ -36,6 +36,7 @@ class PopulationManager {
 
     Start(){
         this.generation = 1;
+        console.log("POPULATION MANAGER: START");
 
         setTimeout(() => {
             this.interval = setInterval(this.BreedNewPopulation, TRIAL_DURATION * 1000);
@@ -93,7 +94,9 @@ class PopulationManager {
         {
             delete sortedPop[i];
         }
-        this.generation++;       
+        this.generation++;
+        console.log(`GEN: ${this.generation}`);
+        this.game.Reset();
     }
 
     Update(){

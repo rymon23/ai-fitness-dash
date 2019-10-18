@@ -52,7 +52,6 @@ export const isInRange = (value, min, max) => {
 // }
 
 
-
 export const isAInXOfB = (objectA, objectB) =>{
   // return objectA.PosX() + objectA.GetWidth() > objectB.PosX()
   //       || objectA.PosX() < objectB.PosX() + objectB.GetWidth();  
@@ -120,11 +119,6 @@ export const isCollidingOnY = (objectA, objectB) => {
   }
 }
 
-// export const hasOverlapY = (objectA, objectB) => {
-//   return isInRange(objectA.PosY(), objectB.PosY(), objectB.PosY() + objectB.GetHeight())
-//     || isInRange(objectB.PosY(), objectA.PosY(), objectA.PosY() + objectA.GetHeight());
-// }
-
 export const hasOverlapTop = (objectA, objectB) => {
   return (objectA.PosY() <= objectB.PosY() + objectB.GetHeight()
     && objectA.PosY() + objectA.GetHeight() > objectB.PosY());
@@ -141,13 +135,3 @@ export const hasOverlapLeft = (objectA, objectB) => {
   return (objectA.PosX() <= objectB.PosX() + objectB.GetWidth()
     && objectA.PosX() + objectA.GetWidth() > objectB.PosX());
 }
-
-  // objectA.PosY() >= objectB.PosY() + objectB.GetHeight //TOP
-  // objectA.PosY() + objectA.GetHeight() >= objectB.PosY() //BOTTOM
-  // objectA.PosX() + objectA.GetWidth() >= objectB.PosX() //RIGHT
-  // objectA.PosX() <= objectB.PosX() + objectB.GetWidth() //LEFT
-
-
-
-
-

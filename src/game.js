@@ -2,8 +2,7 @@ import * as Util from "./util";
 import Canvas from "./canvas";
 import PopulationManager from "./pop_manager";
 import Box from "./box";
-import Ball from "./ball";
-import { CreateEntities } from "./entity";
+import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
 
@@ -22,33 +21,18 @@ class Game {
     this.PopulationManager;
     this.interval;
 
+    this.Init = this.Init.bind(this);
     this.Start = this.Start.bind(this);
-    this.RunGame = this.RunGame.bind(this);
     this.Stop = this.Stop.bind(this);
     this.Update = this.Update.bind(this);
-    this.Draw = this.Draw.bind(this);
+    this.Reset = this.Reset.bind(this);
     this.RenderGameObjects = this.RenderGameObjects.bind(this);
     this.CanvasCollisionDetection = this.CanvasCollisionDetection.bind(this);
 
-    this.Start();
+    this.Init();
   }
 
-  Start() {
-    console.log("GAME STARTED");
-    this.RunGame();
-  }
-  Stop() {
-    this.running = false;
-    clearInterval(this.interval);
-    console.log("GAME STOPPED");
-  }
-  Update(){
-    this.Draw();
-    this.CanvasCollisionDetection(this.canvas);
-  }
-
-  RunGame() {
-    this.running = true;
+  Init(){
     const startBoxHeight = this.canvas.height / 2;
     const startBoxWidth = 60;
     const startBoxY = this.canvas.height / 2 / 2;
@@ -61,25 +45,27 @@ class Game {
       startBoxHeight,
       startBoxWidth
     );
-    this.gameObjects.boxes.push(startBox);
-
     const finishBox = new Box(
         this,
         this.canvas.width - startBoxWidth,
         startBoxY,
         startBoxHeight,
         startBoxWidth
-    )
+    )    
+    this.gameObjects.boxes.push(startBox);
     this.gameObjects.boxes.push(finishBox);
-  
+    this.PopulationManager = new PopulationManager(this, startBox, finishBox);
 
-    const startBoxCenter = startBox.GetCenterPos();
-    this.PopulationManager = new PopulationManager(this, startBox, finishBox)
+    console.log("GAME INITIALIZED");
+    this.Start();
+  }
 
-    this.gameObjects.balls.push(new Ball(this, 100, 100)); //startBoxCenter.x, startBoxCenter.y));
+  Start() {
+    console.log("GAME STARTED");
+    this.running = true;
+
+    this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
     this.gameObjects.columns = CreateColumns(125, this);
-
-    // this.gameObjects.entities = CreateEntities(2, startBox, this);
     this.gameObjects.entities = this.PopulationManager.population;
     this.canvas.Init();
     this.PopulationManager.Start()
@@ -87,17 +73,28 @@ class Game {
     this.interval = setInterval(this.Update, 10);
   }
 
-  Draw() {
-    if (!this.running) return;
-    // debugger
-
-      const ctx = this.ctx;
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.RenderGameObjects(ctx);
+  Update(){
+    this.RenderGameObjects();
+    this.CanvasCollisionDetection(this.canvas);
   }
 
-  RenderGameObjects(ctx) {
+  Stop() {
+    this.running = false;
+    clearInterval(this.interval);
+    console.log("GAME STOPPED");
+  }
+
+  Reset(){
+    console.log("GAME RESETTING");
+    this.Stop();
+    this.Start();
+  }
+
+  RenderGameObjects() {
+    if (!this.running) return;
+
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvas.RenderBorders(ctx);
 
     if (Object.values(this.gameObjects).length === 0) return;
@@ -108,6 +105,7 @@ class Game {
         });
       }
     });
+    
   }
 
   CanvasCollisionDetection(canvas) {
@@ -137,6 +135,20 @@ class Game {
 
   }
 
+  // DeleteGameObjects(){
+  //   if (Object.values(this.gameObjects).length === 0) return;
+
+  //   Object.values(this.gameObjects).forEach((array) => {
+  //     if (array.length > 0) {
+  //       array.forEach(gameObject => {
+  //         if (gameObject.objectType != "box"){
+  //           delete gameObject;
+  //         }
+  //       });
+  //     }
+  //   }); 
+
+  // }
 }
 
 export default Game;
