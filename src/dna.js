@@ -9,11 +9,13 @@ class DNA {
 
     this.genes = {
       speed: new Gene(1, 5),
-      size: new Gene(9, 13),
+      size: new Gene(9, 18),
       senseUp: new Gene(-180, 180),
       senseDown: new Gene(-180, 180),
       senseRight: new Gene(-180, 180),
       senseLeft: new Gene(-180, 180),
+      sensorRange: new Gene(10,25),
+      sensorThickness: new Gene(1, 4),
       random: new Gene(-180, 180),
     };
     // this.SetRandom();

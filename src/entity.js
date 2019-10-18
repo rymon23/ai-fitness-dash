@@ -5,8 +5,8 @@ import Vector2 from "./vector2";
 import { CreateSensorRays } from "./sensor_ray";
 
 const DNA_LENGTH = 5;
-const ENTITY_SENSOR_RANGE = 28;
-const ENTITY_GOAL_RADIUS = 85;
+// const ENTITY_SENSOR_RANGE = 28;
+const ENTITY_GOAL_RADIUS = 68;
 
 class Entity extends GameObject {
   constructor(game, x, y, target = null) {
@@ -26,7 +26,11 @@ class Entity extends GameObject {
 
     this.obstructed = {};
 
-    this.sensorRays = CreateSensorRays(this);
+    this.sensorRays = CreateSensorRays(
+      this,
+      this.dna.GetGene("sensorRange"),
+      this.dna.GetGene("sensorThickness")
+    );
 
     this.sensorHit = {
       seeDownWall: false,
@@ -52,6 +56,7 @@ class Entity extends GameObject {
     this.ResetTriggers = this.ResetTriggers.bind(this);
     this.IsObstructed = this.IsObstructed.bind(this);
     this.ResetObstructions = this.ResetObstructions.bind(this);
+    this.UpdateDirection = this.UpdateDirection.bind(this);
 
     this.ResetObstructions();
     this.Init();
@@ -64,12 +69,12 @@ class Entity extends GameObject {
     return this.radius;
   }
   SensorX(right = true){
-    if(right) return this.PosX() + ENTITY_SENSOR_RANGE; //RIGHT
-    return this.PosX() - ENTITY_SENSOR_RANGE; //LEFT
+    if(right) return this.PosX() + this.sensorRays.right.GetRange(); //RIGHT
+    return this.PosX() - this.sensorRays.left.GetRange(); //LEFT
   }
   SensorY(bottom = true){
-    if(bottom) return this.PosY() + ENTITY_SENSOR_RANGE; //BOTTOM
-    return this.PosY() - ENTITY_SENSOR_RANGE; //TOP
+    if(bottom) return this.PosY() + this.sensorRays.bottom.GetRange(); //BOTTOM
+    return this.PosY() - this.sensorRays.up.GetRange(); //TOP
   }
 
   SensorCheck(object){
@@ -154,7 +159,7 @@ class Entity extends GameObject {
       down: false,
       left: false,
       right: false
-    };     
+    };
   }
 
   Update() {
@@ -194,11 +199,20 @@ class Entity extends GameObject {
     if (Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS){
       this.goalReached = true;
       return    
+    }else {
+      this.ResetObstructions();
+      this.UpdateDirection();
     }
-    
-    //Return motion forward
-    this.ResetObstructions();
-    this.dx = 1;
+  }
+
+  UpdateDirection(){
+    debugger
+    this.dx = Util.isALeftOfB(this, this.target.GetCenterPos()) ?
+      this.dx = 1
+      :this.dx = -1;
+    this.dy = Util.isAAboveB(this, this.target.GetCenterPos()) ?
+      this.dy = 1
+      :this.dy = -1;
   }
 
   StopUpdates() {

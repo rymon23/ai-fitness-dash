@@ -1,8 +1,9 @@
 import * as Util from "./util";
 import Entity from "./entity";
 
-const POPULATION_SIZE = 6;
+const POPULATION_SIZE = 8;
 const BREED_TOP_PERCENT = 0.4;
+const MUTATION_PERCENT = 5;
 
 class PopulationManager {
   constructor(game, startBox, finishBox) {
@@ -50,19 +51,15 @@ class PopulationManager {
   Breed(parent1, parent2) {
     const xyPos = Util.getRandomBoxPos(this.startBox);
     const offspring = new Entity(this.game, xyPos[0], xyPos[1], this.finishBox);
-    debugger
-    if (Util.getRandomInt(0, 100) == 1) {
-      //mutate 1 in 100
+    if (Util.getRandomInt(0, 100) < MUTATION_PERCENT) {
       offspring.dna.Mutate();
     } else {
       offspring.dna.Combine(parent1.dna, parent2.dna);
     }
-    debugger
     return offspring;
   }
 
   BreedNewPopulation() {
-    debugger
     console.log("BREED NEW POPULATION");
 
     const sortedPop = this.population.sort((a, b) => {
@@ -70,7 +67,7 @@ class PopulationManager {
       }).slice(0, Math.floor(this.population.length * BREED_TOP_PERCENT) || 1 );
 
     this.population = [];
-    debugger
+    // debugger
 
     while (this.population.length < POPULATION_SIZE){
         const randIx = Util.getRandomInt(0, sortedPop.length - 1);
@@ -78,14 +75,14 @@ class PopulationManager {
             sortedPop[randIx]
             , sortedPop[(randIx + 1) % sortedPop.length]));
     }
-    debugger
+    // debugger
 
     //destroy all parents and previous population
     for (let i = 0; i < sortedPop.length; i++) {
       delete sortedPop[i];
     }
     this.generation++;
-    debugger
+    // debugger
     this.DisplayGeneration();
   }
 }

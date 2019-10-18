@@ -92,15 +92,16 @@ export const isLeftCollision = (objectA, objectB) =>{
 }       
 
 export const isCollidingOnX = (objectA, objectB) => {
+  debugger
   if (!isAInYOfB(objectA, objectB)) return false;
 
   if (isALeftOfB(objectA, objectB)) {
     const col = isRightCollision(objectA, objectB);
-    // debugger;
+    debugger;
     return col;
   } else {
     const col = isLeftCollision(objectA, objectB);
-    // debugger;
+    debugger;
     return col;
   }
 }

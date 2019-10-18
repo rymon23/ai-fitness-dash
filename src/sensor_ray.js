@@ -78,6 +78,10 @@ class SensorRay {
   GetWidth() {
     return this.HasXDirection() ? this.length : this.thickness;
   }
+  GetRange() {
+    return this.length;
+  }
+
   GetCenterPos() {
     return new Vector2(
       this.PosX() + this.GetWidth() / 2,
@@ -115,7 +119,7 @@ class SensorRay {
         this.hit = Util.isCollidingOnY(this, object);
         break;
       case "down":
-        this.hit = Util.hasOverlapBottom(this, object);
+        // this.hit = Util.hasOverlapBottom(this, object);
         this.hit = Util.isCollidingOnY(this, object);
         break;
       case "right":
@@ -171,11 +175,11 @@ class SensorRay {
   }
 }
 
-export const CreateSensorRays = (owner) => {
-  const up = new SensorRay(owner, "up", SENSOR_RANGE, SENSOR_Width);
-  const down = new SensorRay(owner, "down", SENSOR_RANGE, SENSOR_Width);
-  const right = new SensorRay(owner, "right", SENSOR_RANGE, SENSOR_Width);
-  const left = new SensorRay(owner, "left", SENSOR_RANGE, SENSOR_Width);
+export const CreateSensorRays = (owner ,sensorRange, sensorThickness) => {
+  const up = new SensorRay(owner, "up", sensorRange, sensorThickness);
+  const down = new SensorRay(owner, "down", sensorRange, sensorThickness);
+  const right = new SensorRay(owner, "right", sensorRange, sensorThickness);
+  const left = new SensorRay(owner, "left", sensorRange, sensorThickness);
   const sensorRays = {
     up,
     down,

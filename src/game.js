@@ -6,7 +6,7 @@ import Box from "./box";
 import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
-const ROUND_DURATION = 20; //in seconds
+const ROUND_DURATION = 10; //in seconds
 
 class Game {
   constructor(canvasEl) {
@@ -69,7 +69,7 @@ class Game {
     this.canvas.Init();
 
     // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
-    this.gameObjects.columns = CreateColumns(125, this);
+    // this.gameObjects.columns = CreateColumns(125, this);
 
     if (nextRound){
       this.PopulationManager.BreedNewPopulation();
