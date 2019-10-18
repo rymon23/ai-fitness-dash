@@ -51,14 +51,12 @@ export const isInRange = (value, min, max) => {
 //     return true;
 // }
 
-
-
 export const isAInXOfB = (objectA, objectB) =>{
   // return objectA.PosX() + objectA.GetWidth() > objectB.PosX()
   //       || objectA.PosX() < objectB.PosX() + objectB.GetWidth();  
   const centerPos = objectA.GetCenterPos();
   const r = isInRange(centerPos.PosX(), objectB.PosX(), objectB.PosX() + objectB.GetWidth())
-  debugger
+  // debugger
   return r;
 }
 export const isAInYOfB = (objectA, objectB) =>{
@@ -66,7 +64,7 @@ export const isAInYOfB = (objectA, objectB) =>{
   //       || objectA.PosY() < objectB.PosY() + objectB.GetHeight(); 
   const centerPos = objectA.GetCenterPos();
   const r = isInRange(centerPos.PosY(), objectB.PosY(), objectB.PosY() + objectB.GetHeight())
-  debugger
+  // debugger
   return r;
 }
 
@@ -98,11 +96,11 @@ export const isCollidingOnX = (objectA, objectB) => {
 
   if (isALeftOfB(objectA, objectB)) {
     const col = isRightCollision(objectA, objectB);
-    debugger;
+    // debugger;
     return col;
   } else {
     const col = isLeftCollision(objectA, objectB);
-    debugger;
+    // debugger;
     return col;
   }
 }
@@ -111,19 +109,14 @@ export const isCollidingOnY = (objectA, objectB) => {
 
   if (isAAboveB(objectA, objectB)){
     const col = isTopCollision(objectA, objectB);
-    debugger
+    // debugger
     return col;
   }else {
     const col = isBottomCollision(objectA, objectB);
-    debugger
+    // debugger
     return col;
   }
 }
-
-// export const hasOverlapY = (objectA, objectB) => {
-//   return isInRange(objectA.PosY(), objectB.PosY(), objectB.PosY() + objectB.GetHeight())
-//     || isInRange(objectB.PosY(), objectA.PosY(), objectA.PosY() + objectA.GetHeight());
-// }
 
 export const hasOverlapTop = (objectA, objectB) => {
   return (objectA.PosY() <= objectB.PosY() + objectB.GetHeight()
@@ -141,13 +134,6 @@ export const hasOverlapLeft = (objectA, objectB) => {
   return (objectA.PosX() <= objectB.PosX() + objectB.GetWidth()
     && objectA.PosX() + objectA.GetWidth() > objectB.PosX());
 }
-
-  // objectA.PosY() >= objectB.PosY() + objectB.GetHeight //TOP
-  // objectA.PosY() + objectA.GetHeight() >= objectB.PosY() //BOTTOM
-  // objectA.PosX() + objectA.GetWidth() >= objectB.PosX() //RIGHT
-  // objectA.PosX() <= objectB.PosX() + objectB.GetWidth() //LEFT
-
-
 
 
 

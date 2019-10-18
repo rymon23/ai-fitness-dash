@@ -41,4 +41,4 @@ export const timer = (seconds, callback) => {
   }, 1000);
 }
 
-timer(10);
+// timer(10);

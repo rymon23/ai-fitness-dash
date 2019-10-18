@@ -1,18 +1,19 @@
 import * as Util from "./util";
 import Canvas from "./canvas";
 import PopulationManager from "./pop_manager";
+import Timer from "./timer";
 import Box from "./box";
-import Ball from "./ball";
-import { CreateEntities } from "./entity";
+import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
+const ROUND_DURATION = 10; //in seconds
 
 class Game {
   constructor(canvasEl) {
     this.ctx = canvasEl.getContext("2d");
     // this.canvas = canvasEl;
     this.canvas = new Canvas(this, canvasEl);
-
+    this.timer = new Timer(this);
     this.gameObjects = {
       balls: [],
       boxes: [],
@@ -22,33 +23,19 @@ class Game {
     this.PopulationManager;
     this.interval;
 
+    this.Init = this.Init.bind(this);
     this.Start = this.Start.bind(this);
-    this.RunGame = this.RunGame.bind(this);
     this.Stop = this.Stop.bind(this);
     this.Update = this.Update.bind(this);
-    this.Draw = this.Draw.bind(this);
+    this.Reset = this.Reset.bind(this);
     this.RenderGameObjects = this.RenderGameObjects.bind(this);
+    this.DestroyGameObjects = this.DestroyGameObjects.bind(this);
     this.CanvasCollisionDetection = this.CanvasCollisionDetection.bind(this);
 
-    this.Start();
+    this.Init();
   }
 
-  Start() {
-    console.log("GAME STARTED");
-    this.RunGame();
-  }
-  Stop() {
-    this.running = false;
-    clearInterval(this.interval);
-    console.log("GAME STOPPED");
-  }
-  Update(){
-    this.Draw();
-    this.CanvasCollisionDetection(this.canvas);
-  }
-
-  RunGame() {
-    this.running = true;
+  Init() {
     const startBoxHeight = this.canvas.height / 2;
     const startBoxWidth = 60;
     const startBoxY = this.canvas.height / 2 / 2;
@@ -61,47 +48,71 @@ class Game {
       startBoxHeight,
       startBoxWidth
     );
-    this.gameObjects.boxes.push(startBox);
-
     const finishBox = new Box(
-        this,
-        this.canvas.width - startBoxWidth,
-        startBoxY,
-        startBoxHeight,
-        startBoxWidth
-    )
+      this,
+      this.canvas.width - startBoxWidth,
+      startBoxY,
+      startBoxHeight,
+      startBoxWidth
+    );
+    this.gameObjects.boxes.push(startBox);
     this.gameObjects.boxes.push(finishBox);
-  
+    this.PopulationManager = new PopulationManager(this, startBox, finishBox);
 
-    const startBoxCenter = startBox.GetCenterPos();
-    this.PopulationManager = new PopulationManager(this, startBox, finishBox)
+    console.log("GAME INITIALIZED");
+    this.Start();
+  }
 
-    this.gameObjects.balls.push(new Ball(this, 100, 100)); //startBoxCenter.x, startBoxCenter.y));
+  Start(nextRound = false) {
+    console.log("GAME STARTED");
+    this.running = true;
+    this.canvas.Init();
+
+    this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
     this.gameObjects.columns = CreateColumns(125, this);
 
-    // this.gameObjects.entities = CreateEntities(2, startBox, this);
+    if (nextRound){
+      this.PopulationManager.BreedNewPopulation();
+    }
     this.gameObjects.entities = this.PopulationManager.population;
-    this.canvas.Init();
-    this.PopulationManager.Start()
+    // this.PopulationManager.Start();
 
+    this.timer.Start(ROUND_DURATION);
     this.interval = setInterval(this.Update, 10);
   }
 
-  Draw() {
-    if (!this.running) return;
-    // debugger
+  Update() {
+    if (this.timer.timeUp){
+      this.Reset();      
+      return 
+    }
 
-      const ctx = this.ctx;
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.RenderGameObjects(ctx);
+    this.RenderGameObjects();
+    this.CanvasCollisionDetection(this.canvas);
   }
 
-  RenderGameObjects(ctx) {
+  Stop() {
+    this.running = false;
+    clearInterval(this.interval);
+    console.log("GAME STOPPED");
+  }
+
+  Reset() {
+    console.log("GAME RESETTING");
+    this.Stop();
+    this.DestroyGameObjects();
+    this.Start(true);
+  }
+
+  RenderGameObjects() {
+    if (!this.running) return;
+
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvas.RenderBorders(ctx);
 
     if (Object.values(this.gameObjects).length === 0) return;
-    Object.values(this.gameObjects).forEach((array) => {
+    Object.values(this.gameObjects).forEach(array => {
       if (array.length > 0) {
         array.forEach(gameObject => {
           if (gameObject) gameObject.Render(ctx);
@@ -113,30 +124,45 @@ class Game {
   CanvasCollisionDetection(canvas) {
     if (Object.values(this.gameObjects).length === 0) return;
 
-    Object.values(this.gameObjects).forEach((array) => {
+    Object.values(this.gameObjects).forEach(array => {
       if (array.length > 0) {
         array.forEach(gameObject => {
-          if (gameObject && gameObject != this && !gameObject.isStatic) { 
-            const canvasHitX = (gameObject.PosX() + gameObject.DirX() < gameObject.GetWidth()
-              || gameObject.PosX() + gameObject.GetWidth() + gameObject.DirX() > canvas.width);
+          if (gameObject && gameObject != this && !gameObject.isStatic) {
+            const canvasHitX =
+              gameObject.PosX() + gameObject.DirX() < gameObject.GetWidth() ||
+              gameObject.PosX() + gameObject.GetWidth() + gameObject.DirX() >
+                canvas.width;
 
-            const canvasHitY = (gameObject.PosY() + gameObject.DirY() < gameObject.GetHeight()
-              || gameObject.PosY() + gameObject.GetHeight() + gameObject.DirY() > canvas.height);            
+            const canvasHitY =
+              gameObject.PosY() + gameObject.DirY() < gameObject.GetHeight() ||
+              gameObject.PosY() + gameObject.GetHeight() + gameObject.DirY() >
+                canvas.height;
 
-            if (gameObject.objectType === "ball"){
+            if (gameObject.objectType === "ball") {
               if (canvasHitX) gameObject.dx = -gameObject.dx;
-              if (canvasHitY) gameObject.dy = -gameObject.dy;             
-            }else {
+              if (canvasHitY) gameObject.dy = -gameObject.dy;
+            } else {
               if (canvasHitX) gameObject.dx = 0;
-              if (canvasHitY) gameObject.dy = 0;      
+              if (canvasHitY) gameObject.dy = 0;
             }
           }
         });
       }
-    });    
-
+    });
   }
 
+  DestroyGameObjects() {
+    if (Object.values(this.gameObjects).length === 0) return;
+    Object.values(this.gameObjects).forEach(array => {
+      if (array.length > 0) {
+        array.forEach(gameObject => {
+          if (gameObject.objectType !== "box") {
+            gameObject.Destroy();
+          }
+        });
+      }
+    });
+  }
 }
 
 export default Game;

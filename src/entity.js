@@ -3,7 +3,6 @@ import GameObject from "./gameobject";
 import DNA from "./dna";
 import Vector2 from "./vector2";
 import { CreateSensorRays } from "./sensor_ray";
-import { game } from "./index";
 
 const DNA_LENGTH = 5;
 const ENTITY_SENSOR_RANGE = 28;
@@ -99,8 +98,6 @@ class Entity extends GameObject {
   //       }
   // }
 
-
-
   GetTriggerGene(){
     // debugger
     if(this.sensorHit.seeUpWall){
@@ -147,8 +144,6 @@ class Entity extends GameObject {
       return;
     }
 
-    debugger
-
     // read DNA
     const velocity = 1.0; //dna.GetGene(0);
     const h = this.GetTriggerGene() || 0;
@@ -160,7 +155,7 @@ class Entity extends GameObject {
     }else if (directionX < 0){
       this.obstructed.left ? directionX = 0 : null;
     }
-    debugger
+    // debugger
     
     let directionY = this.DirY() * (h * 0.1);
     if (directionY > 0){
@@ -175,8 +170,7 @@ class Entity extends GameObject {
     // this.pos.y += this.DirY() * (h * 0.1);
 
     this.distanceTravelled = Util.getDistance(this, this.startPos);
-
-    debugger
+    // debugger
 
     if (Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS){
       this.goalReached = true;

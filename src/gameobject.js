@@ -111,16 +111,9 @@ class GameObject {
     if (object.hasSensors) {
       object.SensorCheck(this);
     }
-    // const colliding = Util.isColliding(this, object);
-    // if (colliding){
-    //   debugger
-    //   if (this.styles.fillStyle === "#000000") {
-    //     console.log(`CANVAS WALL HIT: ${this.objectType}`);
-    //   }
-    // }
 
     const colX = Util.isCollidingOnX(object, this);
-    debugger
+    // debugger
     if (colX){
       console.log(`${this.objectType}: COLLISION DETECTED: X - ${object.objectType}`);
       if (object.objectType === "ball") {
@@ -128,11 +121,11 @@ class GameObject {
       } else {
         object.dx = 0;
       }
-
       return true;
     }
+
     const colY = Util.isCollidingOnY(object, this);
-    debugger
+    // debugger
     if (colY){
       console.log(`${this.objectType}: COLLISION DETECTED: Y - ${object.objectType}`);
       if (object.objectType === "ball") {
@@ -178,7 +171,7 @@ class GameObject {
       }
     });
   }
-  
+
 }
 
 export default GameObject;

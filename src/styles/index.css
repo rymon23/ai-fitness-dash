@@ -26,8 +26,7 @@ body {
 }  
 .header-container h1 {
     color: white;
-    font-size: 82px;
-    /* padding-top: 30px; */
+    font-size: 75px;
     padding-bottom: 30px;
 }
 .game-content-container {
@@ -38,6 +37,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  color: white;
 }
 .game-controls-container{
   display: flex;
@@ -57,7 +57,13 @@ body {
   background-color: white;
   color: black;  
 }
-.timer-container {
-  color: white;
+.timer-container,  .gen-container{
   font-size: 23px;
+  color: white;
+}
+.gen-container {
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
 }
