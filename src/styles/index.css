@@ -5,6 +5,9 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
+header{
+  background-color: black;
+}
 canvas {
   border: 5px solid white;
   background: rgb(172, 179, 165); 
@@ -19,7 +22,7 @@ body {
 .header-container {
   display: flex;
   justify-content: center;
-
+  padding-bottom: 10px;
 }  
 .header-container h1 {
     color: white;
@@ -31,22 +34,30 @@ body {
   display: flex;
   flex-direction: column;
 }
+.game-dashboard-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 .game-controls-container{
   display: flex;
   justify-content: center;
-  padding-top: 25px;
+  /* padding-top: 25px; */
 }
-
 .game-controls-container button {
-  font-size: 45px;
+  font-size: 23px;
+  font-weight: bold;
   border: 2px solid white;
   background-color: black;
   color: white;
   padding: 15px;
   border-radius: 40px;
 }
-
 .game-controls-container button:hover {
   background-color: white;
   color: black;  
+}
+.timer-container {
+  color: white;
+  font-size: 23px;
 }
