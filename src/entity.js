@@ -210,9 +210,9 @@ class Entity extends GameObject {
     this.dx = Util.isALeftOfB(this, this.target.GetCenterPos()) ?
       this.dx = 1
       :this.dx = -1;
-    this.dy = Util.isAAboveB(this, this.target.GetCenterPos()) ?
-      this.dy = 1
-      :this.dy = -1;
+    // this.dy = Util.isAAboveB(this, this.target.GetCenterPos()) ?
+    //   this.dy = 1
+    //   :this.dy = -1;
   }
 
   StopUpdates() {
