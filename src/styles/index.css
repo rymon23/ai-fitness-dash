@@ -1,4 +1,15 @@
 
+/* Not Used by ELs */
+.colors{
+  color: black;
+  color: white;
+  color: red;
+  color: grey;
+  color: rgb(114, 120, 133);
+  color: black;
+  color: black;
+}
+
 * { 
   padding: 0; 
   margin: 0;
@@ -10,7 +21,7 @@ header{
 }
 canvas {
   border: 5px solid white;
-  background: rgb(172, 179, 165); 
+  background: rgb(224, 226, 222); 
   display: block; 
   margin: 0 auto;
 }

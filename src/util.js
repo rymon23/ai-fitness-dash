@@ -119,18 +119,26 @@ export const isCollidingOnY = (objectA, objectB) => {
 }
 
 export const hasOverlapTop = (objectA, objectB) => {
+  if (!isAInXOfB(objectA, objectB)) return false;
+
   return (objectA.PosY() <= objectB.PosY() + objectB.GetHeight()
     && objectA.PosY() + objectA.GetHeight() > objectB.PosY());
 }
 export const hasOverlapBottom = (objectA, objectB) => {
+  if (!isAInXOfB(objectA, objectB)) return false;
+
   return (objectA.PosY() + objectA.GetHeight() >= objectB.PosY() 
     && objectA.PosY() < objectB.PosY() + objectB.GetHeight());
 }
 export const hasOverlapRight = (objectA, objectB) => {
+  if (!isAInYOfB(objectA, objectB)) return false;
+
   return (objectA.PosX() + objectA.GetWidth() >= objectB.PosX() 
     && objectA.PosX() < objectB.PosX() + objectB.GetWidth());
 }
 export const hasOverlapLeft = (objectA, objectB) => {
+  if (!isAInYOfB(objectA, objectB)) return false;
+
   return (objectA.PosX() <= objectB.PosX() + objectB.GetWidth()
     && objectA.PosX() + objectA.GetWidth() > objectB.PosX());
 }

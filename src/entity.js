@@ -15,7 +15,7 @@ class Entity extends GameObject {
     this.pos = { x, y };
     this.startPos = new Vector2(this.PosX(), this.PosY());
     this.target = target;
-    this.objectType = "entity";
+    this.tags = ["entity"];
 
     this.dx = 1;
     this.dy = 1;
@@ -36,14 +36,14 @@ class Entity extends GameObject {
       seeCanvasWall: false,
     };
 
-    this.speed = Util.getRandomInt(2, 5);
+    this.speed = this.dna.GetGene("speed"); //Util.getRandomInt(2, 5);
     this.color = "#000000";
     this.goalReached = false;
     this.alive = true;
     this.timeAlive = 0.0;
     this.crashes = 0;
     this.finishBoxDist = 0;
-    this.radius = 10;
+    this.radius = this.dna.GetGene("size");
 
     this.SensorX = this.SensorX.bind(this);
     this.SensorY = this.SensorY.bind(this);
@@ -73,8 +73,9 @@ class Entity extends GameObject {
   }
 
   SensorCheck(object){
-      if (this.sensorRays.right.CheckCollision(object)) return;
+    debugger
       if (this.sensorRays.up.CheckCollision(object)) return;
+      if (this.sensorRays.right.CheckCollision(object)) return;
       if (this.sensorRays.down.CheckCollision(object)) return;
       if (this.sensorRays.left.CheckCollision(object)) return;
       return;
@@ -99,23 +100,41 @@ class Entity extends GameObject {
   // }
 
   GetTriggerGene(){
-    // debugger
+    debugger
     if(this.sensorHit.seeUpWall){
       this.obstructed.right = true;
-      return this.dna.GetGene(0);
+      return this.dna.GetGene("senseRight");
     } else if (this.sensorHit.seeDownWall){
       this.obstructed.right = true;
-      return this.dna.GetGene(1);
+      return this.dna.GetGene("senseRight");
     } else if (this.sensorHit.seeTop){
       this.obstructed.top = true;
-      return this.dna.GetGene(2);
+      return this.dna.GetGene("senseUp");
     } else if (this.sensorHit.seeBottom){
       this.obstructed.down = true;
-      return this.dna.GetGene(3);
+      return this.dna.GetGene("senseDown");
     }else{
-      return this.dna.GetGene(4);
+      return this.dna.GetGene("random");
     }
   }
+  // GetTriggerGene(){
+  //   // debugger
+  //   if(this.sensorHit.seeUpWall){
+  //     this.obstructed.right = true;
+  //     return this.dna.GetGene(0);
+  //   } else if (this.sensorHit.seeDownWall){
+  //     this.obstructed.right = true;
+  //     return this.dna.GetGene(1);
+  //   } else if (this.sensorHit.seeTop){
+  //     this.obstructed.top = true;
+  //     return this.dna.GetGene(2);
+  //   } else if (this.sensorHit.seeBottom){
+  //     this.obstructed.down = true;
+  //     return this.dna.GetGene(3);
+  //   }else{
+  //     return this.dna.GetGene(4);
+  //   }
+  // }
 
   ResetTriggers(){
     this.sensorHit.seeUpWall = false;
@@ -145,7 +164,7 @@ class Entity extends GameObject {
     }
 
     // read DNA
-    const velocity = 1.0; //dna.GetGene(0);
+    const velocity = this.speed; //1.0; //dna.GetGene(0);
     const h = this.GetTriggerGene() || 0;
     this.ResetTriggers();
 
@@ -155,7 +174,7 @@ class Entity extends GameObject {
     }else if (directionX < 0){
       this.obstructed.left ? directionX = 0 : null;
     }
-    // debugger
+    debugger
     
     let directionY = this.DirY() * (h * 0.1);
     if (directionY > 0){

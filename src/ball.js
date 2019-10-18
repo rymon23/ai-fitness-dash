@@ -14,7 +14,7 @@ class Ball extends GameObject {
     this.dy = 1;
     this.radius = radius;
     this.color = color;
-    this.objectType = "ball";
+    this.tags = ["ball"];
 
     this.Init();
   }

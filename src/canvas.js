@@ -1,6 +1,6 @@
 import Box from "./box";
 
-const DEFAULT_COLOR = "#000000";
+const DEFAULT_COLOR = "rgb(114, 120, 133)";
 
 class Canvas {
   constructor(game, canvasEl) {
@@ -11,7 +11,7 @@ class Canvas {
     const h = this.height;
     const w = this.width;
     const wallThickness = 10;
-    const wallStyle = { fillStyle: DEFAULT_COLOR, strokeStyle: null };
+    const wallStyle = { fillStyle: DEFAULT_COLOR, strokeStyle: "#000000" };
 
     const top = new Box(game, 0, 0, wallThickness, w, wallStyle);
     const down = new Box(game, 0, h - wallThickness, wallThickness, w, wallStyle);
@@ -19,10 +19,10 @@ class Canvas {
     const right = new Box(game, w - wallThickness, 0, w, wallThickness, wallStyle);
 
     //Testing
-    top.objectType = "canvasTop"
-    down.objectType = "canvasBottom";
-    left.objectType = "canvasLeft";
-    right.objectType = "canvasRight";
+    top.tags = ["canvasWall","canvasTop"];
+    down.tags = ["canvasWall", "canvasBottom"];
+    left.tags = ["canvasWall", "canvasLeft"];
+    right.tags = ["canvasWall", "canvasRight"];
 
     top.trigger = "seeTop";
     down.trigger = "seeBottom";

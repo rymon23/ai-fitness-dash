@@ -7,7 +7,7 @@ import Vector2 from "./vector2";
 //   left,
 //   right
 // }
-const SENSOR_RANGE = 28;
+const SENSOR_RANGE = 20;
 const SENSOR_Width = 2;
 
 class SensorRay {
@@ -18,7 +18,8 @@ class SensorRay {
 
     this.hit = false;
     this.direction = direction;
-    this.isNegativeDir = (this.direction === "up" || this.direction === "left");
+    this.isNegativeDir = this.direction === "up" || this.direction === "left";
+    this.tags = ["sensorRay"];
 
     this.PosX = this.PosX.bind(this);
     this.PosY = this.PosY.bind(this);
@@ -35,13 +36,12 @@ class SensorRay {
   PosX() {
     if (this.HasXDirection()) {
       let offset = this.owner.GetWidth() / 2.0;
-      return this.direction === "right" ?
-          this.owner.PosX() + offset
-          : this.owner.PosX() - offset;
-
+      return this.direction === "right"
+        ? this.owner.PosX() + offset
+        : this.owner.PosX() - offset;
     } else if (this.HasYDirection()) {
       return this.owner.PosX();
-    } 
+    }
     return null;
   }
 
@@ -57,11 +57,20 @@ class SensorRay {
     return null;
   }
 
-  HasXDirection(){
+  //TEMP
+  DirX() {
+    return 0;
+  }
+  DirY() {
+    return 0;
+  }
+  //
+
+  HasXDirection() {
     return this.direction === "right" || this.direction === "left";
-  }  
-  HasYDirection(){
-    return (this.direction === "up" || this.direction === "down");
+  }
+  HasYDirection() {
+    return this.direction === "up" || this.direction === "down";
   }
   GetHeight() {
     return this.HasYDirection() ? this.length : this.thickness;
@@ -76,44 +85,89 @@ class SensorRay {
     );
   }
 
-  Render(ctx){
+  Render(ctx) {
     ctx.beginPath();
 
-    ctx.rect(this.PosX(), this.PosY(),
-      this.isNegativeDir ? -this.GetWidth() : this.GetWidth()
-      , this.isNegativeDir ? -this.GetHeight() : this.GetHeight());
+    ctx.rect(
+      this.PosX(),
+      this.PosY(),
+      this.isNegativeDir ? -this.GetWidth() : this.GetWidth(),
+      this.isNegativeDir ? -this.GetHeight() : this.GetHeight()
+    );
 
     ctx.fillStyle = "#ff0000";
     ctx.fill();
     ctx.closePath();
   }
 
-  SensorTriggered(object){
+  SensorTriggered(object) {
+    debugger;
     this.owner.SetSensorHit(object.trigger);
-    console.log(`Sensor Hit: ${this.direction} Trigger: ${object.trigger}`);
+    console.log(
+      `Sensor Hit: ${this.direction} Trigger: ${object.trigger} Object: ${object.tags}`
+    );
   }
 
   CheckCollision(object) {
+    debugger;
     switch (this.direction) {
       case "up":
-        this.hit = Util.hasOverlapTop(this, object);
+        this.hit = Util.isCollidingOnY(this, object);
         break;
       case "down":
         this.hit = Util.hasOverlapBottom(this, object);
+        this.hit = Util.isCollidingOnY(this, object);
         break;
       case "right":
-        this.hit = Util.hasOverlapRight(this, object);
+        this.hit = Util.isCollidingOnX(this, object);
         break;
       case "left":
-        this.hit = Util.hasOverlapLeft(this, object);
+        this.hit = Util.isCollidingOnX(this, object);
         break;
       default:
         this.hit = false;
         break;
     }
-    this.hit ? this.SensorTriggered(object) : null;
-    this.hit = false;
-    return !this.hit;
+    if (this.hit) {
+      this.hit = false;
+      this.SensorTriggered(object);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  hasOverlapTop(objectA, objectB) {
+    if (!Util.isAInXOfB(objectA, objectB)) return false;
+
+    return (
+      objectA.PosY() <= objectB.PosY() + objectB.GetHeight() &&
+      objectA.PosY() + objectA.GetHeight() > objectB.PosY()
+    );
+  }
+  hasOverlapBottom(objectA, objectB) {
+    if (!Util.isAInXOfB(objectA, objectB)) return false;
+
+    return (
+      objectA.PosY() + objectA.GetHeight() >= objectB.PosY() &&
+      objectA.PosY() < objectB.PosY() + objectB.GetHeight()
+    );
+  }
+  hasOverlapRight(objectA, objectB) {
+    if (!Util.isAInYOfB(objectA, objectB)) return false;
+
+    return (
+      objectA.PosX() + objectA.GetWidth() >= objectB.PosX() &&
+      objectA.PosX() < objectB.PosX() + objectB.GetWidth()
+    );
+  }
+  hasOverlapLeft(objectA, objectB) {
+    if (!Util.isAInYOfB(objectA, objectB)) return false;
+
+    return (
+      objectA.PosX() <= objectB.PosX() + objectB.GetWidth() &&
+      objectA.PosX() + objectA.GetWidth() > objectB.PosX()
+    );
   }
 }
 

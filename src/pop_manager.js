@@ -1,10 +1,8 @@
 import * as Util from "./util";
 import Entity from "./entity";
 
-
 const POPULATION_SIZE = 6;
 const BREED_TOP_PERCENT = 0.4;
-
 
 class PopulationManager {
   constructor(game, startBox, finishBox) {
@@ -34,24 +32,6 @@ class PopulationManager {
     this.DisplayGeneration();
   }
 
-//   Start() {
-//     this.generation = 1;
-//     console.log("POPULATION MANAGER: START");
-
-//     document.getElementById("gen").innerHTML = `Gen: ${this.generation}`;
-
-//     setTimeout(() => {
-//       this.interval = setInterval(
-//         this.BreedNewPopulation,
-//         TRIAL_DURATION * 1000
-//       );
-//     }, TRIAL_DURATION * 1000);
-//   }
-
-//   Stop() {
-//     clearInterval(this.interval);
-//   }
-
   DisplayGeneration(){
     console.log(`GEN: ${this.generation}`);
     document.getElementById("gen").innerHTML = `Gen: ${this.generation}`;
@@ -70,7 +50,7 @@ class PopulationManager {
   Breed(parent1, parent2) {
     const xyPos = Util.getRandomBoxPos(this.startBox);
     const offspring = new Entity(this.game, xyPos[0], xyPos[1], this.finishBox);
-
+    debugger
     if (Util.getRandomInt(0, 100) == 1) {
       //mutate 1 in 100
       offspring.dna.Mutate();
@@ -82,11 +62,12 @@ class PopulationManager {
   }
 
   BreedNewPopulation() {
+    debugger
     console.log("BREED NEW POPULATION");
 
     const sortedPop = this.population.sort((a, b) => {
         this.CompareEntities(a, b);
-      }).slice(0, Math.floor(this.population.length * BREED_TOP_PERCENT));
+      }).slice(0, Math.floor(this.population.length * BREED_TOP_PERCENT) || 1 );
 
     this.population = [];
     debugger
@@ -97,18 +78,6 @@ class PopulationManager {
             sortedPop[randIx]
             , sortedPop[(randIx + 1) % sortedPop.length]));
     }
-
-
-    // for (let i = Math.trunc((3 * sortedPop.length / 4.0) - 1);
-    //   i < sortedPop.length - 1;
-    //   i++
-    // ) {
-    //     debugger
-    //   this.population.push(this.Breed(sortedPop[i], sortedPop[i + 1]));
-    //   this.population.push(this.Breed(sortedPop[i + 1], sortedPop[i]));
-    //   this.population.push(this.Breed(sortedPop[i], sortedPop[i + 1]));
-    //   this.population.push(this.Breed(sortedPop[i + 1], sortedPop[i]));
-    // }
     debugger
 
     //destroy all parents and previous population

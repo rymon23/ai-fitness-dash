@@ -6,7 +6,7 @@ import Box from "./box";
 import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
-const ROUND_DURATION = 10; //in seconds
+const ROUND_DURATION = 20; //in seconds
 
 class Game {
   constructor(canvasEl) {
@@ -68,7 +68,7 @@ class Game {
     this.running = true;
     this.canvas.Init();
 
-    this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
+    // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
     this.gameObjects.columns = CreateColumns(125, this);
 
     if (nextRound){
@@ -138,7 +138,7 @@ class Game {
               gameObject.PosY() + gameObject.GetHeight() + gameObject.DirY() >
                 canvas.height;
 
-            if (gameObject.objectType === "ball") {
+            if (gameObject.HasTag("ball")) {
               if (canvasHitX) gameObject.dx = -gameObject.dx;
               if (canvasHitY) gameObject.dy = -gameObject.dy;
             } else {
@@ -156,7 +156,7 @@ class Game {
     Object.values(this.gameObjects).forEach(array => {
       if (array.length > 0) {
         array.forEach(gameObject => {
-          if (gameObject.objectType !== "box") {
+          if (!gameObject.HasTag("box")) {
             gameObject.Destroy();
           }
         });

@@ -12,7 +12,7 @@ class Box extends GameObject {
     this.height = height;
     this.width = width;    
     this.styles = styles;
-    this.objectType = "box";
+    this.tags = ["box"];
   }
 
   Update(){

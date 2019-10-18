@@ -17,7 +17,7 @@ class Column extends GameObject {
     this.triggers = triggers;
     this.styles = { fillStyle: DEFAULT_FILL, strokeStyle: DEFAULT_STROKE };
     this.trigger = "";
-    this.objectType = "column";
+    this.tags = ["column"];
 
     this.Init();
   }

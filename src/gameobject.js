@@ -11,18 +11,21 @@ class GameObject {
     this.width = 1;
     this.center;
     this.styles = styles;
+    this.obstructed = {};
 
     this.isStatic = true;
     this.hasSensors = false;
     this.target = null;
     this.interval;
     this.trigger = "";
-    this.objectType = ""
+    this.tags = ["gameObject"];
 
     this.Init = this.Init.bind(this);
+    this.FixedUpdate = this.FixedUpdate.bind(this);
     this.Update = this.Update.bind(this);
     this.Render = this.Render.bind(this);
     this.StopUpdate = this.StopUpdate.bind(this);
+    this.HasTag = this.HasTag.bind(this);
     this.Destroy = this.Destroy.bind(this);
 
     this.SetPosX = this.SetPosX.bind(this);
@@ -41,7 +44,15 @@ class GameObject {
   }
 
   Init() {
-    this.interval = setInterval(this.Update, 10);
+    // this.interval = setInterval(this.Update, 10);
+    this.FixedUpdate();
+  }
+
+  FixedUpdate(ms = 10){
+    this.interval = setTimeout(() => {
+      this.Update();
+      this.FixedUpdate(ms);}
+      , ms);
   }
 
   Update() {
@@ -99,6 +110,10 @@ class GameObject {
     Util.getDistance(this.GetCenterPos(), target.GetCenterPos());
   }
 
+  HasTag(tag){
+    return this.tags.includes(tag);
+  }
+
   SetTarget(object) {
     if (object && this !== object) {
       this.target = object;
@@ -115,8 +130,13 @@ class GameObject {
     const colX = Util.isCollidingOnX(object, this);
     // debugger
     if (colX){
-      console.log(`${this.objectType}: COLLISION DETECTED: X - ${object.objectType}`);
-      if (object.objectType === "ball") {
+      console.log(`${this.tags}: COLLISION DETECTED: X - ${object.tags} DirX: ${object.DirX()}`);
+      object.obstructed.left 
+        = object.DirX() < 0 ? true : object.obstructed.left;
+      object.obstructed.right
+        = object.DirX() >= 0 ? true : object.obstructed.right;
+
+      if (object.HasTag("ball")) {
         object.dx = -object.dx;
       } else {
         object.dx = 0;
@@ -127,8 +147,13 @@ class GameObject {
     const colY = Util.isCollidingOnY(object, this);
     // debugger
     if (colY){
-      console.log(`${this.objectType}: COLLISION DETECTED: Y - ${object.objectType}`);
-      if (object.objectType === "ball") {
+      console.log(`${this.tags}: COLLISION DETECTED: Y - ${object.tags} DirY: ${object.DirY()}`);
+      object.obstructed.up =
+        object.DirY() < 0 ? true : object.obstructed.up;
+      object.obstructed.down =
+        object.DirY() >= 0 ? true : object.obstructed.down;
+
+      if (object.HasTag("ball")) {
         object.dy = -object.dy;
       } else {
         object.dy = 0;
