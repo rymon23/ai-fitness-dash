@@ -6,7 +6,7 @@ import Box from "./box";
 import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
-const ROUND_DURATION = 10; //in seconds
+const ROUND_DURATION = 15; //in seconds
 
 class Game {
   constructor(canvasEl) {

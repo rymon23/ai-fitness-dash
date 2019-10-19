@@ -3,7 +3,7 @@ import Entity from "./entity";
 
 const POPULATION_SIZE = 8;
 const BREED_TOP_PERCENT = 0.4;
-const MUTATION_PERCENT = 5;
+const MUTATION_PERCENT = 6;
 
 class PopulationManager {
   constructor(game, startBox, finishBox) {
@@ -25,8 +25,8 @@ class PopulationManager {
 
   Init() {
     for (let i = 0; i < POPULATION_SIZE; i++) {
-      const xyPos = Util.getRandomBoxPos(this.startBox);
-      const entity = new Entity(this.game, xyPos[0], xyPos[1], this.finishBox);
+      // const xyPos = Util.getRandomBoxPos(this.startBox);
+      const entity = new Entity(this.game, this.startBox.GetCenterPos(), this.finishBox);
       this.population.push(entity);
     }
     console.log("POPULATION MANAGER: First Gen Created");
@@ -49,8 +49,8 @@ class PopulationManager {
   }
 
   Breed(parent1, parent2) {
-    const xyPos = Util.getRandomBoxPos(this.startBox);
-    const offspring = new Entity(this.game, xyPos[0], xyPos[1], this.finishBox);
+    // const xyPos = Util.getRandomBoxPos(this.startBox);
+    const offspring = new Entity(this.game, this.startBox.GetCenterPos(), this.finishBox);
     if (Util.getRandomInt(0, 100) < MUTATION_PERCENT) {
       offspring.dna.Mutate();
     } else {

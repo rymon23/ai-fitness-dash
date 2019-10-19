@@ -20,6 +20,8 @@ class GameObject {
     this.trigger = "";
     this.tags = ["gameObject"];
 
+    if (!this.isStatic) { this.crashes = 0; this.collision = {}; }
+
     this.Init = this.Init.bind(this);
     this.FixedUpdate = this.FixedUpdate.bind(this);
     this.Update = this.Update.bind(this);
@@ -27,7 +29,6 @@ class GameObject {
     this.StopUpdate = this.StopUpdate.bind(this);
     this.HasTag = this.HasTag.bind(this);
     this.Destroy = this.Destroy.bind(this);
-
     this.SetPosX = this.SetPosX.bind(this);
     this.SetPosY = this.SetPosY.bind(this);
     this.PosX = this.PosX.bind(this);
@@ -40,7 +41,8 @@ class GameObject {
     this.GetDistance = this.GetDistance.bind(this);
     this.SetTarget = this.SetTarget.bind(this);
     this.CheckForCollisions = this.CheckForCollisions.bind(this);
-    this.IsInCollisionZone = this.IsInCollisionZone.bind(this);
+    this.CheckCollisionOnObject = this.CheckCollisionOnObject.bind(this);
+    this.CollisionUpdate = this.CollisionUpdate.bind(this);
   }
 
   Init() {
@@ -50,6 +52,10 @@ class GameObject {
 
   FixedUpdate(ms = 10){
     this.interval = setTimeout(() => {
+      if (this.HasTag("entity")){
+        debugger
+      };
+
       this.Update();
       this.FixedUpdate(ms);}
       , ms);
@@ -119,70 +125,69 @@ class GameObject {
       this.target = object;
     }
   }
+  
+  CollisionUpdate(){
+    this.crashes++;
+  }
 
-  IsInCollisionZone(object) {
+  CheckCollisionOnObject(object) {
     if (!object) return false;
 
     if (object.hasSensors) {
       object.SensorCheck(this);
     }
-
+    
     const colX = Util.isCollidingOnX(object, this);
     // debugger
     if (colX){
       console.log(`${this.tags}: COLLISION DETECTED: X - ${object.tags} DirX: ${object.DirX()}`);
-      object.obstructed.left 
-        = object.DirX() < 0 ? true : object.obstructed.left;
-      object.obstructed.right
-        = object.DirX() >= 0 ? true : object.obstructed.right;
+      // object.obstructed.left 
+      //   = object.DirX() < 0 ? true : object.obstructed.left;
+      // object.obstructed.right
+      //   = object.DirX() >= 0 ? true : object.obstructed.right;
 
-      if (object.HasTag("ball")) {
+      // if (object.HasTag("ball")) {
         object.dx = -object.dx;
-      } else {
-        object.dx = 0;
+      // } else {
+      //   object.dx = 0;
+      // }
+      if (Util.isALeftOfB(object, this)){
+          object.collision.left = true 
+          object.obstructed.left = true 
+      }else{
+        object.collision.right = true
+        object.obstructed.right = true 
       }
-      return true;
+      object.CollisionUpdate();
     }
 
     const colY = Util.isCollidingOnY(object, this);
     // debugger
     if (colY){
       console.log(`${this.tags}: COLLISION DETECTED: Y - ${object.tags} DirY: ${object.DirY()}`);
-      object.obstructed.up =
-        object.DirY() < 0 ? true : object.obstructed.up;
-      object.obstructed.down =
-        object.DirY() >= 0 ? true : object.obstructed.down;
+      // object.obstructed.up =
+      //   object.DirY() < 0 ? true : object.obstructed.up;
+      // object.obstructed.down =
+      //   object.DirY() >= 0 ? true : object.obstructed.down;
 
-      if (object.HasTag("ball")) {
+      // if (object.HasTag("ball")) {
         object.dy = -object.dy;
+      // } else {
+      //   object.dy = 0;
+      // }
+      // Util.isAAboveB(object, this) ?
+      //   object.collision.down = true
+      //   : object.collision.up = true;
+      if (Util.isAAboveB(object, this)) {
+        object.collision.down = true
+        object.obstructed.down = true
       } else {
-        object.dy = 0;
+        object.collision.up = true
+        object.obstructed.up = true
       }
-      return true;
+      object.CollisionUpdate();
     }
 
-    // if (
-    //   object.PosX() > this.PosX() - object.GetWidth() &&
-    //   object.PosX() - object.GetWidth() < this.PosX() + this.GetWidth() &&
-    //   object.PosY() > this.PosY() &&
-    //   object.PosY() < this.PosY() + this.GetHeight()
-    // ) {
-    //   // console.log("COLLISION DETECTED: X");
-    //   callBack(object);
-    //   return true;
-    // }
-    // if (
-    //   object.PosX() > this.PosX() &&
-    //   object.PosX() < this.PosX() + this.GetWidth() &&
-    //   (object.PosY() > this.PosY() - object.GetHeight() &&
-    //     object.PosY() - object.GetHeight() < this.PosY() + this.GetHeight())
-    // ) {
-    //   // console.log("COLLISION DETECTED Y");
-    //   // object.dy = 0;  //-object.dy;
-
-    //   return true;
-    // }
-    
   }
 
   CheckForCollisions() {
@@ -190,7 +195,7 @@ class GameObject {
       if (array.length > 0) {
         array.forEach(gameObject => {
           if (gameObject && gameObject != this && !gameObject.isStatic) {
-            this.IsInCollisionZone(gameObject);
+            this.CheckCollisionOnObject(gameObject);
           }
         });
       }
