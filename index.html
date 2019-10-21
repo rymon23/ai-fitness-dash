@@ -23,7 +23,7 @@
                 </div>
                 <div id="game-nav" class="game-navbar-container">
                     <div class="game-nav-button-container">
-                        <button id="bt-start">Start</button>
+                        <button id="restart-button">Restart</button>
                     </div> 
                 </div>
                 <div id="display" class="display-container">
@@ -52,15 +52,117 @@
 
             </div>
         </header>
-        <br>
+
+
+
         <div class="game-content-container">
+
+            <!-- <div class="settings-column-container">
+                <div class="settings-container">
+                    <h2>Algorithm Settings</h2>
+                    <br>
+                    <label >Population size
+                        <div class="slider-population-container">
+                            <input 
+                                class="slider" 
+                                type="range" 
+                                id="slider-pop"
+                                min="3" max="50" value="25">
+                        </div> 
+                        <p id="slider-pop-value">10</p>      
+                    </label>
+                    <label >Round Duration
+                        <div class="slider-population-container">
+                            <input 
+                                class="slider" 
+                                type="range" 
+                                id="slider-duration"
+                                min="15" max="60" value="30">
+                        </div> 
+                        <p id="slider-duration-value">10</p>           
+                    </label>
+                    <label >Top Percent
+                        <div class="slider-population-container">
+                            <input 
+                                class="slider" 
+                                type="range" 
+                                id="slider-top-perc"
+                                min="10" max="80" value="30">
+                        </div> 
+                        <p id="slider-top-perc-value">10</p>
+                    </label>                    
+                    <label >Mutation Chance
+                        <div class="slider-population-container">
+                            <input 
+                                class="slider" 
+                                type="range" 
+                                id="slider-mutation"
+                                min="1" max="100" value="2">
+                        </div>
+                        <p id="slider-mutation-value">10</p>            
+                    </label>
+
+                </div>
+            </div> -->
+
             <div class="canvas-container">
                 <canvas id="canvas-id" width="1080" height="720"></canvas>
             </div>
+
+            <div class="settings-column-container">
+            </div>
+
         </div>
-        <br>
+
         <div id="ranks">
             
+        </div>
+
+        <div id="modal" class="modal-container">
+            <div class="modal-content-container">
+                <div class="modal-content">
+                    <!-- <span class="close">&times;</span> -->
+                    <div class="modal-description">
+                        <h1>Welcome to Fitness Dash</h1>
+                        <p>Fitness Dash simulates the concept of natural selection by utilizing a simple genetic algorithm. </p>
+                    </div>
+
+                    <div class="settings-column-container">
+                        <div class="settings-container">
+                            <h2>Configure Algorithm Settings</h2>
+                            <br>
+                            <label>Population size
+                                <div class="slider-population-container">
+                                    <input class="slider" type="range" id="slider-pop" min="3" max="50" value="25">
+                                </div>
+                                <p id="slider-pop-value">10</p>
+                            </label>
+                            <label>Round Duration
+                                <div class="slider-population-container">
+                                    <input class="slider" type="range" id="slider-duration" min="15" max="60" value="30">
+                                </div>
+                                <p id="slider-duration-value">10</p>
+                            </label>
+                            <label>Top Percent
+                                <div class="slider-population-container">
+                                    <input class="slider" type="range" id="slider-top-perc" min="0.1" max="0.9" value="0.3">
+                                </div>
+                                <p id="slider-top-perc-value">10</p>
+                            </label>
+                            <label>Mutation Chance
+                                <div class="slider-population-container">
+                                    <input class="slider" type="range" id="slider-mutation" min="1" max="100" value="2">
+                                </div>
+                                <p id="slider-mutation-value">10</p>
+                            </label>
+                    
+                        </div>
+                    </div>
+                    <button id="start-button">Start</button>
+
+                </div>
+
+            </div>
         </div>
 
         <script src="./dist/main.js"></script>

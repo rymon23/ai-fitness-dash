@@ -64,7 +64,7 @@ export const CreateColumns = (startPosX = 125, game) => {
     let currentPosX = startPosX;
     let ix = 0;
     while (currentPosX < game.canvas.width * 0.85) {
-      let height = Util.getRandomInt(game.canvas.height * 0.25, game.canvas.height * 0.8);
+      let height = Util.getRandomInt(game.canvas.height * 0.28, game.canvas.height * 0.86);
       columns[ix] = new Column(game,currentPosX, 0, height, COLUMN_WIDTH);
       randomColumnStartPosY(columns[ix]);
 

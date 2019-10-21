@@ -1,12 +1,16 @@
 import * as Util from "./util";
 import Canvas from "./canvas";
 import PopulationManager from "./pop_manager";
+import SliderSetting from "./slider";
 import Timer from "./timer";
 import Box from "./box";
 import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
-const ROUND_DURATION = 15; //in seconds
+// const ROUND_DURATION = 15; //in seconds
+// const POPULATION_SIZE = 20;
+// const BREED_TOP_PERCENT = 0.28;
+// const MUTATION_PERCENT = 5;
 
 class Game {
   constructor(canvasEl) {
@@ -14,12 +18,46 @@ class Game {
     // this.canvas = canvasEl;
     this.canvas = new Canvas(this, canvasEl);
     this.timer = new Timer(this);
+
     this.gameObjects = {
       balls: [],
       boxes: [],
       columns: [],
       entities: []
     };
+
+    this.settings = {
+      roundTime: 15,
+      populationSize: 20,
+      topBreedMult: 0.3,
+      mutationPerc: 3
+    };
+
+    window.game = this;
+
+    this.sliders = {
+      roundTime: new SliderSetting(
+        "slider-duration",
+        "slider-duration-value",
+        "roundTime"
+      ),
+      populationSize: new SliderSetting(
+        "slider-pop",
+        "slider-pop-value",
+        "populationSize"
+      ),
+      topBreedMult: new SliderSetting(
+        "slider-top-perc",
+        "slider-top-perc-value",
+        "topBreedMult"
+      ),
+      mutationPerc: new SliderSetting(
+        "slider-mutation",
+        "slider-mutation-value",
+        "mutationPerc"
+      )
+    };
+
     this.PopulationManager;
     this.interval;
 
@@ -60,7 +98,19 @@ class Game {
     this.PopulationManager = new PopulationManager(this, startBox, finishBox);
 
     console.log("GAME INITIALIZED");
-    this.Start();
+
+    const startButton = document.getElementById("start-button");
+    startButton.addEventListener("click", () => {
+      if (startButton.innerHTML === "Start") {
+        startButton.innerHTML = "Restart";
+        this.Start();
+      } else {
+        startButton.innerHTML = "Start";
+        this.Stop();
+      }
+    });
+
+    //this.Start();
   }
 
   Start(nextRound = false) {
@@ -71,20 +121,21 @@ class Game {
     // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
     this.gameObjects.columns = CreateColumns(125, this);
 
-    if (nextRound){
+    if (nextRound) {
       this.PopulationManager.BreedNewPopulation();
+    }else{
+      this.PopulationManager.Init();
     }
     this.gameObjects.entities = this.PopulationManager.population;
-    // this.PopulationManager.Start();
 
-    this.timer.Start(ROUND_DURATION);
+    this.timer.Start(this.settings.roundTime);
     this.interval = setInterval(this.Update, 10);
   }
 
   Update() {
-    if (this.timer.timeUp){
-      this.Reset();      
-      return 
+    if (this.timer.timeUp) {
+      this.Reset();
+      return;
     }
 
     this.RenderGameObjects();

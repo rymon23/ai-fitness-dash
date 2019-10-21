@@ -53,7 +53,8 @@ body {
 }
 .game-content-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
 }
 .game-dashboard-container{
   display: flex;
@@ -129,4 +130,98 @@ body {
   flex-direction: column;
   /* justify-content: ; */
 }
+.settings-container{
+  display: flex;
+  flex-direction: column;
+}
+.slider-population-container {
+  width: 100%;
+}
+.slider-pop{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
 
+.slider-pop:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+.settings-column-container {
+  /* background-color: rgb(157, 140, 140); */
+  color: white;
+  /* width: 350px; */
+  display: flex;
+  /* flex-direction: column; */
+  justify-content:center;
+}
+.settings-container {
+  padding-top: 25px;
+  display: flex;
+  /* flex-direction: column; */
+  /* justify-content:center; */
+}
+.settings-container label {
+  display: flex;
+  /* flex-direction: column; */
+  /* justify-content:center; */
+}
+
+.modal-container{
+  /* display: none; */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9);
+   /* Black w/ opacity */  
+}
+.modal-content-container {
+  background-color: #616b72cd;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 20px;
+  /* border: 1px solid #888; */
+  border-radius: 90px;
+  width: 40%; 
+  height: 75%;
+  display: flex;
+  /* flex-direction: column; */
+  /* text-align: center; */
+  justify-content: center;
+  color: white;
+}
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.modal-content button{
+  font-size: 30px;
+  font-weight: bolder;
+  color: #616b72cd;
+  border-radius: 50px;
+}
+.modal-content button:hover{
+  color: white;
+  background-color: black;
+}
+.modal-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center; 
+}
+.modal-description h1 {
+  font-size: 50px;
+  padding-bottom: 25px;
+}
