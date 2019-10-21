@@ -154,7 +154,7 @@ export const hasOverlapLeft = (objectA, objectB) => {
 
 
 export const hasCollision = (objA, objB) => {
-  debugger
+  // debugger
   if (objA.HasShape("circle")) {
     if (objB.HasShape("circle")) {
       return (getDistance(objA,objB) < objA.radius + objB.radius) ? 
@@ -227,13 +227,13 @@ export const getLineSide = (point, line) => {
 
 export const getObjectASideBOnX = (objectA, objectB) => {
   const sideX = getLineSide(objectA.pos, getCenterLineY(objectB));
-  debugger
+  // debugger
   return sideX;
 }
 
 export const getObjectASideBOnY = (objectA, objectB) => {
   const sideY = getLineSide(objectA.pos, getCenterLineX(objectB));
-  debugger
+  // debugger
   return sideY;
 }
 

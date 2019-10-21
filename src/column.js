@@ -35,7 +35,7 @@ class Column extends GameObject {
       ctx.stroke();
     }
     ctx.closePath();
-    this.RenderPos(ctx);
+    // this.RenderPos(ctx);
   }
 
   Update(){
@@ -64,7 +64,7 @@ export const CreateColumns = (startPosX = 125, game) => {
     let currentPosX = startPosX;
     let ix = 0;
     while (currentPosX < game.canvas.width * 0.85) {
-      let height = Util.getRandomInt(50, game.canvas.height * 0.8);
+      let height = Util.getRandomInt(game.canvas.height * 0.25, game.canvas.height * 0.8);
       columns[ix] = new Column(game,currentPosX, 0, height, COLUMN_WIDTH);
       randomColumnStartPosY(columns[ix]);
 

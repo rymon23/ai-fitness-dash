@@ -2,8 +2,8 @@ import * as Util from "./util";
 import Entity from "./entity";
 
 const POPULATION_SIZE = 20;
-const BREED_TOP_PERCENT = 0.3;
-const MUTATION_PERCENT = 10;
+const BREED_TOP_PERCENT = 0.28;
+const MUTATION_PERCENT = 8;
 
 class PopulationManager {
   constructor(game, startBox, finishBox) {
@@ -63,15 +63,15 @@ class PopulationManager {
     
     for (let i = 0; i < suceeded.length; i++) {
       const entity = this.population[i];
-      Util.addElement("ranks", "div", `distance traveled: ${entity.distanceTravelled}`, false);
+      Util.addElement("ranks", "div", `distance traveled: ${entity.distanceTraveled}`, false);
     }
   }
 
   CompareEntities(a, b) {
-    if (a.distanceTravelled < b.distanceTravelled) {
-      return -1;
-    } else if (a.distanceTravelled > b.distanceTravelled) {
+    if (a.distanceTraveled < b.distanceTraveled) {
       return 1;
+    } else if (a.distanceTraveled > b.distanceTraveled) {
+      return -1;
     } else {
       return 0;
     }
@@ -92,8 +92,8 @@ class PopulationManager {
     console.log("BREED NEW POPULATION");
 
     const sortedPop = this.population.sort((a, b) => {
-        this.CompareEntities(a, b);
-      }).slice(0, Math.floor(this.population.length * BREED_TOP_PERCENT) || 1 );
+        return this.CompareEntities(a, b);
+        }).slice(0, Math.floor(this.population.length * BREED_TOP_PERCENT) || 1 );
 
     this.population = [];
     debugger

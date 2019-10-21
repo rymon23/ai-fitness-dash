@@ -1,6 +1,6 @@
 import Box from "./box";
 
-const DEFAULT_COLOR = "rgb(114, 120, 133)";
+const DEFAULT_COLOR = "#000000";//"rgb(114, 120, 133)";
 
 class Canvas {
   constructor(game, canvasEl) {

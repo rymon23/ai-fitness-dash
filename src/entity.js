@@ -110,7 +110,7 @@ class Entity extends GameObject {
   }
 
   GetTriggerGene(){
-    debugger
+    // debugger
 
     if(this.sensorHit.seeUpWall || this.collision.seeUpWall){
       this.TriggerActionY(this.dna.GetGene("seeUpWall"));
@@ -236,21 +236,21 @@ class Entity extends GameObject {
       this.obstructed.up ? directionY = 0 : null;
     }
 
-    if (isNaN(this.pos.y) || isNaN(this.pos.x)) {
-      debugger
-      console.log("NAN VALUE FOUND")
-    }
-    if (isNaN(directionX)|| isNaN(directionY)){
-      console.log("NAN VALUE:UPDATE")
-      debugger
-    }
+    // if (isNaN(this.pos.y) || isNaN(this.pos.x)) {
+    //   debugger
+    //   console.log("NAN VALUE FOUND")
+    // }
+    // if (isNaN(directionX)|| isNaN(directionY)){
+    //   console.log("NAN VALUE:UPDATE")
+    //   debugger
+    // }
 
     this.pos.x += directionX;
     this.pos.y += directionY;
     // this.pos.x += this.DirX() * velocity;
     // this.pos.y += this.DirY() * (h * 0.1);
 
-    this.distanceTravelled = Util.getDistance(this, this.startPos);
+    this.distanceTraveled = Util.getDistance(this, this.startPos);
     // debugger
 
     if (Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS){
@@ -265,7 +265,7 @@ class Entity extends GameObject {
   }
 
   UpdateDirection(){
-    debugger
+    // debugger
     this.dx = Util.isALeftOfB(this, this.target.GetCenterPos()) ?
       this.dx = 1
       : this.dx = -1;

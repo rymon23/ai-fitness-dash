@@ -39,7 +39,7 @@ class Game {
     const startBoxHeight = this.canvas.height / 2;
     const startBoxWidth = 60;
     const startBoxY = this.canvas.height / 2 / 2;
-    const startBoxX = 0;
+    const startBoxX = 0 + this.canvas.borders.left.GetWidth();
 
     const startBox = new Box(
       this,
@@ -50,7 +50,7 @@ class Game {
     );
     const finishBox = new Box(
       this,
-      this.canvas.width - startBoxWidth,
+      this.canvas.width - startBoxWidth - this.canvas.borders.right.GetWidth(),
       startBoxY,
       startBoxHeight,
       startBoxWidth

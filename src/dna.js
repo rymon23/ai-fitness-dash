@@ -6,8 +6,8 @@ class DNA {
     // this.genes = []
 
     this.genes = {
-      speed: new Gene(2, 5),
-      size: new Gene(8, 15),
+      speed: new Gene(2, 6),
+      size: new Gene(8, 18),
       seeUp: new Gene(-250, 250),
       seeDown: new Gene(-250, 250),
       seeRight: new Gene(-250, 250),
@@ -15,13 +15,13 @@ class DNA {
       seeUpWall: new Gene(-250, 250),
       seeDownWall: new Gene(-250, 250),
 
-      sensorRange: new Gene(12, 22),
-      sensorThickness: new Gene(2,6),
+      sensorRange: new Gene(9, 20),
+      sensorThickness: new Gene(1,5),
       random: new Gene(-250, 250),
 
-      colorR: new Gene(0,100),
-      colorG: new Gene(0,100),
-      colorB: new Gene(0,100),
+      colorR: new Gene(0,125),
+      colorG: new Gene(0,125),
+      colorB: new Gene(0,125),
     };
     // this.SetRandom();
     

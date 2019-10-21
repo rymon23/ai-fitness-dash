@@ -138,7 +138,7 @@ class GameObject extends Form {
     if (colX){
       console.log(`${this.tags}: COLLISION DETECTED: X - ${object.tags} DirX: ${object.DirX()}`);
 
-      debugger
+      // debugger
       const side = Util.getObjectASideBOnX(object, this);
       if (side < 0){
         //object on left side
@@ -171,7 +171,7 @@ class GameObject extends Form {
     if (colY){
       console.log(`${this.tags}: COLLISION DETECTED: Y - ${object.tags} DirY: ${object.DirY()}`);
 
-      debugger
+      // debugger
       const side = Util.getObjectASideBOnY(object, this);
       if (side < 0) {
         //object below
@@ -179,7 +179,7 @@ class GameObject extends Form {
       } else {
         object.obstructed.down = true
       }
-      
+
       object.HasTag("entity") ?
         object.SetCollisionHit(this.trigger)
         : null;
