@@ -1,12 +1,7 @@
 import * as Util from "./util";
 import Vector2 from "./vector2";
 
-// export const DIRECTIONS = {
-//   up,
-//   down,
-//   left,
-//   right
-// }
+
 const SENSOR_RANGE = 20;
 const SENSOR_Width = 2;
 
@@ -65,7 +60,9 @@ class SensorRay {
     return 0;
   }
   //
-
+  HasTag(tag) {
+    return this.tags.includes(tag);
+  }
   HasXDirection() {
     return this.direction === "right" || this.direction === "left";
   }
@@ -105,21 +102,20 @@ class SensorRay {
   }
 
   SensorTriggered(object) {
-    debugger;
-    this.owner.SetSensorHit(object.trigger);
+    // debugger;
+    this.owner.SetSensorHit(object.trigger, this.direction);
     console.log(
       `Sensor Hit: ${this.direction} Trigger: ${object.trigger} Object: ${object.tags}`
     );
   }
 
   CheckCollision(object) {
-    debugger;
+    // debugger;
     switch (this.direction) {
       case "up":
         this.hit = Util.isCollidingOnY(this, object);
         break;
       case "down":
-        // this.hit = Util.hasOverlapBottom(this, object);
         this.hit = Util.isCollidingOnY(this, object);
         break;
       case "right":

@@ -92,20 +92,26 @@ export const isLeftCollision = (objectA, objectB) =>{
 }       
 
 export const isCollidingOnX = (objectA, objectB) => {
-  debugger
+  if (objectA.HasTag("entity")){
+    // debugger
+  }
+
   if (!isAInYOfB(objectA, objectB)) return false;
 
   if (isALeftOfB(objectA, objectB)) {
     const col = isRightCollision(objectA, objectB);
-    debugger;
+    // debugger;
     return col;
   } else {
     const col = isLeftCollision(objectA, objectB);
-    debugger;
+    // debugger;
     return col;
   }
 }
 export const isCollidingOnY = (objectA, objectB) => {
+  if (objectA.HasTag("entity")) {
+    // debugger
+  }
   if (!isAInXOfB(objectA, objectB)) return false;
 
   if (isAAboveB(objectA, objectB)){
@@ -146,3 +152,110 @@ export const hasOverlapLeft = (objectA, objectB) => {
 
 
 
+
+export const hasCollision = (objA, objB) => {
+  debugger
+  if (objA.HasShape("circle")) {
+    if (objB.HasShape("circle")) {
+      return (getDistance(objA,objB) < objA.radius + objB.radius) ? 
+        true : false
+    } else {
+      return (getDistance(objA,objB) < objA.radius + objB.width
+        || getDistance(objA,objB) < objA.radius + objB.height) ?
+        true : false;
+    }
+
+  } else {
+    if (objB.HasShape("circle")) {
+      return (getDistance(objA,objB) < objB.radius + objA.width
+        || getDistance(objA,objB) < objB.radius + objA.height) ?
+        true : false;
+
+    } else {
+      return (objA.x < objB.x + objB.width
+        && objA.x + objA.width > objB.x
+        && objA.y < objB.y + objB.height
+        && objA.y + objA.height > objB.y) ?
+        true : false;
+    }
+  }
+}
+window.hasCollision = hasCollision;
+
+// export const getCollisionData = (objA, objB) => {
+//   if (!hasCollision(objA, objB)) return null;
+//   const side = 
+//   return {
+    
+//   }
+
+
+// }
+
+
+export const getCenterLineX = (obj) => {
+  const pA = {
+    x: obj.PosX(),
+    y: obj.PosY() + obj.GetHeight() / 2
+  };
+  const pB = {
+    x: obj.PosX() + obj.GetWidth(),
+    y: obj.PosY() + obj.GetHeight() / 2
+  };
+  return { pA, pB }; //line
+}
+
+export const getCenterLineY = (obj) => {
+  const pA = {
+    x: obj.PosX() + obj.GetWidth() / 2,
+    y: obj.PosY()
+  };
+  const pB = {
+    x: obj.PosX() + obj.GetWidth() / 2,
+    y: obj.PosY() + obj.GetHeight()
+  };
+  return { pA, pB }; //line
+}
+
+export const getLineSide = (point, line) => {
+  const pA = line.pA;
+  const pB = line.pB;
+  const d = (point.x - pA.x) * (pB.y - pA.y) -
+    (point.y - pA.y) * (pB.x - pA.x);
+  return d;
+}
+
+export const getObjectASideBOnX = (objectA, objectB) => {
+  const sideX = getLineSide(objectA.pos, getCenterLineY(objectB));
+  debugger
+  return sideX;
+}
+
+export const getObjectASideBOnY = (objectA, objectB) => {
+  const sideY = getLineSide(objectA.pos, getCenterLineX(objectB));
+  debugger
+  return sideY;
+}
+
+// export const listFitnessRanks = (array) => {
+//   const sideY = getLineSide(objectA.pos, getCenterLineX(objectB));
+//   debugger
+//   return sideY;
+// }
+
+export const addElement = (atElId, elType, content, insertBefore = true) => {
+  // create a new div element 
+  const newDiv = document.createElement(elType);
+  // and give it some content 
+  const newContent = document.createTextNode(content);
+  // add the text node to the newly created div
+  newDiv.appendChild(newContent);
+
+  // add the newly created element and its content into the DOM 
+  const currentDiv = document.getElementById(atElId);
+  if (insertBefore){
+    document.body.insertBefore(newDiv, currentDiv);
+    return 
+  }
+  document.body.appendChild(newDiv);
+}

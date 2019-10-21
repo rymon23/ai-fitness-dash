@@ -8,6 +8,9 @@ class Ball extends GameObject {
       x: startPos.PosX(),
       y: startPos.PosY()
     };
+    this.obstructed = {};
+    this.collision = {};
+
     this.isStatic = false;
     this.speed = Util.getRandomInt(2, 4);
     this.dx = 1;
@@ -15,6 +18,7 @@ class Ball extends GameObject {
     this.radius = radius;
     this.color = color;
     this.tags = ["ball"];
+    this.shape = "circle";
 
     this.Init();
   }
@@ -37,6 +41,7 @@ class Ball extends GameObject {
     ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
+    this.RenderPos(ctx);
   }
 }
 

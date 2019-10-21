@@ -24,14 +24,17 @@ export const executeTimer = (seconds, callback) => {
   const remaningTime = seconds;
   window.setTimeout(function() {
     const formatRemainingTime = (seconds) => {
-      let ms = `Time Remaining: `;
-      return ms + (seconds < 10 ? `0${seconds}` : `${seconds}`);
+      // let ms = `Time Remaining: `;
+      // return ms + (seconds < 10 ? `0${seconds}` : `${seconds}`);
+      return (seconds < 10 ? `0${seconds}` : `${seconds}`);
     }
     if (remaningTime > 0) {
-      document.getElementById("timer").innerHTML = formatRemainingTime(remaningTime);
+      document.getElementById("timer").innerHTML = "Time Remaining:";
+      document.getElementById("timer-seconds").innerHTML = formatRemainingTime(remaningTime);
       executeTimer(remaningTime - 1, callback);
     }else {
-      document.getElementById("timer").innerHTML = "Time Up!";
+      document.getElementById("timer").innerHTML = "Time Remaining:";
+      document.getElementById("timer-seconds").innerHTML = "Time Up!";
       callback();
     }
   }, 1000);

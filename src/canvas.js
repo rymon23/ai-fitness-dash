@@ -24,8 +24,8 @@ class Canvas {
     left.tags = ["canvasWall", "canvasLeft"];
     right.tags = ["canvasWall", "canvasRight"];
 
-    top.trigger = "seeTop";
-    down.trigger = "seeBottom";
+    top.trigger = "seeUp";
+    down.trigger = "seeDown";
     left.trigger = "seeCanvasWall";
     right.trigger = "seeCanvasWall";
 

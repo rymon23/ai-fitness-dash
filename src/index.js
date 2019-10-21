@@ -15,6 +15,7 @@ const canvasEl = document.getElementsByTagName("canvas")[0];
 // canvasEl.width = window.innerWidth;
 // new Game(canvasEl.width, canvasEl.height).start(canvasEl);
 export const game = new Game(canvasEl);
+window.game = game;
 
 export const timer = (seconds, callback) => {
   const remaningTime = seconds;

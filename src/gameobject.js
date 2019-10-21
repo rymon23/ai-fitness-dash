@@ -1,10 +1,13 @@
 import * as Util from "./util";
+import Form from "./form";
 import Vector2 from "./vector2";
 
 const DEFAULT_COLOR = "#000000";
+const Highlight_COLOR = "#fdff92";
 
-class GameObject {
+class GameObject extends Form {
   constructor(game, x = 0, y = 0, styles = { fillStyle: DEFAULT_COLOR, strokeStyle: null }) {
+    super();
     this.game = game;
     this.pos = { x, y };
     this.height = 1;
@@ -12,7 +15,7 @@ class GameObject {
     this.center;
     this.styles = styles;
     this.obstructed = {};
-
+    this.shape = null;
     this.isStatic = true;
     this.hasSensors = false;
     this.target = null;
@@ -27,7 +30,6 @@ class GameObject {
     this.Update = this.Update.bind(this);
     this.Render = this.Render.bind(this);
     this.StopUpdate = this.StopUpdate.bind(this);
-    this.HasTag = this.HasTag.bind(this);
     this.Destroy = this.Destroy.bind(this);
     this.SetPosX = this.SetPosX.bind(this);
     this.SetPosY = this.SetPosY.bind(this);
@@ -37,7 +39,6 @@ class GameObject {
     this.DirY = this.DirY.bind(this);
     this.GetHeight = this.GetHeight.bind(this);
     this.GetWidth = this.GetWidth.bind(this);
-    this.GetCenterPos = this.GetCenterPos.bind(this);
     this.GetDistance = this.GetDistance.bind(this);
     this.SetTarget = this.SetTarget.bind(this);
     this.CheckForCollisions = this.CheckForCollisions.bind(this);
@@ -47,22 +48,27 @@ class GameObject {
 
   Init() {
     // this.interval = setInterval(this.Update, 10);
+    this.updating = false
     this.FixedUpdate();
   }
 
   FixedUpdate(ms = 10){
     this.interval = setTimeout(() => {
       if (this.HasTag("entity")){
-        debugger
+        // debugger
       };
 
-      this.Update();
+      if (!this.updating){
+        this.updating = true;
+        this.updating = this.Update();
+      }
       this.FixedUpdate(ms);}
       , ms);
   }
 
   Update() {
     //OVERRIDE BY CHILD
+    return false;
   }
 
   StopUpdate() {
@@ -83,7 +89,7 @@ class GameObject {
   }
 
   SetPosY(posY) {
-    this.pos.x = posY;
+    this.pos.y = posY;
   }
 
   DirX() {
@@ -91,13 +97,6 @@ class GameObject {
   }
   DirY() {
     return this.dy;
-  }
-
-  GetCenterPos() {
-    return new Vector2(
-      this.PosX() + this.GetWidth() / 2,
-      this.PosY() + this.GetHeight() / 2      
-    )
   }
 
   PosX() {
@@ -114,10 +113,6 @@ class GameObject {
   }
   GetDistance(target) {
     Util.getDistance(this.GetCenterPos(), target.GetCenterPos());
-  }
-
-  HasTag(tag){
-    return this.tags.includes(tag);
   }
 
   SetTarget(object) {
@@ -137,53 +132,62 @@ class GameObject {
       object.SensorCheck(this);
     }
     
+
     const colX = Util.isCollidingOnX(object, this);
-    // debugger
+    
     if (colX){
       console.log(`${this.tags}: COLLISION DETECTED: X - ${object.tags} DirX: ${object.DirX()}`);
-      // object.obstructed.left 
-      //   = object.DirX() < 0 ? true : object.obstructed.left;
-      // object.obstructed.right
-      //   = object.DirX() >= 0 ? true : object.obstructed.right;
 
-      // if (object.HasTag("ball")) {
-        object.dx = -object.dx;
-      // } else {
-      //   object.dx = 0;
-      // }
-      if (Util.isALeftOfB(object, this)){
-          object.collision.left = true 
-          object.obstructed.left = true 
-      }else{
-        object.collision.right = true
+      debugger
+      const side = Util.getObjectASideBOnX(object, this);
+      if (side < 0){
+        //object on left side
         object.obstructed.right = true 
+      }else {
+        object.obstructed.left = true 
       }
+
+      object.HasTag("entity")? 
+          object.SetCollisionHit(this.trigger)
+          :null;
+    
+      if (object.HasTag("ball")) {
+        object.dx = -object.dx;
+      } else {
+        object.dx = 0;
+      }      
+
+      // if (Util.isALeftOfB(object, this)){
+      //     object.collision.left = true 
+      //     object.obstructed.left = true 
+      // }else{
+      //   object.collision.right = true
+      //   object.obstructed.right = true 
+      // }
       object.CollisionUpdate();
     }
 
     const colY = Util.isCollidingOnY(object, this);
-    // debugger
     if (colY){
       console.log(`${this.tags}: COLLISION DETECTED: Y - ${object.tags} DirY: ${object.DirY()}`);
-      // object.obstructed.up =
-      //   object.DirY() < 0 ? true : object.obstructed.up;
-      // object.obstructed.down =
-      //   object.DirY() >= 0 ? true : object.obstructed.down;
 
-      // if (object.HasTag("ball")) {
-        object.dy = -object.dy;
-      // } else {
-      //   object.dy = 0;
-      // }
-      // Util.isAAboveB(object, this) ?
-      //   object.collision.down = true
-      //   : object.collision.up = true;
-      if (Util.isAAboveB(object, this)) {
-        object.collision.down = true
-        object.obstructed.down = true
-      } else {
-        object.collision.up = true
+      debugger
+      const side = Util.getObjectASideBOnY(object, this);
+      if (side < 0) {
+        //object below
         object.obstructed.up = true
+      } else {
+        object.obstructed.down = true
+      }
+      
+      object.HasTag("entity") ?
+        object.SetCollisionHit(this.trigger)
+        : null;
+
+      if (object.HasTag("ball")) {
+        object.dy = -object.dy;
+      } else {
+        object.dy = 0;
       }
       object.CollisionUpdate();
     }

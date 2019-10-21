@@ -2,21 +2,26 @@ import * as Util from './util';
 import Gene from './gene';
 
 class DNA {
-  constructor(dnaLength, maxValues) {
-		this.dnaLength = dnaLength;
-    this.maxValues = maxValues;
+  constructor() {
     // this.genes = []
 
     this.genes = {
-      speed: new Gene(1, 5),
-      size: new Gene(9, 15),
-      senseUp: new Gene(-180, 180),
-      senseDown: new Gene(-180, 180),
-      senseRight: new Gene(-180, 180),
-      senseLeft: new Gene(-180, 180),
-      sensorRange: new Gene(12,24),
-      sensorThickness: new Gene(1, 3),
-      random: new Gene(-180, 180),
+      speed: new Gene(2, 5),
+      size: new Gene(8, 15),
+      seeUp: new Gene(-250, 250),
+      seeDown: new Gene(-250, 250),
+      seeRight: new Gene(-250, 250),
+      seeLeft: new Gene(-250, 250),
+      seeUpWall: new Gene(-250, 250),
+      seeDownWall: new Gene(-250, 250),
+
+      sensorRange: new Gene(12, 22),
+      sensorThickness: new Gene(2,6),
+      random: new Gene(-250, 250),
+
+      colorR: new Gene(0,100),
+      colorG: new Gene(0,100),
+      colorB: new Gene(0,100),
     };
     // this.SetRandom();
     

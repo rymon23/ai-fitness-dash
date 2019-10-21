@@ -18,6 +18,7 @@ class Column extends GameObject {
     this.styles = { fillStyle: DEFAULT_FILL, strokeStyle: DEFAULT_STROKE };
     this.trigger = "";
     this.tags = ["column"];
+    this.shape = "box";
 
     this.Init();
   }
@@ -34,6 +35,7 @@ class Column extends GameObject {
       ctx.stroke();
     }
     ctx.closePath();
+    this.RenderPos(ctx);
   }
 
   Update(){
@@ -45,7 +47,7 @@ export const CreateColumns = (startPosX = 125, game) => {
     const columns = [];
 
     const randomColumnBuffer = () => {
-      return Util.getRandomInt(40, 80);
+      return Util.getRandomInt(60, 80);
     };
 
     const randomColumnStartPosY = column => {

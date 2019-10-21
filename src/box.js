@@ -13,6 +13,8 @@ class Box extends GameObject {
     this.width = width;    
     this.styles = styles;
     this.tags = ["box"];
+    this.shape = "box";
+
   }
 
   Update(){

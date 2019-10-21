@@ -1,9 +1,9 @@
 import * as Util from "./util";
 import Entity from "./entity";
 
-const POPULATION_SIZE = 8;
-const BREED_TOP_PERCENT = 0.4;
-const MUTATION_PERCENT = 6;
+const POPULATION_SIZE = 20;
+const BREED_TOP_PERCENT = 0.3;
+const MUTATION_PERCENT = 10;
 
 class PopulationManager {
   constructor(game, startBox, finishBox) {
@@ -35,7 +35,36 @@ class PopulationManager {
 
   DisplayGeneration(){
     console.log(`GEN: ${this.generation}`);
+    if (this.generation < 10){
+      document.getElementById("gen").innerHTML = `Gen: 0${this.generation}`;
+      return
+    }
     document.getElementById("gen").innerHTML = `Gen: ${this.generation}`;
+  }
+
+  DisplaySucessRate(){
+    const successCount = 0;
+    for (let i = 0; i < this.population.length; i++) {
+      const entity = this.population[i];
+      entity.goalReached? 
+        successCount++ : null;
+    }
+    document.getElementById("gen").innerHTML = `Gen: ${this.generation}`;
+  }
+  DisplayRanks(){
+    const suceeded = this.population.slice().filter((entity) => {
+      entity.goalReached === true;
+    }).sort((a, b) => {
+      this.CompareEntities(a, b);
+    })
+
+    debugger
+    document.getElementById("ranks").innerHTML = `Ranks:`;
+    
+    for (let i = 0; i < suceeded.length; i++) {
+      const entity = this.population[i];
+      Util.addElement("ranks", "div", `distance traveled: ${entity.distanceTravelled}`, false);
+    }
   }
 
   CompareEntities(a, b) {
@@ -67,7 +96,7 @@ class PopulationManager {
       }).slice(0, Math.floor(this.population.length * BREED_TOP_PERCENT) || 1 );
 
     this.population = [];
-    // debugger
+    debugger
 
     while (this.population.length < POPULATION_SIZE){
         const randIx = Util.getRandomInt(0, sortedPop.length - 1);
@@ -75,7 +104,7 @@ class PopulationManager {
             sortedPop[randIx]
             , sortedPop[(randIx + 1) % sortedPop.length]));
     }
-    // debugger
+    debugger
 
     //destroy all parents and previous population
     for (let i = 0; i < sortedPop.length; i++) {

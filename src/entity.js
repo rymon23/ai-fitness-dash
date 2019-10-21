@@ -4,8 +4,6 @@ import DNA from "./dna";
 import Vector2 from "./vector2";
 import { CreateSensorRays } from "./sensor_ray";
 
-const DNA_LENGTH = 5;
-// const ENTITY_SENSOR_RANGE = 28;
 const ENTITY_GOAL_RADIUS = 58;
 
 class Entity extends GameObject {
@@ -14,10 +12,11 @@ class Entity extends GameObject {
     this.game = game;
     this.pos = { x: startingPos.PosX(), y: startingPos.PosY() };
     this.startPos = new Vector2(this.PosX(), this.PosY());
-    this.dna = new DNA(DNA_LENGTH, 200);
+    this.dna = new DNA();
 
     this.target = target;
     this.tags = ["entity"];
+    this.shape = "circle";
 
     this.dx = 1;
     this.dy = 1;
@@ -33,19 +32,21 @@ class Entity extends GameObject {
     };
 
     this.collision = {
-      up: false,
-      down: false,
-      left: false,
-      right: false
+      seeDownWall: false,
+      seeUpWall: false,
+      seeDown: false,
+      seeUp: false,
+      seeCanvasWall: false,
     };
 
     this.sensorHit = {
       seeDownWall: false,
       seeUpWall: false,
-      seeBottom: false,
-      seeTop: false,
+      seeDown: false,
+      seeUp: false,
       seeCanvasWall: false,
     };
+
     this.sensorRays = CreateSensorRays(
       this,
       this.dna.GetGene("sensorRange"),
@@ -54,7 +55,9 @@ class Entity extends GameObject {
     this.radius = this.dna.GetGene("size");
     this.speed = this.dna.GetGene("speed");
 
-    this.color = "#000000";
+    this.color = 
+      `rgb(${this.dna.GetGene("colorR")},${this.dna.GetGene("colorG")},${this.dna.GetGene("colorB")})`;//"#000000";
+
     this.goalReached = false;
     this.alive = true;
     this.timeAlive = 0.0;
@@ -76,10 +79,10 @@ class Entity extends GameObject {
   }
 
   GetWidth() {
-    return this.radius;
+    return this.radius * 2;
   }
   GetHeight() {
-    return this.radius;
+    return this.radius * 2;
   }
   SensorX(right = true){
     if(right) return this.PosX() + this.sensorRays.right.GetRange(); //RIGHT
@@ -94,79 +97,68 @@ class Entity extends GameObject {
       this.sensorRays[key].CheckCollision(object);
     })
   }
-  SetSensorHit(trigger){
+  SetSensorHit(trigger, direction){
     if (Object.keys(this.sensorHit).includes(trigger)){
       this.sensorHit[trigger] = true;
+      this.obstructed[direction] = true;
     }
   }
-
-  // OnCollisionEnter(col)
-  //   {
-  //       if(col.gameObject.tag == "dead" ||
-  //       	col.gameObject.tag == "top" ||
-  //       	col.gameObject.tag == "bottom" ||
-  //       	col.gameObject.tag == "upwall" ||
-  //       	col.gameObject.tag == "downwall")
-  //       {
-  //           crash++;
-  //       }
-  // }
+  SetCollisionHit(trigger){
+    if (Object.keys(this.collision).includes(trigger)){
+      this.collision[trigger] = true;
+    }
+  }
 
   GetTriggerGene(){
     debugger
 
-    if(this.sensorHit.seeUpWall){
-      this.obstructed.right = true;
-      this.TriggerActionY(this.dna.GetGene("senseRight"));
+    if(this.sensorHit.seeUpWall || this.collision.seeUpWall){
+      this.TriggerActionY(this.dna.GetGene("seeUpWall"));
     } 
-    if (this.sensorHit.seeDownWall){
-      this.obstructed.right = true;
-      this.TriggerActionY(this.dna.GetGene("senseRight"));
+    if (this.sensorHit.seeDownWall || this.collision.seeDownWall){
+      this.TriggerActionY(this.dna.GetGene("seeDownWall"));
+    } 
+    if (this.sensorHit.seeUp || this.collision.seeUp) {
+      this.TriggerActionY(this.dna.GetGene("seeUp"));
+    } 
+    if (this.sensorHit.seeDown || this.collision.seeDown) {
+      this.TriggerActionY(this.dna.GetGene("seeDown"));
     } 
 
-    Object.keys(this.collision).forEach((key) => {
-      debugger
-      if (this.collision[key]){
-        this.obstructed[key] = true;
-        // this.Tr
-      }
-    })
+
+    // if (this.sensorHit.seeCanvasWall || this.collision.seeCanvasWall){
+    //   // this.obstructed.right = true;
+    //   this.UpdateDirection();
+    //   this.TriggerActionY(100, this.DirY());
+    // } 
+
+    // if (this.collision.seeUpWall){
+    //   this.obstructed.right = true;
+    //   this.TriggerActionY(this.dna.GetGene("seeUpWall"));
+    // } 
+    // if (this.collision.seeDownWall){
+    //   this.obstructed.right = true;
+    //   this.TriggerActionY(this.dna.GetGene("seeDownWall"));
+    // } 
+
+    // Object.keys(this.collision).forEach((key) => {
+    //   debugger
+    //   if (this.collision[key]){
+    //     this.obstructed[key] = true;
+    //     // this.Tr
+    //   }
+    // })
     
-    if (this.collision.seeDownWall){
-      this.obstructed.right = true;
-      this.TriggerActionY(this.dna.GetGene("senseRight"));
-    } 
-    
-    if (this.sensorHit.seeTop){
+    if (this.sensorHit.seeUp){
       this.obstructed.up = true;
-      return this.dna.GetGene("senseUp");
-    } else if (this.sensorHit.seeBottom){
+      return this.dna.GetGene("seeUp");
+    } else if (this.sensorHit.seeDown){
       this.obstructed.down = true;
-      return this.dna.GetGene("senseDown");
+      return this.dna.GetGene("seeDown");
     }else{
       return this.dna.GetGene("random");
     }
   }
-
-  // GetTriggerGene(){
-  //   debugger
-  //   if(this.sensorHit.seeUpWall){
-  //     this.obstructed.right = true;
-  //     return this.dna.GetGene("senseRight");
-  //   } else if (this.sensorHit.seeDownWall){
-  //     this.obstructed.right = true;
-  //     return this.dna.GetGene("senseRight");
-  //   } else if (this.sensorHit.seeTop){
-  //     this.obstructed.up = true;
-  //     return this.dna.GetGene("senseUp");
-  //   } else if (this.sensorHit.seeBottom){
-  //     this.obstructed.down = true;
-  //     return this.dna.GetGene("senseDown");
-  //   }else{
-  //     return this.dna.GetGene("random");
-  //   }
-  // }
-
 
   IsObstructed(){
     return Object.values(this.obstructed).some(value => value === true);
@@ -193,27 +185,36 @@ class Entity extends GameObject {
   TriggerActionX(geneValue){
     let directionX = this.DirX() * (geneValue * 0.1);
     if (directionX > 0) {
-      this.obstructed.down ? directionX = 0 : null
+      this.obstructed.right ? directionX = 0 : null
     } else if (directionX < 0) {
-      this.obstructed.up ? directionX = 0 : null;
+      this.obstructed.left ? directionX = 0 : null;
     }
-    this.pos.y += directionX
+    this.pos.x += directionX
   }
 
-  TriggerActionY(geneValue) {
-    let directionY = this.DirY() * (geneValue * 0.1);
+  TriggerActionY(geneValue, mult = 1) {
+    let directionY = mult * (geneValue * 0.1);
     if (directionY > 0) {
       this.obstructed.down ? directionY = 0 : null
     } else if (directionY < 0) {
       this.obstructed.up ? directionY = 0 : null;
     }
+
+    if (isNaN(directionY)) {
+      console.log("NAN VALUE: TRIGGER Y")
+      debugger
+    }
     this.pos.y += directionY
+    if (isNaN(this.pos.y) || isNaN(this.pos.x)) {
+      debugger
+      console.log("NAN VALUE FOUND")
+    }
   }
 
   Update() {
     if (this.goalReached || !this.alive) {
       this.StopUpdates();
-      return;
+      return false;
     }
 
     // read DNA
@@ -227,17 +228,25 @@ class Entity extends GameObject {
     }else if (directionX < 0){
       this.obstructed.left ? directionX = 0 : null;
     }
-    // debugger
     
-    // let directionY = this.DirY() * (h * 0.1);
-    // if (directionY > 0){
-    //   this.obstructed.down ? directionY = 0 : null
-    // }else if (directionY < 0){
-    //   this.obstructed.up ? directionY = 0 : null;
-    // }
+    let directionY = this.DirY() * velocity;
+    if (directionY > 0){
+      this.obstructed.down ? directionY = 0 : null
+    }else if (directionY < 0){
+      this.obstructed.up ? directionY = 0 : null;
+    }
+
+    if (isNaN(this.pos.y) || isNaN(this.pos.x)) {
+      debugger
+      console.log("NAN VALUE FOUND")
+    }
+    if (isNaN(directionX)|| isNaN(directionY)){
+      console.log("NAN VALUE:UPDATE")
+      debugger
+    }
 
     this.pos.x += directionX;
-    // this.pos.y += directionY;
+    this.pos.y += directionY;
     // this.pos.x += this.DirX() * velocity;
     // this.pos.y += this.DirY() * (h * 0.1);
 
@@ -246,22 +255,23 @@ class Entity extends GameObject {
 
     if (Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS){
       this.goalReached = true;
-      return    
+      return false
     }else {
       this.ResetObstructions();
       this.ResetCollisions();
-      // this.UpdateDirection();
+      this.UpdateDirection();
     }
+    return false;
   }
 
   UpdateDirection(){
     debugger
     this.dx = Util.isALeftOfB(this, this.target.GetCenterPos()) ?
       this.dx = 1
-      :this.dx = -1;
+      : this.dx = -1;
     this.dy = Util.isAAboveB(this, this.target.GetCenterPos()) ?
       this.dy = 1
-      :this.dy = -1;
+      : this.dy = -1;
   }
 
   StopUpdates() {
@@ -272,7 +282,7 @@ class Entity extends GameObject {
 
   Render(ctx) {
     ctx.beginPath();
-    ctx.arc(this.PosX(), this.PosY(), this.GetWidth(), 0, Math.PI * 2);
+    ctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI *2);
     ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
@@ -281,6 +291,7 @@ class Entity extends GameObject {
       sensorRay.Render(ctx);
     });
 
+    this.RenderPos(ctx);
     //SENSORS
     // const offset = this.GetWidth() / 2;
     // ctx.beginPath();
@@ -304,7 +315,6 @@ class Entity extends GameObject {
 export const CreateEntities = (amount, startBox, game, target) =>{
     const entities = [];
     for (let i = 0; i < amount; i++) {
-        // let xyPos = Util.getRandomBoxPos(startBox);
       entities[i] = new Entity(game, startBox, target); 
     }
     return entities;
