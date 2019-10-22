@@ -14,33 +14,26 @@ window.addEventListener("DOMContentLoaded", (e) => {
   console.log("DOM LOADED");
   const canvasEl = document.getElementsByTagName("canvas")[0];
 
-  // const sliderPop = document.getElementById("slider-pop");
-  // const sliderDur = document.getElementById("slider-duration");
-  // const sliderTopPerc = document.getElementById("slider-top-perc");
-  // const sliderMutation = document.getElementById("slider-mutation");
 
-  // sliderPop.addEventListener("click", ()=> {
-  //   sliderPop.addEventListener(
-  //     "input", updateElementValue("slider-pop-value", sliderPop.value)
-  //   );
-  // });
-  // sliderDur.addEventListener("click", ()=> {
-  //   sliderDur.addEventListener(
-  //     "input", updateElementValue("slider-duration-value", sliderDur.value)
-  //   );
-  // });
-  // sliderTopPerc.addEventListener("click", ()=> {
-  //   sliderTopPerc.addEventListener(
-  //     "input", updateElementValue("slider-top-perc-value", `${sliderTopPerc.value}%`)
-  //   );
-  // });
-  // sliderMutation.addEventListener("click", ()=> {
-  //   sliderMutation.addEventListener(
-  //     "input", updateElementValue("slider-mutation-value", `${sliderMutation.value}%`)
-  //   );
-  // });
+  //IMAGES
 
+  //CANVAS BACKGROUND
   const assetPath = "./src/assets/";
+  window.assetPath = assetPath;
+  window.backgroundImages = [];
+  const bg_1 = new Image();
+  const bg_2 = new Image();
+  const bg_3 = new Image();
+  const bg_4 = new Image();
+  bg_1.src = assetPath + "bg_1.jpg";
+  bg_2.src = assetPath + "bg_2.jpg";
+  bg_3.src = assetPath + "bg_3.jpg";
+  bg_4.src = assetPath + "bg_4.jpg";
+  window.backgroundImages.push(bg_1);
+  window.backgroundImages.push(bg_2);
+  window.backgroundImages.push(bg_3);
+  window.backgroundImages.push(bg_4);
+
 
   const img = new Image();
   img.src = assetPath + "image.jpg"; //"./src/assets/image.jpg";

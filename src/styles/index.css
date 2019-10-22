@@ -17,12 +17,12 @@
   font-family: monospace;
 }
 header{
-  background-color: black;
+  background-color: rgba(0,0,0,0.8);
   color: white;
 }
 body {
   /* background-color: rgb(104, 108, 103); */
-  background-image: url("../assets/bg_3.jpg");
+  background-image: url("../assets/bg_9.jpg");
   background-repeat: no-repeat;
   background-color: rgb(160, 152, 118);
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -31,7 +31,11 @@ canvas {
   display: block; 
   margin: 0 auto;
   border: 5px solid rgb(104, 108, 103);
-  background: rgb(238, 236, 174); 
+  /* background-image: url("../assets/bg_4.jpg"); */
+  background-repeat: no-repeat;
+  background-color: rgb(160, 152, 118);
+  background-size: cover;
+  /* background: rgb(238, 236, 174);  */
 }
 button {
   border: 2px solid black;

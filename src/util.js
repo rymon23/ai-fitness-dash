@@ -1,4 +1,9 @@
 
+export const sampleArray = (array) =>{
+  if (!array) return null;
+  return array[getRandomInt(0, array.length - 1)];
+}
+
 export const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);

@@ -1,4 +1,5 @@
 import Box from "./box";
+import * as Util from "./util";
 
 const DEFAULT_COLOR = "#000000";//"rgb(114, 120, 133)";
 
@@ -8,6 +9,10 @@ class Canvas {
     this.canvasEl = canvasEl;
     this.width = this.canvasEl.width;
     this.height = this.canvasEl.height;
+
+    this.assetPath = window.assetPath;
+    this.backgroundImages = window.backgroundImages;    
+
     const h = this.height;
     const w = this.width;
     const wallThickness = 10;
@@ -39,13 +44,16 @@ class Canvas {
     this.PosX = this.PosX.bind(this);
     this.PosY = this.PosY.bind(this);
     this.RenderBorders = this.RenderBorders.bind(this);
+    this.RefreshBackground = this.RefreshBackground.bind(this);
   }
 
   Init(){
     this.borders.top.Init();
     this.borders.down.Init();
     this.borders.right.Init();
-    this.borders.left.Init();  
+    this.borders.left.Init(); 
+
+    this.RefreshBackground();
   }
 
   PosX() {
@@ -54,6 +62,11 @@ class Canvas {
 
   PosY() {
     return this.y;
+  }
+
+  RefreshBackground(){
+    const newBg = Util.sampleArray(this.backgroundImages)
+    this.canvasEl.style.backgroundImage = `url(${newBg.src})`;
   }
 
   RenderBorders(ctx) {
