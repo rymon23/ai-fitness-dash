@@ -128,7 +128,9 @@ class Game {
     this.gameObjects.entities = this.PopulationManager.population;
 
     this.timer.Start(this.settings.roundTime);
-    this.interval = setInterval(this.Update, 10);
+    // this.interval = setInterval(this.Update, 10);
+
+    this.globalID = requestAnimationFrame(this.RenderGameObjects);
   }
 
   Update() {
@@ -177,6 +179,7 @@ class Game {
         });
       }
     });
+    this.globalID = requestAnimationFrame(this.RenderGameObjects);
   }
 
   CanvasCollisionDetection(canvas) {

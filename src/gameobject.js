@@ -1,9 +1,7 @@
 import * as Util from "./util";
 import Form from "./form";
-import Vector2 from "./vector2";
 
 const DEFAULT_COLOR = "#000000";
-const Highlight_COLOR = "#fdff92";
 
 class GameObject extends Form {
   constructor(game, x = 0, y = 0, styles = { fillStyle: DEFAULT_COLOR, strokeStyle: null }) {
@@ -47,23 +45,29 @@ class GameObject extends Form {
   }
 
   Init() {
-    // this.interval = setInterval(this.Update, 10);
     this.updating = false
-    this.FixedUpdate();
+    this.updateID = requestAnimationFrame(this.FixedUpdate)
+    // this.interval = setInterval(this.Update, 10);
+    // this.FixedUpdate();
   }
 
   FixedUpdate(ms = 10){
-    this.interval = setTimeout(() => {
-      if (this.HasTag("entity")){
-        // debugger
-      };
+    if (!this.updating){
+      this.updating = true;
+      this.updating = this.Update();
+    }    
+    this.updateID = requestAnimationFrame(this.FixedUpdate);
 
-      if (!this.updating){
-        this.updating = true;
-        this.updating = this.Update();
-      }
-      this.FixedUpdate(ms);}
-      , ms);
+    // this.interval = setTimeout(() => {
+    //   if (this.HasTag("entity")){
+    //     // debugger
+    //   }
+    //   if (!this.updating){
+    //     this.updating = true;
+    //     this.updating = this.Update();
+    //   }
+    //   this.FixedUpdate(ms);}
+    //   , ms);
   }
 
   Update() {
@@ -73,11 +77,7 @@ class GameObject extends Form {
 
   StopUpdate() {
     clearInterval(this.interval);
-  }
-
-  Destroy() {
-    this.StopUpdate();
-    delete this;
+    cancelAnimationFrame(this.updateID);
   }
 
   Render(ctx) {
