@@ -96,7 +96,7 @@ class PopulationManager {
       .sort((a, b) => {
         return this.CompareEntities(a, b);
       }).slice(0 
-          ,Math.floor(this.population.length * this.game.settings.topBreedMult) 
+          ,Math.floor(this.population.length * this.game.settings.topBreedMult * 0.01) 
             || 1
       );
 

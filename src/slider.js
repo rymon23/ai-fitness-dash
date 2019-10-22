@@ -5,8 +5,10 @@ class SliderSetting {
     this.childId = childId;
     this.settingKey = settingKey;
     this.element = document.getElementById(this.elementId);
+    this.defaultValue = window.game.settings[this.settingKey];
 
     this.Init = this.Init.bind(this);
+    this.SetDefault = this.SetDefault.bind(this);
     this.UpdateElementValue = this.UpdateElementValue.bind(this);
 
     this.Init();
@@ -14,7 +16,7 @@ class SliderSetting {
 
   Init(){
     //DEFAULT VALUE
-    this.UpdateElementValue(window.game.settings[this.settingKey]);
+    this.SetDefault();
 
     //LISTEN FOR CHANGE
     this.element.addEventListener("click", () => {
@@ -23,6 +25,10 @@ class SliderSetting {
         this.UpdateElementValue(this.element.value)
       );
     });    
+  }
+
+  SetDefault(){
+    this.UpdateElementValue(this.defaultValue);  
   }
 
   UpdateElementValue(newVal) {

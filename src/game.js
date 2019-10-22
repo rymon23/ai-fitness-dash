@@ -2,6 +2,7 @@ import * as Util from "./util";
 import Canvas from "./canvas";
 import PopulationManager from "./pop_manager";
 import SliderSetting from "./slider";
+import Modal from "./modal";
 import Timer from "./timer";
 import Box from "./box";
 import { CreateBalls } from "./ball";
@@ -18,7 +19,6 @@ class Game {
     // this.canvas = canvasEl;
     this.canvas = new Canvas(this, canvasEl);
     this.timer = new Timer(this);
-
     this.gameObjects = {
       balls: [],
       boxes: [],
@@ -29,11 +29,13 @@ class Game {
     this.settings = {
       roundTime: 15,
       populationSize: 20,
-      topBreedMult: 0.3,
+      topBreedMult: 30,
       mutationPerc: 3
     };
 
     window.game = this;
+
+    this.modal = new Modal("modal");
 
     this.sliders = {
       roundTime: new SliderSetting(
@@ -66,6 +68,7 @@ class Game {
     this.Stop = this.Stop.bind(this);
     this.Update = this.Update.bind(this);
     this.Reset = this.Reset.bind(this);
+    this.ResetSliderDefaults = this.ResetSliderDefaults.bind(this);
     this.RenderGameObjects = this.RenderGameObjects.bind(this);
     this.DestroyGameObjects = this.DestroyGameObjects.bind(this);
     this.CanvasCollisionDetection = this.CanvasCollisionDetection.bind(this);
@@ -99,15 +102,11 @@ class Game {
 
     console.log("GAME INITIALIZED");
 
-    const startButton = document.getElementById("start-button");
-    startButton.addEventListener("click", () => {
-      if (startButton.innerHTML === "Start") {
-        startButton.innerHTML = "Restart";
-        this.Start();
-      } else {
-        startButton.innerHTML = "Start";
-        this.Stop();
-      }
+    const restartButton = document.getElementById("restart-button");
+    restartButton.addEventListener("click", () => {
+        this.modal.Enable();
+        this.Stop()
+        this.DestroyGameObjects();
     });
 
     //this.Start();
@@ -144,7 +143,9 @@ class Game {
 
   Stop() {
     this.running = false;
+    this.timer.Stop();
     clearInterval(this.interval);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     console.log("GAME STOPPED");
   }
 
@@ -153,6 +154,12 @@ class Game {
     this.Stop();
     this.DestroyGameObjects();
     this.Start(true);
+  }
+
+  ResetSliderDefaults(){
+    Object.keys(this.settings).forEach((key) => {
+      this.sliders[key].SetDefault();
+    });
   }
 
   RenderGameObjects() {

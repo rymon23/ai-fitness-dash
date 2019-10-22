@@ -40,16 +40,6 @@
                         <h2 id="success-rate"></h2>
                     </div>
                 </div>
-
-                <!-- <div id="game-dash" class="game-dashboard-container">
-                    <div class="timer-container">
-                        <h2 id="timer"></h2>
-                    </div>
-                    <div class="game-controls-container">
-                        <button>Start</button>
-                    </div>
-                </div> -->
-
             </div>
         </header>
 
@@ -57,65 +47,13 @@
 
         <div class="game-content-container">
 
-            <!-- <div class="settings-column-container">
-                <div class="settings-container">
-                    <h2>Algorithm Settings</h2>
-                    <br>
-                    <label >Population size
-                        <div class="slider-population-container">
-                            <input 
-                                class="slider" 
-                                type="range" 
-                                id="slider-pop"
-                                min="3" max="50" value="25">
-                        </div> 
-                        <p id="slider-pop-value">10</p>      
-                    </label>
-                    <label >Round Duration
-                        <div class="slider-population-container">
-                            <input 
-                                class="slider" 
-                                type="range" 
-                                id="slider-duration"
-                                min="15" max="60" value="30">
-                        </div> 
-                        <p id="slider-duration-value">10</p>           
-                    </label>
-                    <label >Top Percent
-                        <div class="slider-population-container">
-                            <input 
-                                class="slider" 
-                                type="range" 
-                                id="slider-top-perc"
-                                min="10" max="80" value="30">
-                        </div> 
-                        <p id="slider-top-perc-value">10</p>
-                    </label>                    
-                    <label >Mutation Chance
-                        <div class="slider-population-container">
-                            <input 
-                                class="slider" 
-                                type="range" 
-                                id="slider-mutation"
-                                min="1" max="100" value="2">
-                        </div>
-                        <p id="slider-mutation-value">10</p>            
-                    </label>
-
-                </div>
-            </div> -->
-
             <div class="canvas-container">
                 <canvas id="canvas-id" width="1080" height="720"></canvas>
             </div>
 
-            <div class="settings-column-container">
-            </div>
+            <!-- <div class="settings-column-container">
+            </div> -->
 
-        </div>
-
-        <div id="ranks">
-            
         </div>
 
         <div id="modal" class="modal-container">
@@ -130,7 +68,7 @@
                     <div class="settings-column-container">
                         <div class="settings-container">
                             <h2>Configure Algorithm Settings</h2>
-                            <br>
+
                             <label>Population size
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-pop" min="3" max="50" value="25">
@@ -145,7 +83,7 @@
                             </label>
                             <label>Top Percent
                                 <div class="slider-population-container">
-                                    <input class="slider" type="range" id="slider-top-perc" min="0.1" max="0.9" value="0.3">
+                                    <input class="slider" type="range" id="slider-top-perc" min="10" max="80" value="30">
                                 </div>
                                 <p id="slider-top-perc-value">10</p>
                             </label>
@@ -155,10 +93,14 @@
                                 </div>
                                 <p id="slider-mutation-value">10</p>
                             </label>
-                    
+                            <div class="settings-button-container">
+                                <button id="settings-default-button">Default Settings</button>
+                            </div>
+
+                            <button id="start-button">Start</button>
+
                         </div>
                     </div>
-                    <button id="start-button">Start</button>
 
                 </div>
 

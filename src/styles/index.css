@@ -164,13 +164,29 @@ body {
 .settings-container {
   padding-top: 25px;
   display: flex;
-  /* flex-direction: column; */
-  /* justify-content:center; */
+  width: 90%;
+}
+.settings-container h2{
+  text-align: center;
+  padding-bottom: 25px;
 }
 .settings-container label {
   display: flex;
-  /* flex-direction: column; */
-  /* justify-content:center; */
+  flex-direction: row;
+  padding: 10px;
+  font-size: 20px;
+}
+.settings-button-container{
+  padding-top: 25px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  widows: 100%;
+}
+.settings-button-container button{
+  width: 100%;
+  /* padding: 25px; */
 }
 
 .modal-container{
