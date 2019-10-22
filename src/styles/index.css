@@ -15,16 +15,16 @@
   padding: 0; 
   margin: 0;
   font-family: monospace;
+  color: yellow;
 }
 header{
   background-color: rgba(0,0,0,0.8);
-  color: white;
 }
 body {
   /* background-color: rgb(104, 108, 103); */
-  background-image: url("../assets/bg_9.jpg");
+  background-image: url("../assets/pgBg_1.jpg");
   background-repeat: no-repeat;
-  background-color: rgb(160, 152, 118);
+  background-color: rgb(218, 214, 194);
   background-size: cover; /* Resize the background image to cover the entire container */
 }
 canvas {
@@ -37,15 +37,18 @@ canvas {
   background-size: cover;
   /* background: rgb(238, 236, 174);  */
 }
+
 button {
   border: 2px solid black;
   background-color: black;
-  color: white;
+  color: yellow;
+  cursor: pointer;
 }
 button:hover {
-  border: 2px solid white;
-  background-color: white;
-  color: black;  
+  border: 2px solid yellow;
+  background-color: yellow;
+  color: black;
+  cursor: pointer;
 }
 
 .header-container {
@@ -59,44 +62,21 @@ button:hover {
   justify-content: center;
 }
 .header-container h1 {
-  color: white;
   font-size: 75px;
   padding-bottom: 25px;
 }
-.header-title{
-  display: flex;
-  justify-content: center; 
-}
+
 .game-content-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
-.game-dashboard-container{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  color: white;
-}
-.game-controls-container{
-  display: flex;
-  justify-content: center;
-  /* padding-top: 25px; */
-}
-.game-controls-container button {
-  font-size: 23px;
-  font-weight: bold;
-  border: 2px solid white;
-  background-color: black;
-  color: white;
-  padding: 15px;
-  border-radius: 40px;
-}
+
 
 .top-display-content{
   display: flex;
   flex-direction: row;
-  color: white;
+  color: yellow;
   height: 50px;
   justify-content: center;
 }
@@ -109,9 +89,9 @@ button:hover {
 .top-display-content button{
   font-size: 16px;
   font-weight: bold;
-  border: 2px solid black;
+  /* border: 2px solid black;
   background-color: black;
-  color: white;
+  color: yellow; */
   padding-left: 15px;
   padding-right: 15px;
   border-radius: 40px;
@@ -123,24 +103,6 @@ button:hover {
   padding-bottom: 15px;
 }
 
-.game-navbar-container{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-.game-nav-button-container{
-  display: flex;
-  justify-content: center;
-}
-.game-nav-button-container button{
-  font-size: 18px;
-  font-weight: bold;
-  border: 2px solid white;
-  background-color: black;
-  color: white;
-  padding: 10px;
-  border-radius: 40px;
-}
 .restart-button-container{
   display: flex;
   justify-content: center;
@@ -148,57 +110,33 @@ button:hover {
 .restart-button-container button{
   font-size: 23px;
   font-weight: bold;
-  border: 2px solid black;
+  /* border: 2px solid black;
   background-color: black;
-  color: white;
+  color: yellow; */
   padding: 10px;
   border-radius: 40px;
   width: 150px;
 }
 
-
-
 .display-container{
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* width: 50%; */
 }
 .display-content{
   display: flex;
   width: 65%;
-  /* flex-direction: row; */
   justify-content: space-around;
 }
 .settings-container{
   display: flex;
   flex-direction: column;
 }
-.slider-population-container {
-  width: 100%;
-}
-.slider-pop{
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
-}
 
-.slider-pop:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
 
 .settings-column-container {
-  /* background-color: rgb(157, 140, 140); */
-  color: white;
-  /* width: 350px; */
+  /* color: white; */
   display: flex;
-  /* flex-direction: column; */
   justify-content:center;
 }
 .settings-container {
@@ -209,6 +147,7 @@ button:hover {
 .settings-container h2{
   text-align: center;
   padding-bottom: 25px;
+  font-size: 25px;
 }
 .settings-container label {
   display: flex;
@@ -226,67 +165,46 @@ button:hover {
 }
 .settings-button-container button{
   width: 100%;
-  /* padding: 25px; */
 }
 
-.modal-container{
-  /* display: none; */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9);
-  /* background-color: rgba(0,0,0,0.1); */
-}
-.modal-content-container {
-  background-color: #616b72cd;
-  margin: 5% auto; /* 15% from the top and centered */
-  padding: 20px;
-  /* border: 1px solid #888; */
-  border-radius: 90px;
-  width: 40%; 
-  height: 75%;
-  display: flex;
-  /* flex-direction: column; */
-  /* text-align: center; */
-  justify-content: center;
-  color: white;
-}
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.modal-content button{
-  font-size: 30px;
-  font-weight: bolder;
-  color: #616b72cd;
-  border-radius: 50px;
-}
-.modal-content button:hover{
-  color: white;
-  background-color: black;
-}
-.modal-description {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center; 
-}
-.modal-description h1 {
-  font-size: 50px;
-  padding-bottom: 25px;
-}
 
-.game-content-column{
-  display: flex;
-  flex-direction: column;
-  /* background-color: white; */
-  color: white;
-  width: 300px;
+.slider-population-container {
+  width: 100%;
 }
-
+.slider {
+  -webkit-appearance: none;
+  outline: none; 
+  height: 5px;
+  background: yellow;
+  opacity: 0.7;
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+}
+.slider-pop{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 25px; /* Specified height */
+  background: yellow; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+.slider-pop:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 10px; /* Set a specific slider handle width */
+  height: 10px; /* Slider handle height */
+  background: black; /* Green background */
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 10px; /* Set a specific slider handle width */
+  height: 10px; /* Slider handle height */
+  background: black; /* Green background */
+  cursor: pointer;
+}

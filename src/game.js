@@ -56,7 +56,7 @@ class Game {
     };
 
     this.PopulationManager;
-    this.interval;
+    // this.interval;
 
     this.Init = this.Init.bind(this);
     this.Start = this.Start.bind(this);

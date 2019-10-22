@@ -29,7 +29,7 @@ class Column extends GameObject {
     if (this.styles.fillStyle) {
       // ctx.fillStyle = this.styles.fillStyle;
 
-      const pattern = ctx.createPattern(window.patterns[1], "repeat");
+      const pattern = ctx.createPattern(window.wallPatterns[0], "repeat");
       ctx.fillStyle = pattern; //this.color;
       ctx.fill();
     }
