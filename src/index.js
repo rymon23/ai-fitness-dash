@@ -44,14 +44,20 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
   const img = new Image();
   img.src = assetPath + "image.jpg"; //"./src/assets/image.jpg";
-  const pattern = new Image();
-  pattern.src = assetPath + "pattern_2.jpg";
+
 
   window.images = [];
   window.images.push(img);
  
   window.patterns = [];
+
+  const pattern = new Image();
+  pattern.src = assetPath + "pattern_2.jpg";
   window.patterns.push(pattern);
+
+  const patternWall = new Image();
+  patternWall.src = assetPath + "pattern_5.jpg";
+  window.patterns.push(patternWall);
 
 
   window.game = new Game(canvasEl);

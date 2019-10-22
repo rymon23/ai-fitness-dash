@@ -27,7 +27,10 @@ class Column extends GameObject {
     ctx.beginPath();
     ctx.rect(this.PosX(), this.PosY(), this.GetWidth(), this.GetHeight());
     if (this.styles.fillStyle) {
-      ctx.fillStyle = this.styles.fillStyle;
+      // ctx.fillStyle = this.styles.fillStyle;
+
+      const pattern = ctx.createPattern(window.patterns[1], "repeat");
+      ctx.fillStyle = pattern; //this.color;
       ctx.fill();
     }
     if (this.styles.strokeStyle) {

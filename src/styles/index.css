@@ -22,7 +22,10 @@ header{
 }
 body {
   /* background-color: rgb(104, 108, 103); */
+  background-image: url("../assets/bg_3.jpg");
+  background-repeat: no-repeat;
   background-color: rgb(160, 152, 118);
+  background-size: cover; /* Resize the background image to cover the entire container */
 }
 canvas {
   display: block; 
