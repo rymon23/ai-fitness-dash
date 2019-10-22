@@ -14,38 +14,47 @@
 * { 
   padding: 0; 
   margin: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif
+  font-family: monospace;
 }
-
 header{
   background-color: black;
-}
-canvas {
-  border: 5px solid white;
-  background: rgb(224, 226, 222); 
-  display: block; 
-  margin: 0 auto;
+  color: white;
 }
 body {
-  background-color: rgb(104, 108, 103);
+  /* background-color: rgb(104, 108, 103); */
+  background-color: rgb(160, 152, 118);
+}
+canvas {
+  display: block; 
+  margin: 0 auto;
+  border: 5px solid rgb(104, 108, 103);
+  background: rgb(238, 236, 174); 
+}
+button {
+  border: 2px solid black;
+  background-color: black;
+  color: white;
+}
+button:hover {
+  border: 2px solid white;
+  background-color: white;
+  color: black;  
 }
 
 .header-container {
   display: flex;
   justify-content: center;
-  padding-bottom: 10px;
   width: 100%;
 }  
 .header-content {
-  /* width: 1100px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 .header-container h1 {
-    color: white;
-    font-size: 75px;
-    padding-bottom: 25px;
+  color: white;
+  font-size: 75px;
+  padding-bottom: 25px;
 }
 .header-title{
   display: flex;
@@ -76,31 +85,32 @@ body {
   padding: 15px;
   border-radius: 40px;
 }
-.game-controls-container button:hover {
-  background-color: white;
-  color: black;  
-}
 
-.timer-container{
+.top-display-content{
   display: flex;
+  flex-direction: row;
+  color: white;
+  height: 50px;
   justify-content: center;
-  padding-bottom: 10px;
 }
-.timer-container button{
-  font-size: 18px;
+.top-display-content h2{
+  padding-right: 10px;
+  padding-top: 10px;
+  font-size: 23px;
+  font-weight: bolder;
+}
+.top-display-content button{
+  font-size: 16px;
   font-weight: bold;
-  border: 2px solid white;
+  border: 2px solid black;
   background-color: black;
   color: white;
-  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
   border-radius: 40px;
 }
-.timer-container,  .gen-container{
-  font-size: 23px;
-  color: white;
-}
+
 .gen-container {
-  font-size: 30px;
   display: flex;
   justify-content: center;
   padding-bottom: 15px;
@@ -124,11 +134,34 @@ body {
   padding: 10px;
   border-radius: 40px;
 }
+.restart-button-container{
+  display: flex;
+  justify-content: center;
+}
+.restart-button-container button{
+  font-size: 23px;
+  font-weight: bold;
+  border: 2px solid black;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 40px;
+  width: 150px;
+}
+
+
 
 .display-container{
   display: flex;
-  flex-direction: column;
-  /* justify-content: ; */
+  flex-direction: row;
+  justify-content: center;
+  /* width: 50%; */
+}
+.display-content{
+  display: flex;
+  width: 65%;
+  /* flex-direction: row; */
+  justify-content: space-around;
 }
 .settings-container{
   display: flex;
@@ -199,8 +232,8 @@ body {
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9);
-   /* Black w/ opacity */  
+  /* background-color: rgba(0,0,0,0.9); */
+  /* background-color: rgba(0,0,0,0.1); */
 }
 .modal-content-container {
   background-color: #616b72cd;
@@ -241,3 +274,12 @@ body {
   font-size: 50px;
   padding-bottom: 25px;
 }
+
+.game-content-column{
+  display: flex;
+  flex-direction: column;
+  /* background-color: white; */
+  color: white;
+  width: 300px;
+}
+

@@ -28,7 +28,7 @@ class Timer {
 
   ClearDisplay(){
     document.getElementById("timer").innerHTML = "Time Remaining:";
-    document.getElementById("timer-seconds").innerHTML = "";
+    document.getElementById("timer-seconds").innerHTML = "  ";
   }
 
   ExecuteTimer(seconds, cbRepeatTimer, cbOnTimerEnd, cbShouldStop) {

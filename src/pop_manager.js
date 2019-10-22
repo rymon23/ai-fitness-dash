@@ -36,11 +36,12 @@ class PopulationManager {
 
   DisplayGeneration(){
     console.log(`GEN: ${this.generation}`);
-    if (this.generation < 10){
-      document.getElementById("gen").innerHTML = `Gen: 0${this.generation}`;
-      return
-    }
-    document.getElementById("gen").innerHTML = `Gen: ${this.generation}`;
+    // if (this.generation < 10){
+    //   document.getElementById("gen").innerHTML = `Generation: 0${this.generation}`;
+    //   return
+    // }
+    document.getElementById("gen").innerHTML = `Generation: `;
+    document.getElementById("gen-counter").innerHTML = `${this.generation}`;
   }
 
   DisplaySucessRate(){

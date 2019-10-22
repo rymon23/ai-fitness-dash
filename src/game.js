@@ -103,13 +103,12 @@ class Game {
     console.log("GAME INITIALIZED");
 
     const restartButton = document.getElementById("restart-button");
-    restartButton.addEventListener("click", () => {
-        this.modal.Enable();
-        this.Stop()
-        this.DestroyGameObjects();
-    });
+    // restartButton.addEventListener("click", () => {
+    //     this.modal.Enable();
+    //     this.Stop()
+    //     this.DestroyGameObjects();
+    // });
 
-    //this.Start();
   }
 
   Start(nextRound = false) {
@@ -130,7 +129,7 @@ class Game {
     this.timer.Start(this.settings.roundTime);
     // this.interval = setInterval(this.Update, 10);
 
-    this.globalID = requestAnimationFrame(this.RenderGameObjects);
+    this.globalID = requestAnimationFrame(this.Update);
   }
 
   Update() {
@@ -138,9 +137,9 @@ class Game {
       this.Reset();
       return;
     }
-
     this.RenderGameObjects();
     this.CanvasCollisionDetection(this.canvas);
+    this.globalID = requestAnimationFrame(this.Update);
   }
 
   Stop() {
@@ -179,7 +178,7 @@ class Game {
         });
       }
     });
-    this.globalID = requestAnimationFrame(this.RenderGameObjects);
+    // this.globalID = requestAnimationFrame(this.RenderGameObjects);
   }
 
   CanvasCollisionDetection(canvas) {
