@@ -8,11 +8,6 @@ import Box from "./box";
 import { CreateBalls } from "./ball";
 import { CreateColumns } from "./column";
 
-// const ROUND_DURATION = 15; //in seconds
-// const POPULATION_SIZE = 20;
-// const BREED_TOP_PERCENT = 0.28;
-// const MUTATION_PERCENT = 5;
-
 class Game {
   constructor(canvasEl) {
     this.ctx = canvasEl.getContext("2d");
@@ -218,13 +213,10 @@ class Game {
   }
 
   DestroyGameObjects() {
-    debugger
     if (Object.values(this.gameObjects).length === 0) return;
     Object.values(this.gameObjects).forEach(array => {
-      debugger
       if (array.length > 0) {
         array.forEach(gameObject => {
-          debugger
           if (!gameObject.HasTag("box")) {
             gameObject.Destroy();
           }

@@ -73,6 +73,7 @@ class Entity extends GameObject {
     this.ResetObstructions = this.ResetObstructions.bind(this);
     this.ResetCollisions = this.ResetCollisions.bind(this);
     this.UpdateDirection = this.UpdateDirection.bind(this);
+    this.RenderEye = this.RenderEye.bind(this);
 
     this.ResetObstructions();
     this.Init();
@@ -200,15 +201,11 @@ class Entity extends GameObject {
       this.obstructed.up ? directionY = 0 : null;
     }
 
-    if (isNaN(directionY)) {
-      console.log("NAN VALUE: TRIGGER Y")
-      debugger
-    }
     this.pos.y += directionY
-    if (isNaN(this.pos.y) || isNaN(this.pos.x)) {
-      debugger
-      console.log("NAN VALUE FOUND")
-    }
+    // if (isNaN(this.pos.y) || isNaN(this.pos.x)) {
+    //   debugger
+    //   console.log("NAN VALUE FOUND")
+    // }
   }
 
   Update() {
@@ -283,25 +280,16 @@ class Entity extends GameObject {
   Render(ctx) {
     ctx.beginPath();
     ctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI *2);
-    ctx.fillStyle = this.color;
+    const pattern = ctx.createPattern(window.patterns[0], "repeat");
+    ctx.fillStyle = pattern; //this.color;
     ctx.fill();
     ctx.closePath();
 
     Object.values(this.sensorRays).forEach((sensorRay) => {
       sensorRay.Render(ctx);
     });
-
     this.RenderPos(ctx);
-    //SENSORS
-    // const offset = this.GetWidth() / 2;
-    // ctx.beginPath();
-    // ctx.rect(this.PosX(), this.PosY() - offset, 1, -ENTITY_SENSOR_RANGE); //TOP
-    // ctx.rect(this.PosX(), this.PosY() + offset, 1, ENTITY_SENSOR_RANGE); //BOTTOM
-    // ctx.rect(this.PosX() + offset, this.PosY(), ENTITY_SENSOR_RANGE, 1); //RIGHT
-    // ctx.rect(this.PosX() - offset, this.PosY(), -ENTITY_SENSOR_RANGE, 1); //LEFT
-    // ctx.fillStyle = "#ff0000";
-    // ctx.fill();
-    // ctx.closePath();
+    this.RenderEye(ctx);
 
     // //ENERGY SHIELD
     // ctx.beginPath();
@@ -310,7 +298,27 @@ class Entity extends GameObject {
     // ctx.stroke();
     // ctx.closePath();
   }
+    
+  RenderEye(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.PosX(), this.PosY(), 6, 0, Math.PI * 2);
+    const pattern = ctx.createPattern(window.patterns[0], "no-repeat");
+    ctx.fillStyle = pattern; //"#f41000";
+    ctx.fill();
+    ctx.closePath();
+
+    // const img = new Image();
+    // img.src = "./assets/image.jpg";
+    // ctx.drawImage(window.images[0], this.PosX(), this.PosY(), this.radius, this.radius);
+    // ctx.beginPath();
+    // ctx.arc(this.PosX(), this.PosY(), 3, 0, Math.PI * 2);
+    // ctx.fillStyle = "rgb(0, 0, 0)";
+    // ctx.fill();
+    // ctx.closePath();
+  }
+
 }
+
 
 export const CreateEntities = (amount, startBox, game, target) =>{
     const entities = [];

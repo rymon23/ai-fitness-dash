@@ -10,8 +10,6 @@ const updateElementValue = (elementId, newVal, callBack = null) => {
 }
 
 
-
-
 window.addEventListener("DOMContentLoaded", (e) => {
   console.log("DOM LOADED");
   const canvasEl = document.getElementsByTagName("canvas")[0];
@@ -41,6 +39,20 @@ window.addEventListener("DOMContentLoaded", (e) => {
   //     "input", updateElementValue("slider-mutation-value", `${sliderMutation.value}%`)
   //   );
   // });
+
+  const assetPath = "./src/assets/";
+
+  const img = new Image();
+  img.src = assetPath + "image.jpg"; //"./src/assets/image.jpg";
+  const pattern = new Image();
+  pattern.src = assetPath + "pattern_2.jpg";
+
+  window.images = [];
+  window.images.push(img);
+ 
+  window.patterns = [];
+  window.patterns.push(pattern);
+
 
   window.game = new Game(canvasEl);
 })
