@@ -4,7 +4,7 @@ import DNA from "./dna";
 import Vector2 from "./vector2";
 import { CreateSensorRays } from "./sensor_ray";
 
-const ENTITY_GOAL_RADIUS = 58;
+const ENTITY_GOAL_RADIUS = 45;
 
 class Entity extends GameObject {
   constructor(game, startingPos, target = null) {

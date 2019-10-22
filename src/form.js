@@ -73,6 +73,7 @@ class Form {
     //OVERRRIDE BY CHILD
   }
   Destroy() {
+    debugger
     this.StopUpdate();
     delete this;
   }

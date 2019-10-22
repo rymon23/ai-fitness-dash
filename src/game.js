@@ -67,6 +67,7 @@ class Game {
     this.Start = this.Start.bind(this);
     this.Stop = this.Stop.bind(this);
     this.Update = this.Update.bind(this);
+    this.NextRound = this.NextRound.bind(this);
     this.Reset = this.Reset.bind(this);
     this.ResetSliderDefaults = this.ResetSliderDefaults.bind(this);
     this.RenderGameObjects = this.RenderGameObjects.bind(this);
@@ -103,11 +104,11 @@ class Game {
     console.log("GAME INITIALIZED");
 
     const restartButton = document.getElementById("restart-button");
-    // restartButton.addEventListener("click", () => {
-    //     this.modal.Enable();
-    //     this.Stop()
-    //     this.DestroyGameObjects();
-    // });
+    restartButton.addEventListener("click", () => {
+        this.modal.Enable();
+        this.Stop()
+        this.DestroyGameObjects();
+    });
 
   }
 
@@ -118,7 +119,8 @@ class Game {
 
     // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
     this.gameObjects.columns = CreateColumns(125, this);
-
+    // this.gameObjects.entities = [];
+    // debugger
     if (nextRound) {
       this.PopulationManager.BreedNewPopulation();
     }else{
@@ -131,30 +133,34 @@ class Game {
 
     this.globalID = requestAnimationFrame(this.Update);
   }
-
+  Stop() {
+    this.running = false;
+    this.timer.Stop();
+    cancelAnimationFrame(this.updateID);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    console.log("GAME STOPPED");
+  }
+  NextRound(){
+    this.Stop();
+    this.DestroyGameObjects();
+    this.Start(true);
+    console.log("NEXT ROUND");
+  }
+  Reset() {
+    this.Stop();
+    this.DestroyGameObjects();
+    console.log("GAME RESET");
+  }
   Update() {
+    if (!this.running) return;
+
     if (this.timer.timeUp) {
-      this.Reset();
+      this.NextRound();
       return;
     }
     this.RenderGameObjects();
     this.CanvasCollisionDetection(this.canvas);
     this.globalID = requestAnimationFrame(this.Update);
-  }
-
-  Stop() {
-    this.running = false;
-    this.timer.Stop();
-    clearInterval(this.interval);
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    console.log("GAME STOPPED");
-  }
-
-  Reset() {
-    console.log("GAME RESETTING");
-    this.Stop();
-    this.DestroyGameObjects();
-    this.Start(true);
   }
 
   ResetSliderDefaults(){
@@ -212,10 +218,13 @@ class Game {
   }
 
   DestroyGameObjects() {
+    debugger
     if (Object.values(this.gameObjects).length === 0) return;
     Object.values(this.gameObjects).forEach(array => {
+      debugger
       if (array.length > 0) {
         array.forEach(gameObject => {
+          debugger
           if (!gameObject.HasTag("box")) {
             gameObject.Destroy();
           }

@@ -76,7 +76,7 @@ class GameObject extends Form {
   }
 
   StopUpdate() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
     cancelAnimationFrame(this.updateID);
   }
 

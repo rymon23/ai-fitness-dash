@@ -22,7 +22,7 @@ class Modal {
         const startButton = document.getElementById("start-button");
         startButton.addEventListener("click", () => {
             this.Disable();
-            window.game.Start();
+            window.game.Start(false);
         });
     }
 

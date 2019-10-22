@@ -10,12 +10,9 @@ class PopulationManager {
     this.game = game;
     this.startBox = startBox;
     this.finishBox = finishBox;
-
-    this.population = [];
     this.generation = 1;
-
-    this.interval;
-
+    this.population = [];
+    
     this.Init = this.Init.bind(this);
     this.CompareEntities = this.CompareEntities.bind(this);
     this.Breed = this.Breed.bind(this);
@@ -25,6 +22,8 @@ class PopulationManager {
   }
 
   Init() {
+    this.generation = 1;
+    this.population = [];
     for (let i = 0; i < this.game.settings.populationSize; i++) {
       // const xyPos = Util.getRandomBoxPos(this.startBox);
       const entity = new Entity(this.game, this.startBox.GetCenterPos(), this.finishBox);
@@ -36,37 +35,8 @@ class PopulationManager {
 
   DisplayGeneration(){
     console.log(`GEN: ${this.generation}`);
-    // if (this.generation < 10){
-    //   document.getElementById("gen").innerHTML = `Generation: 0${this.generation}`;
-    //   return
-    // }
     document.getElementById("gen").innerHTML = `Generation: `;
     document.getElementById("gen-counter").innerHTML = `${this.generation}`;
-  }
-
-  DisplaySucessRate(){
-    let successCount = 0;
-    for (let i = 0; i < this.population.length; i++) {
-      const entity = this.population[i];
-      entity.goalReached? 
-        successCount++ : null;
-    }
-    document.getElementById("gen").innerHTML = `Gen: ${this.generation}`;
-  }
-  DisplayRanks(){
-    const suceeded = this.population.slice().filter((entity) => {
-      entity.goalReached === true;
-    }).sort((a, b) => {
-      this.CompareEntities(a, b);
-    })
-
-    debugger
-    document.getElementById("ranks").innerHTML = `Ranks:`;
-    
-    for (let i = 0; i < suceeded.length; i++) {
-      const entity = this.population[i];
-      Util.addElement("ranks", "div", `distance traveled: ${entity.distanceTraveled}`, false);
-    }
   }
 
   CompareEntities(a, b) {
