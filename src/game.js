@@ -111,7 +111,7 @@ class Game {
     console.log("GAME STARTED");
     this.running = true;
     this.canvas.Init();
-
+    
     // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
     this.gameObjects.columns = CreateColumns(125, this);
     // this.gameObjects.entities = [];

@@ -280,8 +280,9 @@ class Entity extends GameObject {
   Render(ctx) {
     ctx.beginPath();
     ctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI *2);
-    const pattern = ctx.createPattern(window.patterns[0], "repeat");
-    ctx.fillStyle = pattern; //this.color;
+    // const pattern = ctx.createPattern(window.patterns[0], "repeat");
+    // ctx.fillStyle = pattern; //this.color;
+    ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();
 

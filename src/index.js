@@ -14,9 +14,6 @@ window.addEventListener("DOMContentLoaded", (e) => {
   console.log("DOM LOADED");
   const canvasEl = document.getElementsByTagName("canvas")[0];
 
-
-  //IMAGES
-
   //CANVAS BACKGROUND
   const assetPath = "./src/assets/";
   window.assetPath = assetPath;
