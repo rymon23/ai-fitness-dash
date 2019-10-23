@@ -11,7 +11,7 @@ class Canvas {
     this.height = this.canvasEl.height;
 
     this.assetPath = window.assetPath;
-    this.backgroundImages = window.backgroundImages;    
+    this.backgroundImages = window.backgroundImages;
 
     const h = this.height;
     const w = this.width;
@@ -54,6 +54,15 @@ class Canvas {
     this.borders.left.Init(); 
 
     this.RefreshBackground();
+
+    //LISTEN FOR MOUSE OVER
+    this.canvasEl.addEventListener("mousemove", e => {
+      const rect = this.canvasEl.getBoundingClientRect();
+      window.mousePosX = e.clientX - rect.left;
+      window.mousePosY = e.clientY - rect.top;
+      // alert(`X: ${canvasX} Y: ${canvasY}`);
+    }); 
+
   }
 
   PosX() {
