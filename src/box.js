@@ -1,11 +1,11 @@
 import * as Util from "./util";
 import GameObject from "./gameobject";
 
-const DEFAULT_FILL = "rgba(0, 0, 255, 0.5)";
+const DEFAULT_FILL = "rgba(0, 0, 255, 0.4)";
 const DEFAULT_STROKE = "#000000";
 
 class Box extends GameObject {
-  constructor(game, x, y, height, width, styles = { fillStyle: DEFAULT_FILL, strokeStyle: DEFAULT_STROKE }) {
+  constructor(game, x, y, height, width, styles = { fillStyle: DEFAULT_FILL, strokeStyle: null }) {
     super();
     this.game = game;
     this.pos = { x, y };

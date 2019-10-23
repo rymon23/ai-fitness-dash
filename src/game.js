@@ -22,10 +22,10 @@ class Game {
     };
 
     this.settings = {
-      roundTime: 15,
-      populationSize: 20,
+      roundTime: 20,
+      populationSize: 25,
       topBreedMult: 30,
-      mutationPerc: 3
+      mutationPerc: 4
     };
 
     window.game = this;
@@ -73,9 +73,9 @@ class Game {
   }
 
   Init() {
-    const startBoxHeight = this.canvas.height / 2;
-    const startBoxWidth = 60;
-    const startBoxY = this.canvas.height / 2 / 2;
+    const startBoxHeight = this.canvas.height * 0.25;
+    const startBoxWidth = 62;
+    const startBoxY = this.canvas.height * 0.5 - startBoxHeight/2; //this.canvas.height / 2 / 2;
     const startBoxX = 0 + this.canvas.borders.left.GetWidth();
 
     const startBox = new Box(
@@ -92,6 +92,9 @@ class Game {
       startBoxHeight,
       startBoxWidth
     );
+    startBox.styles.fillStyle = "rgb(0, 128, 0, 0.45)";
+    finishBox.styles.fillStyle = "rgb(245, 9, 9, 0.45)";
+
     this.gameObjects.boxes.push(startBox);
     this.gameObjects.boxes.push(finishBox);
     this.PopulationManager = new PopulationManager(this, startBox, finishBox);

@@ -132,7 +132,6 @@ class GameObject extends Form {
       object.SensorCheck(this);
     }
     
-
     const colX = Util.isCollidingOnX(object, this);
     
     if (colX){

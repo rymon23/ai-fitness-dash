@@ -14,14 +14,15 @@ class DNA {
       seeLeft: new Gene(-250, 250),
       seeUpWall: new Gene(-250, 250),
       seeDownWall: new Gene(-250, 250),
+      seeCanvasWall: new Gene(-250, 250),
 
       sensorRange: new Gene(4, 22),
-      sensorThickness: new Gene(1,4),
+      sensorThickness: new Gene(1, 4),
       random: new Gene(-250, 250),
 
-      colorR: new Gene(0,255),
-      colorG: new Gene(0,155),
-      colorB: new Gene(0,155),
+      colorR: new Gene(0, 255),
+      colorG: new Gene(0, 155),
+      colorB: new Gene(0, 155)
     };
     // this.SetRandom();
     

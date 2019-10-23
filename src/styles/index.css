@@ -6,6 +6,8 @@
   color: #f41000;
   color: grey;
   color: rgb(100, 100, 100);
+  color: rgb(0, 128, 0, 0.4);
+  color: rgb(245, 9, 9, 0.4);
   color: #fdff92;
   color: #f7b527;
   color: black;
@@ -22,7 +24,7 @@ header{
 }
 body {
   /* background-color: rgb(104, 108, 103); */
-  background-image: url("../assets/pgBg_1.jpg");
+  background-image: url("../assets/pgBg_2.jpg");
   background-repeat: no-repeat;
   background-color: rgb(218, 214, 194);
   background-size: cover; /* Resize the background image to cover the entire container */

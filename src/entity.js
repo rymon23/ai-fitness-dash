@@ -4,7 +4,7 @@ import DNA from "./dna";
 import Vector2 from "./vector2";
 import { CreateSensorRays } from "./sensor_ray";
 
-const ENTITY_GOAL_RADIUS = 45;
+const ENTITY_GOAL_RADIUS = 35;
 
 class Entity extends GameObject {
   constructor(game, startingPos, target = null) {
@@ -56,7 +56,7 @@ class Entity extends GameObject {
     this.speed = this.dna.GetGene("speed");
 
     this.color = 
-      `rgb(${this.dna.GetGene("colorR")},${this.dna.GetGene("colorG")},${this.dna.GetGene("colorB")})`;//"#000000";
+      `rgb(${this.dna.GetGene("colorR")},${this.dna.GetGene("colorG")},${this.dna.GetGene("colorB")})`;
 
     this.goalReached = false;
     this.alive = true;
@@ -111,8 +111,6 @@ class Entity extends GameObject {
   }
 
   GetTriggerGene(){
-    // debugger
-
     if(this.sensorHit.seeUpWall || this.collision.seeUpWall){
       this.TriggerActionY(this.dna.GetGene("seeUpWall"));
     } 
@@ -125,7 +123,10 @@ class Entity extends GameObject {
     if (this.sensorHit.seeDown || this.collision.seeDown) {
       this.TriggerActionY(this.dna.GetGene("seeDown"));
     } 
-
+    if (this.sensorHit.seeCanvasWall || this.collision.seeCanvasWall) {
+      debugger
+      this.TriggerActionX(this.dna.GetGene("seeCanvasWall"));
+    } 
 
     // if (this.sensorHit.seeCanvasWall || this.collision.seeCanvasWall){
     //   // this.obstructed.right = true;
@@ -184,6 +185,7 @@ class Entity extends GameObject {
   }
 
   TriggerActionX(geneValue){
+    debugger
     let directionX = this.DirX() * (geneValue * 0.1);
     if (directionX > 0) {
       this.obstructed.right ? directionX = 0 : null
@@ -301,12 +303,28 @@ class Entity extends GameObject {
   }
     
   RenderEye(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.PosX(), this.PosY(), 6, 0, Math.PI * 2);
-    const pattern = ctx.createPattern(window.patterns[0], "no-repeat");
-    ctx.fillStyle = pattern; //"#f41000";
-    ctx.fill();
-    ctx.closePath();
+
+    const img = window.eyes[0];
+    ctx.drawImage(
+      img,
+      this.PosX() - this.radius,
+      this.PosY() - this.radius,
+      this.radius*2,
+      this.radius*2
+    );
+
+
+    // ctx.beginPath();
+    // const tempCanvas = document.createElement('canvas');
+    // tempCanvas.width = this.radius;
+    // tempCanvas.height = this.radius;
+    // const tctx = tempCanvas.getContext('2d');
+    // tctx.beginPath();
+    // tctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI * 2);
+    // const pattern = tctx.createPattern(window.patterns[1], "no-repeat");
+    // tctx.fillStyle = pattern; //"#f41000";
+    // tctx.fill();
+    // ctx.closePath();
 
     // const img = new Image();
     // img.src = "./assets/image.jpg";

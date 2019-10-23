@@ -29,7 +29,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
   bg_3.src = assetPath + "bg_3.jpg";
   bg_4.src = assetPath + "bg_4.png";
   bg_5.src = assetPath + "bg_5.png";
-  bg_6.src = assetPath + "bg_6.jpeg";
+  bg_6.src = assetPath + "bg_6.jpg";
   bg_7.src = assetPath + "bg_7.jpeg";
   window.backgroundImages.push(bg_1);
   window.backgroundImages.push(bg_2);
@@ -48,12 +48,26 @@ window.addEventListener("DOMContentLoaded", (e) => {
   window.wallPatterns.push(wp_1);
   window.wallPatterns.push(wp_2);
 
+  //EYES
+  window.eyes = [];
+  const eye_1 = new Image();
+  const eye_2 = new Image();
+  eye_1.src = assetPath + "eye_1.gif";
+  eye_2.src = assetPath + "eye_2.gif";
+  window.eyes.push(eye_1);
+  window.eyes.push(eye_2);
 
-  window.images = [];
+  //PATTERNS
   window.patterns = [];
-  const pattern = new Image();
-  pattern.src = assetPath + "pattern_2.jpg";
-  window.patterns.push(pattern);
+  const p_1 = new Image();
+  const p_2 = new Image();
+  const p_3 = new Image();
+  p_1.src = assetPath + "p_1.jpg";
+  p_2.src = assetPath + "p_2.jpg";
+  p_3.src = assetPath + "p_3.jpg";
+  window.patterns.push(p_1);
+  window.patterns.push(p_2);
+  window.patterns.push(p_3);
 
   const patternWall = new Image();
   patternWall.src = assetPath + "pattern_5.jpg";
