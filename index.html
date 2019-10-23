@@ -60,32 +60,36 @@
                 <div class="modal-content">
                     <div class="modal-description">
                         <h1>Welcome to Fitness Dash</h1>
-                        <p>Fitness Dash simulates the concept of natural selection by utilizing a simple genetic algorithm. </p>
+                        <p>Fitness Dash simulates the concept of natural selection by utilizing a simple genetic algorithm to produce Ai smart enough to navigate across a randomized obstacle course </p>
                     </div>
 
                     <div class="settings-column-container">
                         <div class="settings-container">
                             <h2>Configure Algorithm Settings</h2>
 
-                            <label>Population size
+                            <label class="settings-label">Population size
+                                <span class="tooltip-text">The number of navigating entities to spawn</span>
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-pop" min="3" max="50" value="25">
                                 </div>
                                 <p id="slider-pop-value">10</p>
                             </label>
-                            <label>Round Duration
+                            <label class="settings-label">Round Duration
+                                <span class="tooltip-text">The trial time for a generation</span>
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-duration" min="15" max="60" value="30">
                                 </div>
                                 <p id="slider-duration-value">10</p>
                             </label>
-                            <label>Top Percent
+                            <label class="settings-label">Selection Percent
+                                <span class="tooltip-text">The fitness acceptance rate</span>
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-top-perc" min="10" max="80" value="30">
                                 </div>
                                 <p id="slider-top-perc-value">10</p>
                             </label>
-                            <label>Mutation Chance
+                            <label class="settings-label">Mutation Chance
+                                <span class="tooltip-text">The chance of random gene mutation in an entity per round</span>
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-mutation" min="1" max="100" value="2">
                                 </div>
