@@ -65,6 +65,13 @@ class Canvas {
   }
 
   RefreshBackground(){
+    if (this.backgroundImages.length > 1){
+      const currentBg = this.canvasEl.style.backgroundImage;
+      let newBg = `url(${Util.sampleArray(this.backgroundImages).src})`
+      while (currentBg === newBg){
+        newBg = Util.sampleArray(this.backgroundImages)
+      }
+    }
     const newBg = Util.sampleArray(this.backgroundImages)
     this.canvasEl.style.backgroundImage = `url(${newBg.src})`;
   }

@@ -23,18 +23,21 @@ window.addEventListener("DOMContentLoaded", (e) => {
   const bg_4 = new Image();
   const bg_5 = new Image();
   const bg_6 = new Image();
+  const bg_7 = new Image();
   bg_1.src = assetPath + "bg_1.jpg";
   bg_2.src = assetPath + "bg_2.jpg";
   bg_3.src = assetPath + "bg_3.jpg";
-  bg_4.src = assetPath + "bg_4.jpg";
+  bg_4.src = assetPath + "bg_4.png";
   bg_5.src = assetPath + "bg_5.png";
-  bg_6.src = assetPath + "bg_6.jpg";
+  bg_6.src = assetPath + "bg_6.jpeg";
+  bg_7.src = assetPath + "bg_7.jpeg";
   window.backgroundImages.push(bg_1);
   window.backgroundImages.push(bg_2);
   window.backgroundImages.push(bg_3);
   window.backgroundImages.push(bg_4);
   window.backgroundImages.push(bg_5);
   window.backgroundImages.push(bg_6);
+  window.backgroundImages.push(bg_7);
 
   //WALL PATTERNS
   window.wallPatterns = [];
