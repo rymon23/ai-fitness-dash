@@ -18,8 +18,16 @@ class SliderSetting {
     //DEFAULT VALUE
     this.SetDefault();
 
-    //LISTEN FOR CHANGE
+    //LISTEN FOR CLICK
     this.element.addEventListener("click", () => {
+      this.element.addEventListener(
+        "input",
+        this.UpdateElementValue(this.element.value)
+      );
+    });    
+    
+    //LISTEN FOR MOUSE OVER
+    this.element.addEventListener("mousemove", () => {
       this.element.addEventListener(
         "input",
         this.UpdateElementValue(this.element.value)
