@@ -337,14 +337,12 @@ class Entity extends GameObject {
     // const canvasEl = document.getElementsByClassName(
     //         "canvas-container"
     //       )[0];
-  const canvasEl = document.getElementsByTagName("canvas")[0];
-
+    const canvasEl = document.getElementsByTagName("canvas")[0];
     const rect = canvasEl.getBoundingClientRect();
-
-
+    const eleBounds = this.myEle.getBoundingClientRect();
     debugger
-    const xPosition = this.PosX() - this.radius*1.04 + rect.left; // + this.radius;
-    const yPosition = this.PosY() + this.GetHeight() + this.radius + rect.top; //+ this.radius;
+    const xPosition = this.PosX() + this.radius - eleBounds.width + rect.left; // + this.radius;
+    const yPosition = this.PosY() + this.radius + eleBounds.height + rect.top; //+ this.radius;
     // const widthXY = parseInt(this.myEle.style.padding.split("px")[0]);
 
     debugger;
