@@ -73,5 +73,58 @@ window.addEventListener("DOMContentLoaded", (e) => {
   patternWall.src = assetPath + "pattern_5.jpg";
   window.patterns.push(patternWall);
 
+  // debugger
+  // if (window.sessionID){
+  //   alert(`Last session id: ${window.sessionID.id}`);
+  //   window.sessionID.id = window.sessionID.id + 1;
+  // }else{
+  //     window.sessionID = { id: 1};
+  // }
+
+
+const theThing = document.querySelector("#thing");
+const container = document.querySelector("#contentContainer");
+
+// container.addEventListener("click", getClickPosition, false);
+canvasEl.addEventListener("click", getClickPosition, false);
+
+window.getPosition = getPosition;
+
+function getClickPosition(e) {
+  const parentPosition = getPosition(canvasEl);
+  const xPosition = e.clientX - parentPosition.x - theThing.clientWidth / 2;
+  const yPosition = e.clientY - parentPosition.y - theThing.clientHeight / 2;
+
+  theThing.style.left = xPosition + "px";
+  theThing.style.top = yPosition + "px";
+}
+
   window.game = new Game(canvasEl);
 })
+
+// Helper function to get an element's exact position
+export const getPosition = (el) => {
+  let xPos = 0;
+  let yPos = 0;
+ 
+  while (el) {
+    if (el.tagName == "BODY") {
+      // deal with browser quirks with body/window/document and page scroll
+      let xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+      let yScroll = el.scrollTop || document.documentElement.scrollTop;
+ 
+      xPos += (el.offsetLeft - xScroll + el.clientLeft);
+      yPos += (el.offsetTop - yScroll + el.clientTop);
+    } else {
+      // for all other non-BODY elements
+      xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+      yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+    }
+ 
+    el = el.offsetParent;
+  }
+  return {
+    x: xPos,
+    y: yPos
+  };
+}

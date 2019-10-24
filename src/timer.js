@@ -40,7 +40,7 @@ class Timer {
         return (seconds < 10 ? `0${seconds}` : `${seconds}`);
       }
       // debugger
-      if (remaningTime > 0) {
+      if (remaningTime >= 0) {
         document.getElementById("timer").innerHTML = "Time Remaining:";
         document.getElementById("timer-seconds").innerHTML = formatRemainingTime(remaningTime);
         cbRepeatTimer(remaningTime - 1, cbRepeatTimer, cbOnTimerEnd, cbShouldStop);

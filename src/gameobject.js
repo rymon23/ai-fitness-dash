@@ -1,10 +1,18 @@
 import * as Util from "./util";
 import Form from "./form";
+import Vector2 from "./vector2";
 
 const DEFAULT_COLOR = "#000000";
+const POS_COLOR = "#f7b527";
+const Highlight_COLOR = "#fdff92";
 
 class GameObject extends Form {
-  constructor(game, x = 0, y = 0, styles = { fillStyle: DEFAULT_COLOR, strokeStyle: null }) {
+  constructor(
+    game,
+    x = 0,
+    y = 0,
+    styles = { fillStyle: DEFAULT_COLOR, strokeStyle: null }
+  ) {
     super();
     this.game = game;
     this.pos = { x, y };
@@ -21,7 +29,10 @@ class GameObject extends Form {
     this.trigger = "";
     this.tags = ["gameObject"];
 
-    if (!this.isStatic) { this.crashes = 0; this.collision = {}; }
+    if (!this.isStatic) {
+      this.crashes = 0;
+      this.collision = {};
+    }
 
     this.Init = this.Init.bind(this);
     this.FixedUpdate = this.FixedUpdate.bind(this);
@@ -45,17 +56,15 @@ class GameObject extends Form {
   }
 
   Init() {
-    this.updating = false
-    this.updateID = requestAnimationFrame(this.FixedUpdate)
-    // this.interval = setInterval(this.Update, 10);
-    // this.FixedUpdate();
+    this.updating = false;
+    this.updateID = requestAnimationFrame(this.FixedUpdate);
   }
 
-  FixedUpdate(ms = 10){
-    if (!this.updating){
+  FixedUpdate() {
+    if (!this.updating) {
       this.updating = true;
       this.updating = this.Update();
-    }    
+    }
     this.updateID = requestAnimationFrame(this.FixedUpdate);
 
     // this.interval = setTimeout(() => {
@@ -82,6 +91,19 @@ class GameObject extends Form {
 
   Render(ctx) {
     //OVERRIDE BY CHILD
+
+    if (!ctx) {
+      if (!window.ctx) return;
+      ctx = window.ctx;
+    }
+  }
+
+  RenderPos(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.PosX(), this.PosY(), 2, 0, Math.PI * 2);
+    ctx.fillStyle = POS_COLOR;
+    ctx.fill();
+    ctx.closePath();
   }
 
   SetPosX(posX) {
@@ -111,6 +133,12 @@ class GameObject extends Form {
   GetHeight() {
     return this.height;
   }
+  GetCenterPos() {
+    return new Vector2(
+      this.PosX() + this.GetWidth() / 2,
+      this.PosY() + this.GetHeight() / 2
+    );
+  }
   GetDistance(target) {
     Util.getDistance(this.GetCenterPos(), target.GetCenterPos());
   }
@@ -120,8 +148,8 @@ class GameObject extends Form {
       this.target = object;
     }
   }
-  
-  CollisionUpdate(){
+
+  CollisionUpdate() {
     this.crashes++;
   }
 
@@ -131,57 +159,53 @@ class GameObject extends Form {
     if (object.hasSensors) {
       object.SensorCheck(this);
     }
-    
-    const colX = Util.isCollidingOnX(object, this);
-    
-    if (colX){
-      console.log(`${this.tags}: COLLISION DETECTED: X - ${object.tags} DirX: ${object.DirX()}`);
 
-      // debugger
+    const colX = Util.isCollidingOnX(object, this);
+
+    if (colX) {
+      console.log(
+        `${this.tags}: COLLISION DETECTED: X - ${
+          object.tags
+        } DirX: ${object.DirX()}`
+      );
+
       const side = Util.getObjectASideBOnX(object, this);
-      if (side < 0){
+      if (side < 0) {
         //object on left side
-        object.obstructed.right = true 
-      }else {
-        object.obstructed.left = true 
+        object.obstructed.right = true;
+      } else {
+        object.obstructed.left = true;
       }
 
-      object.HasTag("entity")? 
-          object.SetCollisionHit(this.trigger)
-          :null;
-    
+      object.HasTag("entity") ? object.SetCollisionHit(this.trigger) : null;
+
       if (object.HasTag("ball")) {
         object.dx = -object.dx;
       } else {
         object.dx = 0;
-      }      
+      }
 
-      // if (Util.isALeftOfB(object, this)){
-      //     object.collision.left = true 
-      //     object.obstructed.left = true 
-      // }else{
-      //   object.collision.right = true
-      //   object.obstructed.right = true 
-      // }
       object.CollisionUpdate();
     }
 
     const colY = Util.isCollidingOnY(object, this);
-    if (colY){
-      console.log(`${this.tags}: COLLISION DETECTED: Y - ${object.tags} DirY: ${object.DirY()}`);
+    if (colY) {
+      console.log(
+        `${this.tags}: COLLISION DETECTED: Y - ${
+          object.tags
+        } DirY: ${object.DirY()}`
+      );
 
       // debugger
       const side = Util.getObjectASideBOnY(object, this);
       if (side < 0) {
         //object below
-        object.obstructed.up = true
+        object.obstructed.up = true;
       } else {
-        object.obstructed.down = true
+        object.obstructed.down = true;
       }
 
-      object.HasTag("entity") ?
-        object.SetCollisionHit(this.trigger)
-        : null;
+      object.HasTag("entity") ? object.SetCollisionHit(this.trigger) : null;
 
       if (object.HasTag("ball")) {
         object.dy = -object.dy;
@@ -190,7 +214,6 @@ class GameObject extends Form {
       }
       object.CollisionUpdate();
     }
-
   }
 
   CheckForCollisions() {
@@ -205,6 +228,9 @@ class GameObject extends Form {
     });
   }
 
+  Highlight() {
+    this.styles.fillStyle = Highlight_COLOR;
+  }
 }
 
 export default GameObject;

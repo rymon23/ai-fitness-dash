@@ -44,3 +44,45 @@
   font-size: 50px;
   padding-bottom: 25px;
 }
+
+
+#contentContainer {
+    width: 550px;
+    height: 350px;
+    border: 5px black solid;
+    overflow: hidden;
+    background-color: #F2F2F2;
+    cursor: pointer;
+}
+#thing {
+    z-index: 2;
+    position: relative;
+    left: 10px;
+    top: 10px;
+    /* left: 50px;
+    top: 50px; */
+    transition: left .5s cubic-bezier(.42,-0.3,.78,1.25), 
+                top .5s cubic-bezier(.42,-0.3,.78,1.25);
+
+  border-radius: 100%;
+  padding: 20px;
+  background-image: url("../assets/eye_2.gif");
+  background-repeat: no-repeat;
+  background-color: rgb(218, 214, 194);
+  background-size: cover; /* Resize the background image to cover the entire container */
+  /* opacity: 0.9; */
+}
+.thing {
+  z-index: 2;
+  position: absolute;
+  margin: 0px;
+  left: 10px;
+  top: 10px;
+  border-radius: 100%;
+  padding: 30px;
+  background-image: url("../assets/eye_4.gif");
+  background-repeat: no-repeat;
+  background-color: rgb(218, 214, 194);
+  background-size: cover; /* Resize the background image to cover the entire container */
+  opacity: 0.7;
+}

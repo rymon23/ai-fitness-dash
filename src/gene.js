@@ -1,7 +1,9 @@
 import * as Util from "./util";
+import Form from "./form";
 
-class Gene {
+class Gene extends Form{
   constructor(min = -250, max = 250, value = null) {
+    super();
     this.min = min;
     this.max = max;
     this.value = value;

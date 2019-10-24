@@ -1,12 +1,13 @@
 import * as Util from "./util";
 import Vector2 from "./vector2";
+import Form from "./form";
 
+// const SENSOR_RANGE = 20;
+// const SENSOR_Width = 2;
 
-const SENSOR_RANGE = 20;
-const SENSOR_Width = 2;
-
-class SensorRay {
+class SensorRay extends Form{
   constructor(ownerObject, direction, length, thickness) {
+    super();
     this.owner = ownerObject;
     this.length = length;
     this.thickness = thickness;

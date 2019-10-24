@@ -22,8 +22,8 @@ class Game {
     };
 
     this.settings = {
-      roundTime: 20,
-      populationSize: 25,
+      roundTime: 80,
+      populationSize: 1,
       topBreedMult: 30,
       mutationPerc: 4
     };
@@ -130,6 +130,7 @@ class Game {
     // this.interval = setInterval(this.Update, 10);
 
     this.globalID = requestAnimationFrame(this.Update);
+    // window.sessionID = this.globalID;
   }
   Stop() {
     this.running = false;
@@ -140,6 +141,7 @@ class Game {
   }
   NextRound(){
     this.Stop();
+    this.gameObjects.entities = [];
     this.DestroyGameObjects();
     this.Start(true);
     console.log("NEXT ROUND");
