@@ -22,8 +22,8 @@ class Game {
     };
 
     this.settings = {
-      roundTime: 80,
-      populationSize: 1,
+      roundTime: 20,
+      populationSize: 20,
       topBreedMult: 30,
       mutationPerc: 4
     };

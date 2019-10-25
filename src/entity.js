@@ -322,6 +322,7 @@ class Entity extends GameObject {
       newEle.className = "thing";
       newEle.style.padding = this.radius + "px";
       newEle.style.zIndex = this.id;
+    newEle.style.backgroundColor = this.color;
       // canvasEl.appendChild(newEle);
       canvasEl.insertBefore(newEle, canvasEl.firstChild);
       this.UpdateMyElePos();
@@ -331,20 +332,20 @@ class Entity extends GameObject {
   UpdateMyElePos(){
     if (!this.myEle) return;
 
-    this.dx = 0;
-    this.dy = 0;
+    // this.dx = 0;
+    // this.dy = 0;
 
     // const canvasEl = document.getElementsByClassName(
     //         "canvas-container"
     //       )[0];
     const canvasEl = document.getElementsByTagName("canvas")[0];
     const rect = canvasEl.getBoundingClientRect();
-    const eleBounds = this.myEle.getBoundingClientRect();
     debugger
-    const xPosition = this.PosX() + this.radius - eleBounds.width + rect.left; // + this.radius;
-    const yPosition = this.PosY() + this.radius + eleBounds.height + rect.top; //+ this.radius;
-    // const widthXY = parseInt(this.myEle.style.padding.split("px")[0]);
+    const eleBounds = this.myEle.getBoundingClientRect();
 
+    const xPosition = this.PosX() + rect.left + window.pageXOffset - this.myEle.offsetWidth / 2 + this.radius /2//(this.radius);
+    const yPosition = this.PosY() + rect.top + window.pageYOffset - this.myEle.offsetHeight / 2 + this.radius / 2;
+    // const widthXY = parseInt(this.myEle.style.padding.split("px")[0]);
     debugger;
     this.myEle.style.left = xPosition + "px";
     this.myEle.style.top = yPosition + "px";

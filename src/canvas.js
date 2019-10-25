@@ -56,11 +56,12 @@ class Canvas {
     this.RefreshBackground();
 
     //LISTEN FOR MOUSE OVER
-    this.canvasEl.addEventListener("mousemove", e => {
+    // this.canvasEl.addEventListener("mousemove", e => {
+    this.canvasEl.addEventListener("click", e => {
       const rect = this.canvasEl.getBoundingClientRect();
       window.mousePosX = e.clientX - rect.left;
       window.mousePosY = e.clientY - rect.top;
-      // alert(`X: ${canvasX} Y: ${canvasY}`);
+      // alert(`canvasX: ${window.mousePosX} canvasY: ${window.mousePosY} \n mouseX: ${e.clientX} mouseY: ${e.clientY} \n  rectL: ${rect.left} rectT: ${rect.top}`);
     }); 
 
   }

@@ -1,12 +1,6 @@
 import _ from 'lodash';
 import Game from './game';
-
-const updateElementValue = (elementId, newVal, callBack = null) => {
-  document.getElementById(elementId).innerHTML = newVal;
-  if (callBack){
-    callBack(newVal);
-  }
-}
+import * as Util from "./util";
 
 
 window.addEventListener("DOMContentLoaded", (e) => {
@@ -52,52 +46,29 @@ window.addEventListener("DOMContentLoaded", (e) => {
   window.eyes = [];
   const eye_1 = new Image();
   const eye_2 = new Image();
+  const eye_3 = new Image();
   eye_1.src = assetPath + "eye_1.gif";
   eye_2.src = assetPath + "eye_2.gif";
+  eye_2.src = assetPath + "eye_3.gif";
   window.eyes.push(eye_1);
   window.eyes.push(eye_2);
-
-  //PATTERNS
-  window.patterns = [];
-  const p_1 = new Image();
-  const p_2 = new Image();
-  const p_3 = new Image();
-  p_1.src = assetPath + "p_1.jpg";
-  p_2.src = assetPath + "p_2.jpg";
-  p_3.src = assetPath + "p_3.jpg";
-  window.patterns.push(p_1);
-  window.patterns.push(p_2);
-  window.patterns.push(p_3);
-
-  const patternWall = new Image();
-  patternWall.src = assetPath + "pattern_5.jpg";
-  window.patterns.push(patternWall);
-
-  // debugger
-  // if (window.sessionID){
-  //   alert(`Last session id: ${window.sessionID.id}`);
-  //   window.sessionID.id = window.sessionID.id + 1;
-  // }else{
-  //     window.sessionID = { id: 1};
-  // }
+  window.eyes.push(eye_3);
 
 
-const theThing = document.querySelector("#thing");
-const container = document.querySelector("#contentContainer");
 
-// container.addEventListener("click", getClickPosition, false);
-canvasEl.addEventListener("click", getClickPosition, false);
+// const theThing = document.querySelector("#thing");
+// canvasEl.addEventListener("click", getClickPosition, false);
 
-window.getPosition = getPosition;
+  window.getPosition = getPosition;
 
-function getClickPosition(e) {
-  const parentPosition = getPosition(canvasEl);
-  const xPosition = e.clientX - parentPosition.x - theThing.clientWidth / 2;
-  const yPosition = e.clientY - parentPosition.y - theThing.clientHeight / 2;
+  function getClickPosition(e) {
+    const parentPosition = getPosition(canvasEl);
+    const xPosition = e.clientX - parentPosition.x - theThing.clientWidth / 2;
+    const yPosition = e.clientY - parentPosition.y - theThing.clientHeight / 2;
 
-  theThing.style.left = xPosition + "px";
-  theThing.style.top = yPosition + "px";
-}
+    theThing.style.left = xPosition + "px";
+    theThing.style.top = yPosition + "px";
+  }
 
   window.game = new Game(canvasEl);
 })

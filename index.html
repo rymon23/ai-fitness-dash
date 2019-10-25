@@ -14,7 +14,7 @@
         <header class="header-container">
             <div class="header-content">
                 <div class="header-title">
-                    <h1>Fitness Dash</h1>
+                    <h1>AI Fitness Dash</h1>
                 </div>
             </div>
         </header>
@@ -43,7 +43,7 @@
 
             <div class="canvas-container">
                 <!-- <img id="thing" src="//www.kirupa.com/images/smiley_red.png"> -->
-                <button id="thing"></button>
+                <!-- <button id="thing"></button> -->
 
                 <canvas id="canvas-id" width="1080" height="720">
 
@@ -64,8 +64,8 @@
             <div class="modal-content-container">
                 <div class="modal-content">
                     <div class="modal-description">
-                        <h1>Welcome to Fitness Dash</h1>
-                        <p>Fitness Dash simulates the concept of natural selection by utilizing a simple genetic algorithm to produce Ai smart enough to navigate across a randomized obstacle course </p>
+                        <h1>Welcome to AI Fitness Dash</h1>
+                        <p>AI Fitness Dash simulates the concept of natural selection by utilizing a simple genetic algorithm to produce AI bots smart enough to navigate across a randomized obstacle course </p>
                     </div>
 
                     <div class="settings-column-container">
@@ -73,7 +73,7 @@
                             <h2>Configure Algorithm Settings</h2>
 
                             <label class="settings-label">Population size
-                                <span class="tooltip-text">The number of navigating entities to spawn</span>
+                                <span class="tooltip-text">The number of navigating bots to spawn</span>
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-pop" min="3" max="50" value="25">
                                 </div>
@@ -94,7 +94,7 @@
                                 <p id="slider-top-perc-value">10</p>
                             </label>
                             <label class="settings-label">Mutation Chance
-                                <span class="tooltip-text">The chance of random gene mutation in an entity per round</span>
+                                <span class="tooltip-text">The chance of random gene mutation in an bot per round</span>
                                 <div class="slider-population-container">
                                     <input class="slider" type="range" id="slider-mutation" min="1" max="100" value="2">
                                 </div>
@@ -113,10 +113,6 @@
 
             </div>
         </div>
-
-<!-- 
-        <div id="contentContainer">
-        </div> -->
         
         <script src="./dist/main.js"></script>
     </body>

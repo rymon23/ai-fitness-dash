@@ -24,7 +24,7 @@ header{
 }
 body {
   /* background-color: rgb(104, 108, 103); */
-  background-image: url("../assets/pgBg_2.jpg");
+  background-image: url("../assets/pgBg_1.jpg");
   background-repeat: no-repeat;
   background-color: rgb(218, 214, 194);
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -87,6 +87,7 @@ button:hover {
   padding-top: 10px;
   font-size: 23px;
   font-weight: bolder;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 .top-display-content button{
   font-size: 16px;
@@ -257,4 +258,8 @@ button:hover {
 .settings-label:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.thing {
+  background-color: red;
 }

@@ -1,4 +1,11 @@
 
+export const updateElementValue = (elementId, newVal, callBack = null) => {
+  document.getElementById(elementId).innerHTML = newVal;
+  if (callBack) {
+    callBack(newVal);
+  }
+}
+
 export const sampleArray = (array) =>{
   if (!array) return null;
   return array[getRandomInt(0, array.length - 1)];
