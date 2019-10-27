@@ -40,29 +40,23 @@ Objective:
   
   
 ## Functionality & MVP
-
-  users can:
-  
-  -guess on a breed generation
-  -adjust population size
-
-  -adjust the genetic algorithm:
-  
-    -gene mutation amount
-    -gene mutation percent
-    
-  A modal will display the rules of the game 
-  A project README will be included
+  A modal will initially display with a description of the game and slider settings
+  Users can:
+  * adjust population size
+  * adjust generation trial time
+  * adjust the genetic algorithm:
+    - Fittness selection percent
+    - Gene mutation chance
   
 ## Wireframes
 
 The content for the game will constist of a single screen displaying the rendered map, a game controls modal, with the adjustable options referenced under Functionality and MVP. In addition, there will be an About modal, displaying the rules and linking to Github. A timer will display in the top center of the game screen. and the current generation will be displayed in the top left. A start button will prompt the player to guess a number (perhaps a min and max) before generating the first batch of NPCs. A restart button will allow the player to start over.
 
 ## Technologies
--Vanilla JavaScript for game logic, classes and genetic algorithm
--HTML5 Canvas for rendering the map and game objects
--CSS3 for page styling
--Webpack to bundle files
+* Vanilla JavaScript for game logic, classes and genetic algorithm
+* HTML5 Canvas for rendering the map and game objects
+* CSS3 for page styling
+* Webpack to bundle files
 
 ## Development Timeline
 
