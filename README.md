@@ -1,8 +1,8 @@
-Fitness Dash
+# Fitness Dash
 https://rymon23.github.io/aa_js_project/
 
 
-Background and Overview
+## Background and Overview
 
 Fitness Dash is a 2D guessing game that uses a genetic algorithm.
 Objective is to guess the number of generations needed to breed a fit enough population of npcs in which 90% can 
