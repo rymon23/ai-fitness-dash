@@ -1,4 +1,4 @@
-# Fitness Dash
+# AI Fitness Dash
 https://rymon23.github.io/aa_js_project/
 
 
@@ -39,7 +39,7 @@ Objective:
   capable of traversing the map with a 90% success rate
   
   
-Functionality & MVP
+## Functionality & MVP
 
   users can:
   
@@ -54,40 +54,38 @@ Functionality & MVP
   A modal will display the rules of the game 
   A project README will be included
   
-Wireframes
+## Wireframes
 
 The content for the game will constist of a single screen displaying the rendered map, a game controls modal, with the adjustable options referenced under Functionality and MVP. In addition, there will be an About modal, displaying the rules and linking to Github. A timer will display in the top center of the game screen. and the current generation will be displayed in the top left. A start button will prompt the player to guess a number (perhaps a min and max) before generating the first batch of NPCs. A restart button will allow the player to start over.
 
-Technologies
+## Technologies
+-Vanilla JavaScript for game logic, classes and genetic algorithm
+-HTML5 Canvas for rendering the map and game objects
+-CSS3 for page styling
+-Webpack to bundle files
 
--React.js for web page structure and basic features.
--HTML5 Canvas for rendering map and game objects.
--Vanilla JavaScript for game logic, including the genetic algorithm.
--Webpack.
--Howler.js for background music and sound effects.
+## Development Timeline
 
-Development Timeline
+### Day 1:
 
-Day 1:
-
-  -Setup the basic files/ components for rendering with react
-  -Learn basics Canvas and render a game screen and basic map
-  -Determine the necessary classes and methods needed to implement the game
-  -create a basic outline of thhe game objects and their components
+  * Setup the basic files/ components for rendering with react
+  * Learn basics Canvas and render a game screen and basic map
+  * etermine the necessary classes and methods needed to implement the game
+  * create a basic outline of thhe game objects and their components
   
-Day 2:
+### Day 2:
 
-  -create the collision and logic for the game objects and implement the genetic algorithm in js.
-  -determine the 'genes' that will be implemented and the starting value range / base values.
-  -learn more about Canvas
+  * create the collision and logic for the game objects and implement the genetic algorithm in js.
+  * determine the 'genes' that will be implemented and the starting value range / base values.
+  * learn more about Canvas
   
-Day 3:
+### Day 3:
 
-  -setup genetic algorithm logic and break up the code into different files
-  -add more style to the game
-  -setup & style the page
+  * setup genetic algorithm logic and break up the code into different files
+  * add more style to the game
+  * setup & style the page
   
-Day 4:
+### Day 4:
 
-  -create controls for adjusting the algorithm and population size.
-  -style the page
+  * create controls for adjusting the algorithm and population size.
+  * style the page
