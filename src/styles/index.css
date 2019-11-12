@@ -13,6 +13,24 @@
   color: black;
 }
 
+.static-width {
+  width: 1080px;
+}
+.app-flex-width{
+  width: -webkit-fill-available;
+  max-width: 1080px;
+  justify-content: center;
+}
+.homepage-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.homepage{
+    display: flex;
+    flex-direction: column;
+}
+
 * { 
   padding: 0; 
   margin: 0;
@@ -54,9 +72,11 @@ button:hover {
 }
 
 .header-container {
+  width: 100%;
   display: flex;
   justify-content: center;
-  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }  
 .header-content {
   display: flex;
@@ -64,8 +84,8 @@ button:hover {
   justify-content: center;
 }
 .header-container h1 {
-  font-size: 75px;
-  padding-bottom: 25px;
+  font-size: 40px;
+  text-align: center;
 }
 
 .game-content-container {
@@ -128,8 +148,8 @@ button:hover {
 }
 .display-content{
   display: flex;
-  width: 65%;
-  justify-content: space-around;
+  width: 100%;
+  justify-content: space-between;
 }
 .settings-container{
   display: flex;

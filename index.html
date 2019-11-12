@@ -12,53 +12,58 @@
 
     <body>
         <header class="header-container">
-            <div class="header-content">
+            <div class="header-content static-width">
                 <div class="header-title">
                     <h1>AI Fitness Dash</h1>
                 </div>
             </div>
         </header>
-        <br>
 
-        <div id="display" class="display-container">
-            <div class="display-content">
-                <div class="gen-container">
-                    <div class="top-display-content">
-                        <h2 id="gen"></h2>
-                        <button id="gen-counter"></button>                       
+        <div class="homepage-container">
+            <div class="homepage static-width">
+                <div id="display" class="display-container">
+                    <div class="display-content">
+                        <div class="display restart-button-container">
+                            <button id="restart-button">Restart</button>
+                        </div>
+                        <div class="display gen-container">
+                            <div class="top-display-content">
+                                <h2 id="gen"></h2>
+                                <button id="gen-counter"></button>                       
+                            </div>
+                        </div>
+                        <div class="display timer-container">
+                            <div class="top-display-content">
+                                <h2 id="timer"></h2>
+                                <button id="timer-seconds"></button>   
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="timer-container">
-                    <div class="top-display-content">
-                        <h2 id="timer"></h2>
-                        <button id="timer-seconds"></button>   
+
+                <div class="game-content-container">
+                    <div class="game-content-column">
+                    </div>
+
+                    <div class="canvas-container">
+                        <!-- <img id="thing" src="//www.kirupa.com/images/smiley_red.png"> -->
+                        <!-- <button id="thing"></button> -->
+
+                        <canvas id="canvas-id" width="1080" height="720">
+
+                        </canvas>
+                    </div>
+
+                    <div class="game-content-column">
                     </div>
                 </div>
+
+                <!-- <div class="restart-button-container">
+                    <button id="restart-button">Restart</button>
+                </div> -->
+
             </div>
         </div>
-
-        <div class="game-content-container">
-            <div class="game-content-column">
-            </div>
-
-            <div class="canvas-container">
-                <!-- <img id="thing" src="//www.kirupa.com/images/smiley_red.png"> -->
-                <!-- <button id="thing"></button> -->
-
-                <canvas id="canvas-id" width="1080" height="720">
-
-                </canvas>
-            </div>
-
-            <div class="game-content-column">
-            </div>
-        </div>
-        <br>
-        <div class="restart-button-container">
-            <button id="restart-button">Restart</button>
-        </div>
-        
-        <br>
 
         <div id="modal" class="modal-container">
             <div class="modal-content-container">
@@ -102,14 +107,6 @@
                                         <span id="slider-duration-value" class="slider-value">10</span>
                                     </div>
                                 </div>
-                                <!-- <label class="settings-label">Round Duration
-                                    <span class="tooltip-text">The trial time for a generation</span>
-                                    <div class="slider-population-container">
-                                        <input class="slider" type="range" id="slider-duration" min="10" max="60" value="30">
-                                    </div>
-                                    <p id="slider-duration-value">10</p>
-                                </label> -->
-
 
                                 <div class="settings-slider-wrapper">
                                     <span class="tooltip-text">The fitness acceptance rate</span>
@@ -121,13 +118,6 @@
                                         <span id="slider-top-perc-value" class="slider-value">10</span>
                                     </div>
                                 </div>
-                                <!-- <label class="settings-label">Selection Percent
-                                    <span class="tooltip-text">The fitness acceptance rate</span>
-                                    <div class="slider-population-container">
-                                        <input class="slider" type="range" id="slider-top-perc" min="10" max="80" value="30">
-                                    </div>
-                                    <p id="slider-top-perc-value">10</p>
-                                </label> -->
 
                                 <div class="settings-slider-wrapper">
                                     <span class="tooltip-text">The chance of random gene mutation in an bot per round</span>
@@ -139,13 +129,7 @@
                                         <span id="slider-mutation-value" class="slider-value">10</span>
                                     </div>
                                 </div>
-                                <!-- <label class="settings-label">Mutation Chance
-                                    <span class="tooltip-text">The chance of random gene mutation in an bot per round</span>
-                                    <div class="slider-population-container">
-                                        <input class="slider" type="range" id="slider-mutation" min="1" max="100" value="2">
-                                    </div>
-                                    <p id="slider-mutation-value">10</p>
-                                </label> -->
+
                             </div>
 
                             <div class="settings-button-container">
