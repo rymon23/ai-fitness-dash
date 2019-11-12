@@ -339,6 +339,12 @@ button:hover {
 .slider-value {
   font-weight: bold;
 }
+
+
 .thing {
   background-color: red;
+  border: 2px solid black;
+}
+.thing:hover {
+  border: 2px solid black;
 }

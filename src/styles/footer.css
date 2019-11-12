@@ -13,9 +13,23 @@
     max-width: 400px;
     min-width: 350px;
 }
+.creator-links-container-modal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* max-width: 400px;
+    min-width: 350px; */
+  width: 40%; 
+  min-width: 325px;
+  max-width: 650px;
+}
 .created-by {
     text-align: center;
     margin-bottom: 15px;
+}
+.created-by-modal {
+    align-self: center;
+    text-align: center;
 }
 .creator-link-icon-container {
     display: flex;
@@ -31,4 +45,7 @@
 }
 .creator-link-icons li a {
     font-size:28px;
+}
+.creator-link-icons li a:hover {
+    color: yellow;
 }

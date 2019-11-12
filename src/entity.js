@@ -322,7 +322,7 @@ class Entity extends GameObject {
       newEle.className = "thing";
       newEle.style.padding = this.radius + "px";
       newEle.style.zIndex = this.id;
-    newEle.style.backgroundColor = this.color;
+      newEle.style.backgroundColor = this.color;
       // canvasEl.appendChild(newEle);
       canvasEl.insertBefore(newEle, canvasEl.firstChild);
       this.UpdateMyElePos();
