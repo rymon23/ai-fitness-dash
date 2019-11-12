@@ -1,6 +1,4 @@
-
-/* Not Used by ELs */
-.colors{
+.test-colors-DO-NOT-USE{
   color: black;
   color: white;
   color: #f41000;
@@ -93,7 +91,6 @@ button:hover {
   flex-direction: row;
   justify-content: space-around;
 }
-
 
 .top-display-content{
   display: flex;
