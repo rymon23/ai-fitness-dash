@@ -335,9 +335,6 @@ class Entity extends GameObject {
     // this.dx = 0;
     // this.dy = 0;
 
-    // const canvasEl = document.getElementsByClassName(
-    //         "canvas-container"
-    //       )[0];
     const canvasEl = document.getElementsByTagName("canvas")[0];
     const rect = canvasEl.getBoundingClientRect();
     debugger
@@ -363,27 +360,6 @@ class Entity extends GameObject {
       this.radius * 2,
       this.radius * 2
     );
-
-    // ctx.beginPath();
-    // const tempCanvas = document.createElement('canvas');
-    // tempCanvas.width = this.radius;
-    // tempCanvas.height = this.radius;
-    // const tctx = tempCanvas.getContext('2d');
-    // tctx.beginPath();
-    // tctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI * 2);
-    // const pattern = tctx.createPattern(window.patterns[1], "no-repeat");
-    // tctx.fillStyle = pattern; //"#f41000";
-    // tctx.fill();
-    // ctx.closePath();
-
-    // const img = new Image();
-    // img.src = "./assets/image.jpg";
-    // ctx.drawImage(window.images[0], this.PosX(), this.PosY(), this.radius, this.radius);
-    // ctx.beginPath();
-    // ctx.arc(this.PosX(), this.PosY(), 3, 0, Math.PI * 2);
-    // ctx.fillStyle = "rgb(0, 0, 0)";
-    // ctx.fill();
-    // ctx.closePath();
   }
 
   Destroy() {
