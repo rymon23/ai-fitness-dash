@@ -1,5 +1,5 @@
 # AI Fitness Dash
-[Live Link](https://rymon23.github.io/aa_js_project/)
+[Live Link](https://rymon23.github.io/ai-fitness-dash/)
 
 ## Background and Overview
 
