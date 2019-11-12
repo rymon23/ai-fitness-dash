@@ -1,0 +1,34 @@
+.footer-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.footer-content-container {
+    display: flex;
+    justify-content: center;
+}
+.creator-links-container {
+    max-width: 400px;
+    min-width: 350px;
+}
+.created-by {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.creator-link-icon-container {
+    display: flex;
+    justify-content: center;
+}
+.creator-link-icons {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+.creator-link-icons li {
+    margin-right: 15px;
+}
+.creator-link-icons li a {
+    font-size:28px;
+}

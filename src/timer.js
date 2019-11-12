@@ -27,7 +27,7 @@ class Timer {
   }
 
   ClearDisplay(){
-    document.getElementById("timer").innerHTML = "Time Remaining:";
+    // document.getElementById("timer").innerHTML = "Time Remaining:";
     document.getElementById("timer-seconds").innerHTML = "  ";
   }
 
@@ -41,11 +41,11 @@ class Timer {
       }
       // debugger
       if (remaningTime >= 0) {
-        document.getElementById("timer").innerHTML = "Time Remaining:";
+        // document.getElementById("timer").innerHTML = "Time Remaining:";
         document.getElementById("timer-seconds").innerHTML = formatRemainingTime(remaningTime);
         cbRepeatTimer(remaningTime - 1, cbRepeatTimer, cbOnTimerEnd, cbShouldStop);
       }else {
-        document.getElementById("timer").innerHTML = "Time Remaining:";
+        // document.getElementById("timer").innerHTML = "Time Remaining:";
         document.getElementById("timer-seconds").innerHTML = "Time Up!";
         cbOnTimerEnd();
       }

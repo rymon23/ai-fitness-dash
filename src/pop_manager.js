@@ -40,7 +40,7 @@ class PopulationManager {
 
   DisplayGeneration() {
     console.log(`GEN: ${this.generation}`);
-    document.getElementById("gen").innerHTML = `Generation: `;
+    // document.getElementById("gen").innerHTML = `Generation: `;
     document.getElementById("gen-counter").innerHTML = `${this.generation}`;
   }
 

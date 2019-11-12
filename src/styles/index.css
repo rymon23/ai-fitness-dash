@@ -1,3 +1,6 @@
+@import url(fontawesome-all.min.css);
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,400italic,600italic|Roboto+Slab:400,700");
+
 .test-colors-DO-NOT-USE{
   color: black;
   color: white;
@@ -11,6 +14,21 @@
   color: black;
 }
 
+:root {
+  --page-bg-color-header: rgba(0,0,0,0.92);
+  --page-color-primary: lightyellow;
+  --page-color-secondary: black;  
+  --page-font-size-nav: 18px;
+  --page-font-family: monospace;
+  --page-button-border-radius: 10px;
+}
+
+* { 
+  padding: 0; 
+  margin: 0;
+  font-family: monospace;
+  color: var(--page-color-primary);
+}
 .static-width {
   width: 1080px;
 }
@@ -29,14 +47,19 @@
     flex-direction: column;
 }
 
-* { 
-  padding: 0; 
-  margin: 0;
-  font-family: monospace;
-  color: yellow;
+a:visited{
+    color: inherit;
 }
+a, .no-text-dec{
+    color: inherit;
+    text-decoration-line: inherit;
+}
+a, .clicky {
+    cursor: pointer;
+}
+
 header{
-  background-color: rgba(0,0,0,0.8);
+  background-color: var(--page-bg-color-header);
 }
 body {
   background-image: url("../assets/pgBg_1.jpg");
@@ -44,27 +67,30 @@ body {
   background-color: rgb(218, 214, 194);
   background-size: cover; /* Resize the background image to cover the entire container */
 }
+footer{
+  background-color: var(--page-bg-color-header);
+}
 canvas {
   display: block; 
   margin: 0 auto;
   border: 5px solid rgb(104, 108, 103);
   /* background-image: url("../assets/bg_4.jpg"); */
   background-repeat: no-repeat;
-  background-color: rgb(160, 152, 118);
+  background-color: var(--page-color-primary);
   background-size: cover;
   /* background: rgb(238, 236, 174);  */
 }
 
 button {
-  border: 2px solid black;
-  background-color: black;
-  color: yellow;
+  border: 2px solid var(--page-color-secondary);
+  background-color: var(--page-color-secondary);
+  color: var(--page-color-primary);
   cursor: pointer;
 }
 button:hover {
-  border: 2px solid yellow;
-  background-color: yellow;
-  color: black;
+  border: 2px solid var(--page-color-primary);
+  background-color: var(--page-color-primary);
+  color: var(--page-color-secondary);
   cursor: pointer;
 }
 
@@ -94,32 +120,30 @@ button:hover {
 .top-display-content{
   display: flex;
   flex-direction: row;
-  color: yellow;
+  /* color: yellow; */
   height: 50px;
   justify-content: center;
 }
-.top-display-content h2{
+.top-display-content span , .top-display-content button{
+  font-size: var(--page-font-size-nav);
+}
+.top-display-content span{
+  align-self: center;
   padding-right: 10px;
-  padding-top: 10px;
-  font-size: 23px;
   font-weight: bolder;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
 }
 .top-display-content button{
-  font-size: 16px;
   font-weight: bold;
-  /* border: 2px solid black;
-  background-color: black;
-  color: yellow; */
   padding-left: 15px;
   padding-right: 15px;
-  border-radius: 40px;
+  border-radius: 10px;
+  min-width: 60px;
 }
 
 .gen-container {
   display: flex;
   justify-content: center;
-  padding-bottom: 15px;
 }
 
 .restart-button-container{
@@ -127,16 +151,16 @@ button:hover {
   justify-content: center;
 }
 .restart-button-container button{
-  font-size: 23px;
+  font-size: var(--page-font-size-nav);
   font-weight: bold;
-  /* border: 2px solid black;
-  background-color: black;
-  color: yellow; */
   padding: 10px;
-  border-radius: 40px;
+  border-radius: 10px;
   width: 150px;
 }
 
+.display{
+  flex-grow: 1;
+}
 .display-container{
   display: flex;
   flex-direction: row;
@@ -146,6 +170,7 @@ button:hover {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  margin-top: 10px;
 }
 .settings-container{
   display: flex;
@@ -194,7 +219,7 @@ button:hover {
   -webkit-appearance: none;
   outline: none; 
   height: 5px;
-  background: yellow;
+  background: var(--page-color-primary);
   opacity: 0.7;
   -webkit-transition: .2s; 
   transition: opacity .2s;
@@ -203,8 +228,8 @@ button:hover {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 25px; /* Specified height */
-  background: yellow; /* Grey background */
+  height: 25px;
+  /* background: yellow; */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
@@ -260,7 +285,7 @@ button:hover {
     display: none;
     visibility: visible;
     width: 200px;
-    background-color: yellow;
+    background-color: var(--page-color-primary);
     color: black;
     text-align: center;
     border-radius: 6px;
