@@ -31,6 +31,11 @@
     align-self: center;
     text-align: center;
 }
+.created-by:hover, .created-by-modal:hover {
+    color: yellow;
+    text-decoration-line: underline;
+}
+
 .creator-link-icon-container {
     display: flex;
     justify-content: center;
