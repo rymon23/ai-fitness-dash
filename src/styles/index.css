@@ -41,6 +41,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  min-height: 755px;
 }
 .homepage{
     display: flex;
