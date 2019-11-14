@@ -17,11 +17,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* max-width: 400px;
-    min-width: 350px; */
-  width: 40%; 
-  min-width: 325px;
-  max-width: 650px;
+    width: 40%; 
+    min-width: 325px;
+    max-width: 650px;
+    margin-bottom: 25px;
 }
 .created-by {
     text-align: center;

@@ -1,6 +1,8 @@
 
 .modal-container{
-  /* display: none; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
@@ -9,7 +11,7 @@
   height: 100%; 
   overflow: auto;
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.96);
+  background-color: rgba(0,0,0,0.98);
   /* background-color: rgba(0,0,0,0.1); */
 }
 .modal-content-container {
