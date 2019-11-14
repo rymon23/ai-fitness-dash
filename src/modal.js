@@ -21,16 +21,22 @@ class Modal {
         //GAME START
         const startButton = document.getElementById("start-button");
         startButton.addEventListener("click", () => {
+             defaultButton = document.getElementById("settings-default-button");
+
             this.Disable();
             window.game.Start(false);
         });
     }
 
     Disable(){
+        // debugger
+        // this.element.style.display = "none";
         this.element.hidden = true;
     }
 
     Enable(){
+        // debugger
+        // this.element.style.display = "flex";
         this.element.hidden = false;
     }
 
