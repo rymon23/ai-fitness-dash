@@ -80,6 +80,8 @@ canvas {
   background-color: var(--page-color-primary);
   background-size: cover;
   /* background: rgb(238, 236, 174);  */
+  /* width: 1200px;
+  height:1080px; */
 }
 
 button {
