@@ -24,6 +24,7 @@ class Entity extends GameObject {
     this.isStatic = false;
     this.hasSensors = true;
     this.distanceTraveled = 0;
+    this.timeLeft = -1;
 
     this.obstructed = {
       up: false,
@@ -56,9 +57,9 @@ class Entity extends GameObject {
     this.radius = this.dna.GetGene("size");
     this.speed = this.dna.GetGene("speed") + Math.random();
 
-    this.color = `rgb(${this.dna.GetGene("colorR")},${this.dna.GetGene(
+    this.color = `rgb(${this.dna.GetGene("colorR") + Util.getRandomInt(-2,2)},${this.dna.GetGene(
       "colorG"
-    )},${this.dna.GetGene("colorB")})`;
+    ) + Util.getRandomInt(-2, 2)},${this.dna.GetGene("colorB")})`;
 
     this.goalReached = false;
     this.alive = true;
@@ -265,10 +266,9 @@ class Entity extends GameObject {
     this.distanceTraveled = Util.getDistance(this, this.startPos);
     // debugger
 
-    if (
-      Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS
-    ) {
+    if (Util.getDistance(this, this.target.GetCenterPos()) <= ENTITY_GOAL_RADIUS) {
       this.goalReached = true;
+      this.timeLeft = window.afdTimeLeft;
       return false;
     } else {
       this.ResetObstructions();
@@ -304,7 +304,7 @@ class Entity extends GameObject {
     Object.values(this.sensorRays).forEach(sensorRay => {
       sensorRay.Render(ctx);
     });
-    this.RenderPos(ctx);
+    //this.RenderPos(ctx);
     // this.RenderEye(ctx);
 
     // //ENERGY SHIELD

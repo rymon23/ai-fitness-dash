@@ -73,11 +73,25 @@ class PopulationManager {
   }
 
   CompareEntities(a, b) {
+    debugger
+    if (a.goalReached !== b.goalReached){
+      if (a.goalReached){
+        return -1;
+      }else{
+        return 1;
+      }
+    }else{
+      if (a.goalReached){
+        if (a.timeLeft < b.timeLeft) return 1;
+        if (a.timeLeft > b.timeLeft) return -1;
+        return 0;        
+      }
+    }
     if (a.distanceTraveled < b.distanceTraveled) {
       return 1;
-    } else if (a.distanceTraveled > b.distanceTraveled) {
+    }else if (a.distanceTraveled > b.distanceTraveled) {
       return -1;
-    } else {
+    }else {
       return 0;
     }
   }
@@ -101,7 +115,8 @@ class PopulationManager {
     console.log("BREED NEW POPULATION");
     const oldPopulation = this.population;
     const sortedPop = oldPopulation.sort((a, b) => {
-        return this.CompareEntities(a, b);
+      let compare = this.CompareEntities(a, b);
+        return compare; //this.CompareEntities(a, b);
       })
       .slice(
         0,

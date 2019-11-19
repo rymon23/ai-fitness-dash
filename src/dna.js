@@ -7,7 +7,7 @@ class DNA extends Form{
     super();
     this.genes = {
       speed: new Gene(1, 8, savedGeneValues.speed),
-      size: new Gene(8, 18, savedGeneValues.size),
+      size: new Gene(8, 22, savedGeneValues.size),
       seeUp: new Gene(-250, 250, savedGeneValues.seeUp),
       seeDown: new Gene(-250, 250, savedGeneValues.seeDown),
       seeRight: new Gene(-250, 250, savedGeneValues.seeRight),
@@ -20,7 +20,7 @@ class DNA extends Form{
       sensorThickness: new Gene(1, 4, savedGeneValues.sensorThickness),
       random: new Gene(-250, 250, savedGeneValues.random),
 
-      colorR: new Gene(50, 255, savedGeneValues.colorR),
+      colorR: new Gene(50, 250, savedGeneValues.colorR),
       colorG: new Gene(50, 155, savedGeneValues.colorG),
       colorB: new Gene(50, 155, savedGeneValues.colorB)
     };

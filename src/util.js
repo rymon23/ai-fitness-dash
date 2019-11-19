@@ -1,4 +1,14 @@
 
+export const compareValues = (valA, valB) => {
+  if (valA > valB){
+    return 1;
+  }else if (valA < valB){
+    return -1;
+  }else {
+    return 0;
+  }
+}
+
 export const updateElementValue = (elementId, newVal, callBack = null) => {
   document.getElementById(elementId).innerHTML = newVal;
   if (callBack) {

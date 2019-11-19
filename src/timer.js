@@ -13,8 +13,10 @@ class Timer {
 
   Start(seconds){
     this.timeUp = false;
-    // window.timer = this;
     this.ClearDisplay();
+
+    window.afdTimeLeft = seconds;
+    
     this.ExecuteTimer(seconds, this.ExecuteTimer, this.Stop, ()=>{
       if (this.timeUp) return true;
     });
@@ -33,20 +35,24 @@ class Timer {
 
   ExecuteTimer(seconds, cbRepeatTimer, cbOnTimerEnd, cbShouldStop) {
     if (cbShouldStop()) return;
-    const remaningTime = seconds;
+    const remainingTime = seconds;
+    // this.remainingTime = remainingTime;
+    // console.log(`Remaining Time: ${this.remainingTime}`);
 
     this.timeOut = setTimeout(function () {
       const formatRemainingTime = (seconds) => {
         return (seconds < 10 ? `0${seconds}` : `${seconds}`);
       }
       // debugger
-      if (remaningTime >= 0) {
+      if (remainingTime >= 0) {
         // document.getElementById("timer").innerHTML = "Time Remaining:";
-        document.getElementById("timer-seconds").innerHTML = formatRemainingTime(remaningTime);
-        cbRepeatTimer(remaningTime - 1, cbRepeatTimer, cbOnTimerEnd, cbShouldStop);
+        document.getElementById("timer-seconds").innerHTML = formatRemainingTime(remainingTime);
+        window.afdTimeLeft = remainingTime - 1;
+        cbRepeatTimer(remainingTime - 1, cbRepeatTimer, cbOnTimerEnd, cbShouldStop);
       }else {
         // document.getElementById("timer").innerHTML = "Time Remaining:";
         document.getElementById("timer-seconds").innerHTML = "Time Up!";
+        window.afdTimeLeft = 0;
         cbOnTimerEnd();
       }
     }, 1000);
