@@ -16,6 +16,9 @@ window.addEventListener("DOMContentLoaded", (e) => {
     return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
   };
   window.isDeviceMobile = isMobileDevice();
+  if (window.isDeviceMobile){
+    alert("Your current viewing device may not properly display this page!")
+  }
   console.log(`isMobileDevice = ${window.isDeviceMobile}`);
 
 

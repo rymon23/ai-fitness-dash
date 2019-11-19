@@ -26,12 +26,12 @@ class AFDDataBase {
             let db;
 
             openRequest.onerror = function (e) {
-                alert("Open Request error");
+            //    alert("Open Request error");
                 console.log("There was an error: " + e.target.errorCode);
             };
 
             openRequest.onupgradeneeded = function (e) {
-                alert("request upgrade called");
+            //    alert("request upgrade called");
                 db = e.target.result;
                 db.createObjectStore("data", { keyPath: "gen" });
                 // store.createIndex("gen", "gen", { unique: false });
@@ -69,7 +69,8 @@ class AFDDataBase {
                         cb(myRecord);
                     };
                     tx.onerror = function (event) {
-                        alert("Transaction Error:" + event.target.errorCode)
+                     //   alert("Transaction Error:" + event.target.errorCode)
+                        console.log.length("Transaction Error:" + event.target.errorCode);
                     };
                     objectStoreRequest.onsuccess = function (event) {
                         console.log("object store request successful");
@@ -86,7 +87,8 @@ class AFDDataBase {
                             myRecord = objectStoreRequest.result; 
                         }
                         requestUpdate.onerror = function (event) {
-                            alert("Transaction Error:" + event.target.errorCode);
+                        //    alert("Transaction Error:" + event.target.errorCode);
+                            console.log.length("Transaction Error:" + event.target.errorCode);
                         };
                         requestUpdate.onsuccess = function (event) {
                             console.log("update request successful");
