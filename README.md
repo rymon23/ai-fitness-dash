@@ -56,7 +56,7 @@ The content for the game will constist of a single screen displaying the rendere
 * HTML5 Canvas for rendering the map and game objects
 * CSS3 for page styling
 * Webpack to bundle files
-
+* IndexedDB to store round data on the client browser and refresh the page, improving performance. 
 ## Development Timeline
 
 ### Day 1:
