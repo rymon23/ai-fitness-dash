@@ -44,6 +44,9 @@ class Column extends GameObject {
   Update(){
     this.CheckForCollisions();
   }
+  Resize(){
+    
+  }
 }
 
 export const CreateColumns = (startPosX = 125, game) => {
@@ -54,12 +57,13 @@ export const CreateColumns = (startPosX = 125, game) => {
     };
 
     const randomColumnStartPosY = (column) => {
+      const borderWallWidth = window.game.canvas.borders.top.height;
       if (Math.random() >= 0.5) {
-        column.pos.y = 0;
+        column.pos.y = 0 + borderWallWidth;
         column.trigger = "seeDownWall";
 
-      } else {
-        column.pos.y = game.canvas.height - column.height;
+      }else {
+        column.pos.y = game.canvas.height - (column.height + borderWallWidth);
         column.trigger = "seeUpWall";
       }
     };

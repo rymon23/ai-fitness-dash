@@ -7,13 +7,13 @@ import { CreateSensorRays } from "./sensor_ray";
 const ENTITY_GOAL_RADIUS = 35;
 
 class Entity extends GameObject {
-  constructor(game, startingPos, target = null, id = null) {
+  constructor(game, startingPos, target = null, id = null, savedDNA = {}) {
     super();
     this.id = id;
     this.game = game;
     this.pos = { x: startingPos.PosX(), y: startingPos.PosY() };
     this.startPos = new Vector2(this.PosX(), this.PosY());
-    this.dna = new DNA();
+    this.dna = new DNA(savedDNA);
 
     this.target = target;
     this.tags = ["entity"];
@@ -54,7 +54,7 @@ class Entity extends GameObject {
       this.dna.GetGene("sensorThickness")
     );
     this.radius = this.dna.GetGene("size");
-    this.speed = this.dna.GetGene("speed");
+    this.speed = this.dna.GetGene("speed") + Math.random();
 
     this.color = `rgb(${this.dna.GetGene("colorR")},${this.dna.GetGene(
       "colorG"
@@ -221,11 +221,12 @@ class Entity extends GameObject {
   }
 
   Update() {
+
     if (this.goalReached || !this.alive) {
       this.StopUpdates();
       return false;
     }
-        this.UpdateMyElePos();
+      this.UpdateMyElePos();
 
     // read DNA
     const velocity = this.speed; //1.0; //dna.GetGene(0);
@@ -294,13 +295,11 @@ class Entity extends GameObject {
   }
 
   Render(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI * 2);
-    // const pattern = ctx.createPattern(window.patterns[0], "repeat");
-    // ctx.fillStyle = pattern; //this.color;
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.arc(this.PosX(), this.PosY(), this.radius, 0, Math.PI * 2);
+    // ctx.fillStyle = this.color;
+    // ctx.fill();
+    // ctx.closePath();
 
     Object.values(this.sensorRays).forEach(sensorRay => {
       sensorRay.Render(ctx);
@@ -323,7 +322,6 @@ class Entity extends GameObject {
       newEle.style.padding = this.radius + "px";
       newEle.style.zIndex = this.id;
       newEle.style.backgroundColor = this.color;
-      // canvasEl.appendChild(newEle);
       canvasEl.insertBefore(newEle, canvasEl.firstChild);
       this.UpdateMyElePos();
       return newEle;
@@ -331,24 +329,25 @@ class Entity extends GameObject {
 
   UpdateMyElePos(){
     if (!this.myEle) return;
-
+    
     // this.dx = 0;
     // this.dy = 0;
 
-    const canvasEl = document.getElementsByTagName("canvas")[0];
-    const rect = canvasEl.getBoundingClientRect();
-    debugger
-    const eleBounds = this.myEle.getBoundingClientRect();
+    // const canvasEl = document.getElementsByTagName("canvas")[0];
+    // const rect = canvasEl.getBoundingClientRect();
+    // const xPosition = this.PosX() + rect.left + window.pageXOffset - this.myEle.offsetWidth / 2 + this.radius / 2;
+    // const yPosition = this.PosY() + rect.top + window.pageYOffset - this.myEle.offsetHeight / 2 + this.radius / 2;
+    // this.myEle.style.left = xPosition + "px";
+    // this.myEle.style.top = yPosition + "px";
 
-    const xPosition = this.PosX() + rect.left + window.pageXOffset - this.myEle.offsetWidth / 2 + this.radius /2//(this.radius);
-    const yPosition = this.PosY() + rect.top + window.pageYOffset - this.myEle.offsetHeight / 2 + this.radius / 2;
-    // const widthXY = parseInt(this.myEle.style.padding.split("px")[0]);
-    debugger;
-    this.myEle.style.left = xPosition + "px";
-    this.myEle.style.top = yPosition + "px";
     // this.myEle.style.left = xPosition - (widthXY*0.85) + "px";
     // this.myEle.style.top = yPosition + (widthXY*1.22) + "px";
     // this.myEle.innerHTML = `X: ${xPosition} Y: ${yPosition}`;
+
+    const xPosition = this.PosX() - this.radius;
+    const yPosition = this.PosY() - this.radius;
+    this.myEle.style.left = xPosition + "px";
+    this.myEle.style.top = yPosition + "px";
   }
 
   RenderEye(ctx) {
@@ -366,17 +365,18 @@ class Entity extends GameObject {
     this.StopUpdate();
 
     delete this.startPos;
+    this.startPos = null;
+
     this.dna.Destroy();
     this.myEle.remove();
 
     //DESTROY SENSORS AND DNA BEFORE SELF
     if (Object.keys(this.sensorRays).length > 0) {
       Object.keys(this.sensorRays).forEach(key => {
-        debugger;
         this.sensorRays[key].Destroy();
       });
     }
-    debugger;
+    this.sensorRays = null;
 
     delete this;
   }

@@ -61,7 +61,7 @@ class GameObject extends Form {
   }
 
   FixedUpdate() {
-    if (!this.updating) {
+    if (!this.updating && window.game.running ) {
       this.updating = true;
       this.updating = this.Update();
     }

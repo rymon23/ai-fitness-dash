@@ -1,4 +1,5 @@
 import * as Util from "./util";
+import AFDDataBase from './database';
 import Canvas from "./canvas";
 import PopulationManager from "./pop_manager";
 import SliderSetting from "./slider";
@@ -10,10 +11,18 @@ import { CreateColumns } from "./column";
 
 class Game {
   constructor(canvasEl) {
+    window.game = this;
+
     this.ctx = canvasEl.getContext("2d");
-    // this.canvas = canvasEl;
     this.canvas = new Canvas(this, canvasEl);
     this.timer = new Timer(this);
+    this.PopulationManager;
+
+    this.dataLoaded = false;      
+    if (window.indexedDB){
+      this.myDataBase = new AFDDataBase();
+    }
+
     this.gameObjects = {
       balls: [],
       boxes: [],
@@ -24,14 +33,11 @@ class Game {
     this.settings = {
       roundTime: 20,
       populationSize: 20,
-      topBreedMult: 30,
-      mutationPerc: 4
+      topBreedMult: 40,
+      mutationPerc: 10
     };
 
-    window.game = this;
-
     this.modal = new Modal("modal");
-
     this.sliders = {
       roundTime: new SliderSetting(
         "slider-duration",
@@ -55,9 +61,6 @@ class Game {
       )
     };
 
-    this.PopulationManager;
-    // this.interval;
-
     this.Init = this.Init.bind(this);
     this.Start = this.Start.bind(this);
     this.Stop = this.Stop.bind(this);
@@ -69,7 +72,7 @@ class Game {
     this.DestroyGameObjects = this.DestroyGameObjects.bind(this);
     this.CanvasCollisionDetection = this.CanvasCollisionDetection.bind(this);
 
-    this.Init();
+    // this.Init();
   }
 
   Init() {
@@ -87,7 +90,7 @@ class Game {
     );
     const finishBox = new Box(
       this,
-      this.canvas.width - startBoxWidth - this.canvas.borders.right.GetWidth(),
+      this.canvas.width - (startBoxWidth + this.canvas.borders.right.GetWidth()),
       startBoxY,
       startBoxHeight,
       startBoxWidth
@@ -99,15 +102,47 @@ class Game {
     this.gameObjects.boxes.push(finishBox);
     this.PopulationManager = new PopulationManager(this, startBox, finishBox);
 
-    console.log("GAME INITIALIZED");
+    if (window.indexedDB){
+      this.myDataBase.init().then((response) => {
+        debugger
+        if (!response || response.length === 0) {
+          this.dataLoaded = false;
+          console.log("No save data found")
+          this.modal.Init();
+
+          // this.myDataBase.create({ gen: 1, bots: [], settings: {} }).then()
+        }else {
+          this.dataLoaded = true;
+          //alert("save data found, loading...");
+          this.settings = response[0].settings;
+          this.PopulationManager.Init(response[0].gen, response[0].dna);
+
+          console.log("saved data retrieved, ok to delete");
+
+          this.myDataBase.destroy().then(()=> {
+            console.log("saved data should be destroyed");
+            this.modal.Disable();
+            this.Start(true);
+          });
+        }
+        console.log("GAME INITIALIZED");
+      });    
+
+    }else {
+      this.dataLoaded = false;
+      this.modal.Init();
+      console.log("GAME INITIALIZED");
+    }
 
     const restartButton = document.getElementById("restart-button");
     restartButton.addEventListener("click", () => {
-        this.modal.Enable();
-        this.Stop()
-        this.DestroyGameObjects();
+      if (window.indexedDB){
+        document.location.reload();
+      }else {
+        this.Stop();
+        this.DestroyGameObjects();        
+      }
     });
-
   }
 
   Start(nextRound = false) {
@@ -115,26 +150,53 @@ class Game {
     this.running = true;
     this.canvas.Init();
     
-    // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
-    this.gameObjects.columns = CreateColumns(125, this);
-    // this.gameObjects.entities = [];
-    // debugger
-    if (nextRound) {
-      this.PopulationManager.BreedNewPopulation();
-    }else{
-      this.PopulationManager.Init();
+    const startRound = (nextRound = false) => {
+      if (!this.dataLoaded){
+        if (nextRound){
+          this.PopulationManager.BreedNewPopulation(false);
+        }else {
+          this.PopulationManager.Init();
+        }
+      }else {
+        this.dataLoaded = false;
+      }
+
+      // this.gameObjects.balls = CreateBalls(2, this.gameObjects.boxes[1]);
+      this.gameObjects.columns = CreateColumns(125, this);
+      this.gameObjects.entities = this.PopulationManager.population;
+
+      this.timer.Start(this.settings.roundTime);
+      this.globalID = requestAnimationFrame(this.Update);
     }
-    this.gameObjects.entities = this.PopulationManager.population;
 
-    this.timer.Start(this.settings.roundTime);
-    // this.interval = setInterval(this.Update, 10);
+    if (nextRound) {
+      debugger
 
-    this.globalID = requestAnimationFrame(this.Update);
-    // window.sessionID = this.globalID;
+      if (this.dataLoaded){
+        startRound(nextRound);
+
+      }else if (window.indexedDB){
+        const savedData = this.PopulationManager.BreedNewPopulation(true);
+        savedData.settings = this.settings;
+        this.myDataBase.create(savedData).then(()=>{
+          //alert("next round data should be saved, ok to refresh page");
+          //reftesh
+          document.location.reload();
+        })
+
+      }else{
+        startRound(nextRound);
+      }
+    }else{
+      startRound();
+    }
   }
+
   Stop() {
     this.running = false;
     this.timer.Stop();
+    this.modal.Enable(true);
+
     cancelAnimationFrame(this.updateID);
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     console.log("GAME STOPPED");
@@ -158,6 +220,7 @@ class Game {
       this.NextRound();
       return;
     }
+    // this.canvas.Update();
     this.RenderGameObjects();
     this.CanvasCollisionDetection(this.canvas);
     this.globalID = requestAnimationFrame(this.Update);

@@ -1,11 +1,55 @@
 import _ from 'lodash';
 import Game from './game';
+import AFDDataBase from './database';
 import * as Util from "./util";
-
 
 window.addEventListener("DOMContentLoaded", (e) => {
   console.log("DOM LOADED");
-  const canvasEl = document.getElementsByTagName("canvas")[0];
+
+  if (window.indexedDB) {
+    console.log("IndexedDB detected");
+  }else {
+    console.log("NO IndexedDB detected for this browser");
+  }
+
+  function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  };
+  window.isDeviceMobile = isMobileDevice();
+  console.log(`isMobileDevice = ${window.isDeviceMobile}`);
+
+
+  const updateCanvasSize = () => {
+    console.log(`Device orientation changed!`);
+    const canvasContainer = document.getElementsByClassName("canvas-container")[0];
+    canvasEl.height = canvasContainer.clientHeight;
+    canvasEl.width = canvasContainer.clientWidth;
+  }
+
+  // const canvasEl = document.getElementsByTagName("canvas")[0];
+  let canvasEl = document.getElementsByTagName("canvas")[0];
+  if (!canvasEl){
+    const canvasContainer = document.getElementsByClassName("canvas-container")[0];
+    canvasEl = document.createElement("CANVAS");
+    canvasEl.setAttribute("id","canvas-id");
+    if (window.isDeviceMobile) {
+      // if ("orientation" in screen) {
+      //   debugger
+      //   screen.orientation.lock(screen.orientation.type);
+      // }
+      // ScreenOrientation.lock("portrait");
+      canvasEl.height = canvasContainer.clientHeight;
+      canvasEl.width = canvasContainer.clientWidth;
+      // window.addEventListener('deviceorientation', () => {
+      //   updateCanvasSize()
+      // });  
+    }else {
+      canvasEl.height = 720;
+      canvasEl.width = 1280; 
+    }
+    canvasContainer.appendChild(canvasEl);
+  }
+
 
   //CANVAS BACKGROUND
   const assetPath = "./src/assets/";
@@ -18,13 +62,25 @@ window.addEventListener("DOMContentLoaded", (e) => {
   const bg_5 = new Image();
   const bg_6 = new Image();
   const bg_7 = new Image();
+  const bg_8 = new Image();
+  const bg_9 = new Image();
+  const bg_10 = new Image();
+  const bg_11 = new Image();
+  const bg_12 = new Image();
+  const bg_13 = new Image();
   bg_1.src = assetPath + "bg_1.jpg";
-  bg_2.src = assetPath + "bg_2.jpg";
+  bg_2.src = assetPath + "bg_2.jpeg";
   bg_3.src = assetPath + "bg_3.jpg";
   bg_4.src = assetPath + "bg_4.png";
   bg_5.src = assetPath + "bg_5.png";
   bg_6.src = assetPath + "bg_6.jpg";
   bg_7.src = assetPath + "bg_7.jpeg";
+  bg_8.src = assetPath + "bg_8.jpeg";
+  bg_9.src = assetPath + "bg_9.jpeg";
+  bg_10.src = assetPath + "bg_10.jpeg";
+  bg_11.src = assetPath + "bg_11.jpeg";
+  bg_12.src = assetPath + "bg_12.jpeg";
+  bg_13.src = assetPath + "bg_13.jpeg";
   window.backgroundImages.push(bg_1);
   window.backgroundImages.push(bg_2);
   window.backgroundImages.push(bg_3);
@@ -32,6 +88,12 @@ window.addEventListener("DOMContentLoaded", (e) => {
   window.backgroundImages.push(bg_5);
   window.backgroundImages.push(bg_6);
   window.backgroundImages.push(bg_7);
+  window.backgroundImages.push(bg_8);
+  window.backgroundImages.push(bg_9);
+  window.backgroundImages.push(bg_10);
+  window.backgroundImages.push(bg_11);
+  window.backgroundImages.push(bg_12);
+  window.backgroundImages.push(bg_13);
 
   //WALL PATTERNS
   window.wallPatterns = [];
@@ -55,7 +117,6 @@ window.addEventListener("DOMContentLoaded", (e) => {
   window.eyes.push(eye_3);
 
 
-
 // const theThing = document.querySelector("#thing");
 // canvasEl.addEventListener("click", getClickPosition, false);
 
@@ -71,6 +132,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
   }
 
   window.game = new Game(canvasEl);
+  window.game.Init();
 })
 
 // Helper function to get an element's exact position

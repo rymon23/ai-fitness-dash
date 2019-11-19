@@ -15,11 +15,11 @@ class Gene extends Form{
     //   : max;
     this.Randomize = this.Randomize.bind(this);
     this.Dup = this.Dup.bind(this);   
+    this.GetValue = this.GetValue.bind(this);   
 
-    if (this.value === null) {
+    if (!this.value) {
       this.Randomize();
     }
-    // debugger
   }
 
   Randomize(){
@@ -27,6 +27,9 @@ class Gene extends Form{
   }
   Dup(){
     return new Gene(this.min, this.max, this.value);
+  }
+  GetValue(){
+    return this.value;
   }
 }
 

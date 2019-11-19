@@ -11,14 +11,14 @@
 }
 .creator-links-container {
     max-width: 400px;
-    min-width: 350px;
+    min-width: 300px;
 }
 .creator-links-container-modal {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 40%; 
-    min-width: 325px;
+    min-width: 300px;
     max-width: 650px;
     margin-bottom: 25px;
 }

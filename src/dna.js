@@ -3,31 +3,32 @@ import Form from "./form";
 import Gene from './gene';
 
 class DNA extends Form{
-  constructor() {
+  constructor(savedGeneValues = {}) {
     super();
     this.genes = {
-      speed: new Gene(1, 8),
-      size: new Gene(8, 18),
-      seeUp: new Gene(-250, 250),
-      seeDown: new Gene(-250, 250),
-      seeRight: new Gene(-250, 250),
-      seeLeft: new Gene(-250, 250),
-      seeUpWall: new Gene(-250, 250),
-      seeDownWall: new Gene(-250, 250),
-      seeCanvasWall: new Gene(-250, 250),
+      speed: new Gene(1, 8, savedGeneValues.speed),
+      size: new Gene(8, 18, savedGeneValues.size),
+      seeUp: new Gene(-250, 250, savedGeneValues.seeUp),
+      seeDown: new Gene(-250, 250, savedGeneValues.seeDown),
+      seeRight: new Gene(-250, 250, savedGeneValues.seeRight),
+      seeLeft: new Gene(-250, 250, savedGeneValues.seeLeft),
+      seeUpWall: new Gene(-250, 250, savedGeneValues.seeUpWall),
+      seeDownWall: new Gene(-250, 250, savedGeneValues.seeDownWall),
+      seeCanvasWall: new Gene(-250, 250, savedGeneValues.seeCanvasWall),
 
-      sensorRange: new Gene(4, 22),
-      sensorThickness: new Gene(1, 4),
-      random: new Gene(-250, 250),
+      sensorRange: new Gene(4, 22, savedGeneValues.sensorRange),
+      sensorThickness: new Gene(1, 4, savedGeneValues.sensorThickness),
+      random: new Gene(-250, 250, savedGeneValues.random),
 
-      colorR: new Gene(0, 255),
-      colorG: new Gene(0, 155),
-      colorB: new Gene(0, 155)
+      colorR: new Gene(50, 255, savedGeneValues.colorR),
+      colorG: new Gene(50, 155, savedGeneValues.colorG),
+      colorB: new Gene(50, 155, savedGeneValues.colorB)
     };
 
     this.GetGene = this.GetGene.bind(this);
     this.Combine = this.Combine.bind(this);
     this.Mutate = this.Mutate.bind(this);
+    this.ExtractGeneValues = this.ExtractGeneValues.bind(this);
   }
 
   GetGene(geneKey) {
@@ -51,13 +52,20 @@ class DNA extends Form{
     //DESTROY GENES BEFORE SELF
     if (Object.keys(this.genes).length > 0){
       Object.keys(this.genes).forEach(key => {
-        debugger
         this.genes[key].Destroy();
       });
     }
-    debugger
-
     delete this;
+  }
+
+  ExtractGeneValues(){
+    const geneVals = {};
+    if (Object.keys(this.genes).length > 0) {
+      Object.keys(this.genes).forEach(key => {
+        geneVals[key] = this.GetGene(key);
+      });
+    }
+    return geneVals;
   }
 
   // SetRandom(){

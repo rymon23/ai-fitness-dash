@@ -1,0 +1,30 @@
+.loading-container {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 75px;
+    padding-top: 50px;
+}
+.loading-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    text-align: center;
+}
+.loading-header {
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.loading {
+  border: 16px solid #dddddd7a;
+  border-top: 16px solid var(--page-color-primary);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -45,14 +45,19 @@ class Canvas {
     this.PosY = this.PosY.bind(this);
     this.RenderBorders = this.RenderBorders.bind(this);
     this.RefreshBackground = this.RefreshBackground.bind(this);
+    this.Update = this.Update.bind(this);
+    this.UpdateSize = this.UpdateSize.bind(this);
+
+    this.UpdateSize();
   }
 
   Init(){
+    //this.UpdateSize();
+
     this.borders.top.Init();
     this.borders.down.Init();
     this.borders.right.Init();
     this.borders.left.Init(); 
-
     this.RefreshBackground();
 
     //LISTEN FOR MOUSE OVER
@@ -63,7 +68,6 @@ class Canvas {
       window.mousePosY = e.clientY - rect.top;
       // alert(`canvasX: ${window.mousePosX} canvasY: ${window.mousePosY} \n mouseX: ${e.clientX} mouseY: ${e.clientY} \n  rectL: ${rect.left} rectT: ${rect.top}`);
     }); 
-
   }
 
   PosX() {
@@ -90,6 +94,38 @@ class Canvas {
     Object.values(this.borders).forEach(wall => {
           if (wall) wall.Render(ctx);
         });
+  }
+  Update(){
+    this.UpdateSize();
+  }
+  UpdateSize(){
+    debugger
+    // const minHeight = 480;
+    // const minWidth = 640;
+    // const maxHeight = 720;
+    // const maxWidth = 1280;
+
+    // const rect = this.canvasEl.parentNode.getBoundingClientRect();
+    const parent = this.canvasEl.parentElement;
+    // const heightDiff = rect.height - this.canvasEl.height;
+    // const widthDiff = rect.width - this.canvasEl.width;
+    const heightDiff = parent.clientHeight - this.canvasEl.height;
+    const widthDiff = parent.clientWidth - this.canvasEl.width;
+
+    // if (heightDiff !== 0) {
+    //   const newHeight = this.canvasEl.height + heightDiff;
+    //   if (newHeight <= maxHeight && newHeight >= minHeight){
+    //     this.canvasEl.height = parent.height;
+    //   }
+    // }
+    // if (widthDiff !== 0) {
+    //   const newWidth = this.canvasEl.height + widthDiff;
+    //   if (newWidth <= maxWidth && newWidth >= minWidth){
+    //     this.canvasEl.width = parent.width;
+    //   }
+    // }
+    this.canvasEl.width = parent.clientWidth;
+    this.canvasEl.height = parent.clientHeight;
   }
 }
 export default Canvas;

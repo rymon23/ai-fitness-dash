@@ -8,6 +8,7 @@ class Form {
     this.HasShape = this.HasShape.bind(this);
     this.StopUpdate = this.StopUpdate.bind(this);
     this.Destroy = this.Destroy.bind(this);
+    this.Resize = this.Resize.bind(this);
   }
 
   HasShape(shape) {
@@ -22,6 +23,9 @@ class Form {
   Destroy() {
     this.StopUpdate();
     delete this;
+  }
+  Resize(){
+    //OVERRIDDEN BY CHILD
   }
 }
 

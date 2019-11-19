@@ -14,7 +14,6 @@ class Box extends GameObject {
     this.styles = styles;
     this.tags = ["box"];
     this.shape = "box";
-
   }
 
   Update(){
@@ -34,6 +33,10 @@ class Box extends GameObject {
       ctx.stroke();
     }
     ctx.closePath();
+  }
+
+  Resize(){
+      
   }
 }
 export default Box;
