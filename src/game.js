@@ -47,7 +47,8 @@ class Game {
       populationSize: new SliderSetting(
         "slider-pop",
         "slider-pop-value",
-        "populationSize"
+        "populationSize",
+        { min: 3, max: 80}
       ),
       topBreedMult: new SliderSetting(
         "slider-top-perc",
