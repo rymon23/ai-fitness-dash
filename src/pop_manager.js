@@ -116,7 +116,7 @@ class PopulationManager {
     const oldPopulation = this.population;
     const sortedPop = oldPopulation.sort((a, b) => {
       let compare = this.CompareEntities(a, b);
-        return compare; //this.CompareEntities(a, b);
+      return compare; //this.CompareEntities(a, b);
       })
       .slice(
         0,
